@@ -46,3 +46,8 @@ test_*.ps1
 test_*.py
 tools/inspect_windows.ps1
 tools/test_*.ps1
+
+# Arte original em alta resolucao e efeitos sonoros originais: so no PC.
+# O repositorio leva os quadros ja convertidos (assets/), que bastam para compilar com ./build.sh
+Sprites/
+SFX/

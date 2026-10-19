@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Sprites/Menu/logo_veil_of_the_damned.png" alt="Veil of the Damned" width="560">
+  <img src="assets/logo_veil_of_the_damned.png" alt="Veil of the Damned" width="560">
 </p>
 
 <h3 align="center">RPG de ação roguelike gótico para Nintendo 64</h3>
@@ -68,13 +68,13 @@ Vencer uma campanha abre a próxima, e vencer uma dificuldade abre a seguinte.
 
 ## Como compilar
 
-Requisitos: Windows com WSL, o toolchain do **libdragon** e o **Tiny3D**. Os scripts `setup_deps.sh` / `setup_deps_unix.sh` baixam as dependências. Para os conversores de sprites é preciso Python 3 com Pillow, NumPy e OpenCV.
+Requisitos: WSL ou Linux com o toolchain do **libdragon** e o **Tiny3D**. Os scripts `setup_deps.sh` e `setup_deps_unix.sh` baixam as dependências.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\build_with_sprites.ps1
+```bash
+./build.sh -j4
 ```
 
-O script converte os sprites (`Sprites/` → `assets/`), prepara o áudio e compila a ROM `veil_of_the_damned.z64`.
+Gera a ROM `veil_of_the_damned.z64` a partir dos quadros já convertidos em `assets/`. A arte original em alta resolução não está no repositório.
 
 ## Estrutura
 
@@ -82,9 +82,8 @@ O script converte os sprites (`Sprites/` → `assets/`), prepara o áudio e comp
 |---|---|
 | `src/`, `include/` | Código do jogo em C (libdragon + Tiny3D) |
 | `tools/` | Conversores de sprites, gerador de mapas, textos e cartas (Python) |
-| `Sprites/` | Arte original em alta resolução |
-| `assets/` | Quadros já convertidos para o N64 |
-| `SFX/`, `Soundtrack/` | Efeitos sonoros e trilha |
+| `assets/` | Sprites, cenário, cartas e áudio já convertidos para o N64 |
+| `Soundtrack/` | Trilha sonora |
 
 ## Tecnologia
 
