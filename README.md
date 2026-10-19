@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo_veil_of_the_damned.png" alt="Veil of the Damned" width="560">
+  <img src=".github/logo.png" alt="Veil of the Damned" width="560">
 </p>
 
 <h3 align="center">RPG de ação roguelike gótico para Nintendo 64</h3>
@@ -71,7 +71,9 @@ Vencer uma campanha abre a próxima, e vencer uma dificuldade abre a seguinte.
 Requisitos: WSL ou Linux com o toolchain do **libdragon** e o **Tiny3D**. Os scripts `setup_deps.sh` e `setup_deps_unix.sh` baixam as dependências.
 
 ```bash
-./build.sh -j4
+export N64_INST=/opt/libdragon        # onde o libdragon foi instalado
+export T3D_INST=$PWD/deps/tiny3d      # Tiny3D baixado pelo setup_deps.sh
+make -j4
 ```
 
 Gera a ROM `veil_of_the_damned.z64` a partir dos quadros já convertidos em `assets/`. A arte original em alta resolução não está no repositório.
@@ -81,9 +83,9 @@ Gera a ROM `veil_of_the_damned.z64` a partir dos quadros já convertidos em `ass
 | Pasta | Conteúdo |
 |---|---|
 | `src/`, `include/` | Código do jogo em C (libdragon + Tiny3D) |
-| `tools/` | Conversores de sprites, gerador de mapas, textos e cartas (Python) |
-| `assets/` | Sprites, cenário, cartas e áudio já convertidos para o N64 |
-| `Soundtrack/` | Trilha sonora |
+| `assets/` | Sprites, cenário, cartas, fontes e áudio já convertidos para o N64 |
+| `Makefile`, `build.sh` | Compilação da ROM |
+| `setup_deps.sh` | Baixa as dependências (Tiny3D) |
 
 ## Tecnologia
 
