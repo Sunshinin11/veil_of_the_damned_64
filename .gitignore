@@ -1,0 +1,34 @@
+# Gerados pelo build (o Makefile e o build_with_sprites.ps1 recriam)
+build/
+filesystem/
+*.z64
+*.v64
+*.n64
+*.eeprom
+*.apk
+*.aab
+
+# Toolchain / dependencias baixadas (setup_deps.sh baixa de novo)
+deps/
+
+# Logs e capturas de teste do emulador
+ares_*.txt
+ares_*.log
+capturas/
+*.log
+
+# Restos de testes e backups locais
+_backup_*/
+Veil/
+raw_druid.*
+test_applied*.glb
+scratch_*.ps1
+Sprites/Barbaro/_ref/
+
+# Sistema / editores
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+__pycache__/
+*.pyc
