@@ -1,6 +1,6 @@
 Add-Type -AssemblyName System.Drawing
 
-$root = 'C:\Desenvolvimento\Nintendo 64\Sprites'
+$root = 'C:\Desenvolvimento\Nintendo 64\Veil of the Damned 64\Sprites'
 $files = @(
     'Norte_Passo/t1_chao_neve.png',
     'Norte_Passo/t2_parede_penhasco.png',

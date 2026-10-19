@@ -24,7 +24,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Falha na conversão do cenário.' }
     & $spritePython 'tools\prepare_audio_assets.py'
     if ($LASTEXITCODE -ne 0) { throw 'Falha no preparo do áudio.' }
-    & wsl bash -lc 'cd /home/georges/veil_n64 && ./build.sh -j4'
+    & wsl bash -lc 'cd "/mnt/c/Desenvolvimento/Nintendo 64/Veil of the Damned 64" && ./build.sh -j4'
     if ($LASTEXITCODE -ne 0) { throw 'Falha na compilação da ROM.' }
     Write-Host 'ROM criada: veil_of_the_damned.z64'
 } finally {

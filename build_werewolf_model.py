@@ -8,8 +8,8 @@ addon_utils.disable("fast64", default_set=False)
 # Start clean
 bpy.ops.wm.read_factory_settings(use_empty=True)
 
-WEREWOLF_DIR = r"C:\Desenvolvimento\Nintendo 64\Modelos\Werewolf"
-OUT_GLB = r"C:\Desenvolvimento\Nintendo 64\assets\models\werewolf.glb"
+WEREWOLF_DIR = r"C:\Desenvolvimento\Nintendo 64\Veil of the Damned 64\Modelos\Werewolf"
+OUT_GLB = r"C:\Desenvolvimento\Nintendo 64\Veil of the Damned 64\assets\models\werewolf.glb"
 
 idle_fbx = os.path.join(WEREWOLF_DIR, "Mutant Idle.fbx")
 print(f"Importing base Werewolf FBX: {idle_fbx}")

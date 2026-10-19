@@ -10,8 +10,8 @@ if hasattr(bpy.app.handlers, 'frame_change_pre'):
 # Start clean
 bpy.ops.wm.read_factory_settings(use_empty=True)
 
-MODEL_DIR = r"C:\Desenvolvimento\Nintendo 64\Modelos"
-OUT_GLB = r"C:\Desenvolvimento\Nintendo 64\assets\models\spirit_wolf.glb"
+MODEL_DIR = r"C:\Desenvolvimento\Nintendo 64\Veil of the Damned 64\Modelos"
+OUT_GLB = r"C:\Desenvolvimento\Nintendo 64\Veil of the Damned 64\assets\models\spirit_wolf.glb"
 
 wolf_fbx = os.path.join(MODEL_DIR, "Spirit Wolf.fbx")
 print(f"Importing Spirit Wolf FBX: {wolf_fbx}")

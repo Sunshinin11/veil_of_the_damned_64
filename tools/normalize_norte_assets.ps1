@@ -1,6 +1,6 @@
 Add-Type -AssemblyName System.Drawing
 
-$root = 'C:\Desenvolvimento\Nintendo 64\Sprites'
+$root = 'C:\Desenvolvimento\Nintendo 64\Veil of the Damned 64\Sprites'
 $jobs = @(
     @{ File='Barbaro/fx_grito.png'; W=2048; H=512; Cols=4; Rows=1; Mode='fit' },
     @{ File='Barbaro/fx_impacto.png'; W=2048; H=512; Cols=4; Rows=1; Mode='fit' },

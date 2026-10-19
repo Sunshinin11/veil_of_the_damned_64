@@ -32,3 +32,17 @@ desktop.ini
 .vscode/
 __pycache__/
 *.pyc
+
+# Documentos de trabalho (prompts de arte/IA, relatorios, guias) e scripts de teste do emulador:
+# ficam so no PC, fora do repositorio
+PROMPT*.md
+RELATORIO*.md
+docs/
+Sprites/**/*.md
+capture_ares_window.ps1
+check_*.py
+run_test*.ps1
+test_*.ps1
+test_*.py
+tools/inspect_windows.ps1
+tools/test_*.ps1

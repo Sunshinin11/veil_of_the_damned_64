@@ -8,8 +8,8 @@ addon_utils.disable("fast64", default_set=False)
 # Start clean
 bpy.ops.wm.read_factory_settings(use_empty=True)
 
-DRUID_DIR = r"C:\Desenvolvimento\Nintendo 64\Modelos\Druid"
-OUT_GLB = r"C:\Desenvolvimento\Nintendo 64\assets\models\druid.glb"
+DRUID_DIR = r"C:\Desenvolvimento\Nintendo 64\Veil of the Damned 64\Modelos\Druid"
+OUT_GLB = r"C:\Desenvolvimento\Nintendo 64\Veil of the Damned 64\assets\models\druid.glb"
 
 idle_fbx = os.path.join(DRUID_DIR, "Idle.fbx")
 print(f"Importing base FBX: {idle_fbx}")
