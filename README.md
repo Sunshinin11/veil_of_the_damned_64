@@ -72,15 +72,32 @@ Vencer uma campanha abre a próxima, e vencer uma dificuldade abre a seguinte.
 
 ## Como compilar
 
-Requisitos: WSL ou Linux com o toolchain do **libdragon** e o **Tiny3D**. Os scripts `setup_deps.sh` e `setup_deps_unix.sh` baixam as dependências.
+### Dependências externas
 
+- **libdragon:** toolchain MIPS e SDK para N64 (padrão em `/opt/libdragon`, configurável via `$N64_INST`).
+- **Python 3:** para o script de empacotamento do DragonFS (`tools/stage_rom_assets.py`).
+- **Tiny3D:** biblioteca 3D, baixada e compilada em `deps/tiny3d` pelo script `./setup_deps.sh`.
+
+### Passo a passo
+
+1. Baixe e compile o Tiny3D:
 ```bash
-export N64_INST=/opt/libdragon        # onde o libdragon foi instalado
-export T3D_INST=$PWD/deps/tiny3d      # Tiny3D baixado pelo setup_deps.sh
-make -j4
+./setup_deps.sh
 ```
 
-Gera a ROM `veil_of_the_damned.z64` a partir dos quadros já convertidos em `assets/`. A arte original em alta resolução não está no repositório.
+2. Compile a ROM:
+```bash
+./build.sh
+```
+
+> **Dica:** o script `./build.sh` lida automaticamente com diretórios cujo caminho contenha espaços (criando um link temporário para o Make) e chama `make`. Caso prefira rodar `make` diretamente de um caminho sem espaços:
+> ```bash
+> export N64_INST=/opt/libdragon
+> export T3D_INST=$PWD/deps/tiny3d
+> make -j4
+> ```
+
+A compilação gera a ROM `veil_of_the_damned.z64` a partir dos ativos prontos para console em `assets/`. A arte bruta de alta resolução do PC não é necessária para compilar.
 
 ### Formatos dos recursos
 
@@ -93,12 +110,13 @@ O carregamento de texturas 3D envia também as paletas, e a análise da base dos
 
 ## Estrutura
 
-| Pasta | Conteúdo |
+| Pasta / Arquivo | Conteúdo |
 |---|---|
 | `src/`, `include/` | Código do jogo em C (libdragon + Tiny3D) |
 | `assets/` | Sprites, cenário, cartas, fontes e áudio já convertidos para o N64 |
+| `tools/stage_rom_assets.py` | Script de organização do manifesto de assets para a ROM |
 | `Makefile`, `build.sh` | Compilação da ROM |
-| `setup_deps.sh` | Baixa as dependências (Tiny3D) |
+| `setup_deps.sh` | Baixa e prepara as dependências locais (Tiny3D) |
 
 ## Tecnologia
 

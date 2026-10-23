@@ -62,6 +62,7 @@ tools/test_*.ps1
 # Repositorio = so o necessario para compilar a ROM (src, include, assets, Makefile, build.sh, setup_deps).
 # Ferramentas, trilha original e scripts do PC ficam so na maquina local.
 /Soundtrack/
-/tools/
+/tools/*
+!/tools/stage_rom_assets.py
 build_*_model.py
 build_with_sprites.ps1

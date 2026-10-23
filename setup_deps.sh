@@ -10,8 +10,8 @@ if [ ! -d "tiny3d" ]; then
 fi
 
 cd tiny3d
-export N64_INST=/opt/libdragon
-export PATH=/opt/libdragon/bin:$PATH
+export N64_INST="${N64_INST:-/opt/libdragon}"
+export PATH="$N64_INST/bin:$PATH"
 echo "Building Tiny3D..."
 make -j$(nproc)
 echo "Tiny3D build completed successfully!"
