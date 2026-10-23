@@ -3,13 +3,13 @@
 #define SPRITE_NORM_H
 typedef struct { const char *name; float s[4]; } SpriteNorm;
 static const SpriteNorm SPRITE_NORM[] = {
-    {"druid_run", {0.907f, 0.891f, 0.942f, 0.860f}},
-    {"druid_run_alt", {0.831f, 0.925f, 0.942f, 0.831f}},
-    {"druid_idle", {1.000f, 1.000f, 1.043f, 0.925f}},
-    {"druid_cast", {0.980f, 1.021f, 1.043f, 0.980f}},
-    {"druid_hurt", {0.925f, 1.000f, 1.043f, 0.925f}},
-    {"druid_transform", {0.980f, 0.980f, 1.065f, 0.907f}},
-    {"druid_escape", {1.089f, 1.114f, 1.140f, 1.043f}},
+    {"mage_run", {0.907f, 0.891f, 0.942f, 0.860f}},
+    {"mage_run_alt", {0.831f, 0.925f, 0.942f, 0.831f}},
+    {"mage_idle", {1.000f, 1.000f, 1.043f, 0.925f}},
+    {"mage_cast", {0.980f, 1.021f, 1.043f, 0.980f}},
+    {"mage_hurt", {0.925f, 1.000f, 1.043f, 0.925f}},
+    {"mage_transform", {0.980f, 0.980f, 1.065f, 0.907f}},
+    {"mage_escape", {1.089f, 1.114f, 1.140f, 1.043f}},
     {"werewolf_idle", {1.020f, 0.962f, 0.962f, 1.064f}},
     {"werewolf_walk", {1.064f, 1.020f, 1.000f, 1.020f}},
     {"werewolf_run", {0.980f, 0.980f, 1.064f, 0.943f}},

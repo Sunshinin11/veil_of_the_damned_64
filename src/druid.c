@@ -121,6 +121,8 @@ static const HeroStats HERO_STATS[HERO_COUNT] = {
     [HERO_DRUID]     = {  90, 12, 120, 18, 18, 4, 0.00f, .004f, .10f, .03f, .002f, .15f },
     [HERO_HUNTRESS]  = {  80, 10, 100, 12, 20, 5, 0.03f, .004f, .12f, .08f, .006f, .30f },
     [HERO_BARBARIAN] = { 140, 22, 100,  5, 26, 6, 0.10f, .008f, .30f, .03f, .002f, .15f },
+    [HERO_MAGE]      = {  90, 12, 120, 18, 18, 4, 0.00f, .004f, .10f, .03f, .002f, .15f }, // temporary staff kit
+    [HERO_ROGUE]     = {  80, 10, 100, 12, 20, 5, 0.03f, .004f, .12f, .08f, .006f, .30f }, // reserved; locked until own art
 };
 const HeroStats *hero_stats(void) { return &HERO_STATS[(g_hero >= 0 && g_hero < HERO_COUNT) ? g_hero : 0]; }
 static int lv_steps(void) { return (g_druid.level > 1 ? g_druid.level : 1) - 1; }
@@ -136,6 +138,7 @@ float hero_crit(void) {
 }
 
 void druid_reset_at(float x, float z) {
+    if (g_hero == HERO_BARBARIAN) barb_cancel_actions();
     g_druid.x = x;
     g_druid.y = 0.0f;
     g_druid.z = z;
@@ -226,6 +229,7 @@ void druid_gain_exp(int amount) {
 
 void druid_revive(void) {
     if (g_druid.continues <= 0) return;
+    if (g_hero == HERO_BARBARIAN) barb_cancel_actions();
     g_druid.continues--;
     if (g_seeds > 0) {                     // morrer custa as sementes
         g_seeds = 0;
@@ -337,7 +341,7 @@ void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
     // Speed setting
     float speed = (g_druid.is_beast ? 110.0f : g_hero == HERO_HUNTRESS ? 82.0f : g_hero == HERO_BARBARIAN ? 78.0f : 75.0f) * (1.0f + g_mods.speed_pct);
     if (g_hero == HERO_BARBARIAN) speed *= barb_speed_mult();
-    if (g_druid.state == DRUID_STATE_DODGE) speed *= (g_hero == HERO_BARBARIAN ? 2.5f : 1.6f);   // salto do barbaro vai mais longe
+    if (g_druid.state == DRUID_STATE_DODGE) speed *= 1.6f;
     else speed *= world_ground_speed(g_druid.x, g_druid.z);   // agua do pantano
     float accel = 12.0f * world_ground_grip(g_druid.x, g_druid.z);   // gelo liso: escorrega
 
@@ -349,6 +353,10 @@ void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
     // Golpe corpo a corpo: o druida PARA para golpear e so volta a andar quando a animacao termina.
     if (g_druid.state == DRUID_STATE_ATTACK && g_hero != HERO_HUNTRESS) {
         target_vx = 0.0f; target_vz = 0.0f;
+    }
+    if (g_hero == HERO_BARBARIAN && (g_druid.state == DRUID_STATE_CAST || g_druid.leap_timer > 0.0f)) {
+        target_vx = target_vz = 0.0f;
+        g_druid.vx = g_druid.vz = 0.0f;
     }
 
     g_druid.vx = lerpf(g_druid.vx, target_vx, clampf(accel * dt, 0.0f, 1.0f));
@@ -385,7 +393,8 @@ void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
     }
 
     // Smooth yaw rotation (travada durante o golpe)
-    if (g_druid.state == DRUID_STATE_ATTACK && g_hero != HERO_HUNTRESS) g_druid.target_yaw = g_druid.yaw;
+    if ((g_druid.state == DRUID_STATE_ATTACK && g_hero != HERO_HUNTRESS) ||
+        (g_hero == HERO_BARBARIAN && (g_druid.state == DRUID_STATE_CAST || g_druid.leap_timer > 0.0f))) g_druid.target_yaw = g_druid.yaw;
     float dyaw = g_druid.target_yaw - g_druid.yaw;
     while (dyaw > 3.14159f) dyaw -= 6.28318f;
     while (dyaw < -3.14159f) dyaw += 6.28318f;
@@ -394,17 +403,15 @@ void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
     // Action buttons
     if (pressed) {
         // R: short dodge, shared by Druid and Werewolf.
-        if (pressed->r && g_druid.state != DRUID_STATE_DODGE && !g_mods.no_dodge && g_druid.leap_timer <= 0.0f) {
-            bool jump = g_hero == HERO_BARBARIAN;           // barbaro nao rola: SALTA, e mais longe
+        if (g_hero != HERO_BARBARIAN && pressed->r && g_druid.state != DRUID_STATE_DODGE && !g_mods.no_dodge && g_druid.leap_timer <= 0.0f) {
             g_druid.state = DRUID_STATE_DODGE;
-            g_druid.dodge_timer = jump ? 0.40f : 0.30f;
+            g_druid.dodge_timer = 0.30f;
             g_druid.invuln_timer = g_druid.dodge_timer;
             float dash_x = input_mag > .15f ? -move_x / input_mag : cosf(g_druid.yaw);
             float dash_z = input_mag > .15f ?  move_z / input_mag : sinf(g_druid.yaw);
-            float dash = jump ? speed * 1.55f : speed;
+            float dash = speed;
             g_druid.vx = dash_x * dash;
             g_druid.vz = dash_z * dash;
-            if (jump) { g_druid.combo = 0; g_druid.yaw = g_druid.target_yaw = atan2f(dash_z, dash_x); }
             sound_play(SFX_DODGE);
         }
         if (g_hero == HERO_HUNTRESS) {
@@ -521,7 +528,7 @@ void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
     }
 
     // Cast state update
-    if (g_druid.state == DRUID_STATE_CAST) {
+    if (g_druid.state == DRUID_STATE_CAST && g_hero != HERO_BARBARIAN) {
         g_druid.cast_timer -= dt;
         if (g_druid.cast_timer <= 0.0f) {
             g_druid.state = DRUID_STATE_IDLE;

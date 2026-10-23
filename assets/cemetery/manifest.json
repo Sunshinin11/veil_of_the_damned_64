@@ -1,0 +1,38 @@
+{
+  "format": "CI8",
+  "palette": "RGBA5551 big endian",
+  "core": 32,
+  "gutter": 1,
+  "width": 34,
+  "height": 34,
+  "stride": 40,
+  "page_bytes": 1360,
+  "materials": [
+    {
+      "name": "trilha",
+      "source_sha256": "548efe030a38014a02325db88cbd0197ba11503774f035d3f21e0b0d4a7bdf41"
+    },
+    {
+      "name": "terra",
+      "source_sha256": "895c74942487717b9a81de64b672aa2005658516aa7c028d6e61cb4a8d8b8317"
+    },
+    {
+      "name": "lajes",
+      "source_sha256": "27f8c12acb68c833faee922c421ff33eb0372cbf69acb4e787caf9365c82dccb"
+    },
+    {
+      "name": "grama",
+      "source_sha256": "8373b997c9c28dd9508d973259ec7f50b0d0d64856ee72c4707711b4a91d3251"
+    },
+    {
+      "name": "barranco_topo",
+      "source_sha256": "096dfb2023f253a680a1e0a9ac7a9f0dc819496e144b839549795b11696ca778"
+    },
+    {
+      "name": "barranco_face",
+      "source_sha256": "fda76388fd808ee290d83b44e6c37baf0220d31272bcea8a84e6c04e8aa5b589"
+    }
+  ],
+  "pages_sha256": "486bd725811a3d0e5de7398193013c037f49722183823001776be58930784aa0",
+  "palette_sha256": "515defeb1d10b99133201c9f9383ed6cb0f1753740204e608d59bd3913308a9c"
+}

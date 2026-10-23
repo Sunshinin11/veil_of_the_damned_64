@@ -42,14 +42,20 @@ typedef struct {
 
     // Barbaro (o "espirito" vira Furia: enche batendo e apanhando)
     int   combo;            // golpe atual do combo (0, 1, 2 = pesado)
-    bool  combo_queued;     // apertou A de novo durante o golpe
+    unsigned char combo_queued; // ate dois cliques pendentes: tres toques rapidos completam o combo
     float combo_reset;      // tempo para o combo voltar ao primeiro golpe
     float spin_timer;       // Redemoinho
     float spin_tick;
+    float spin_clock;       // fase do giro aprovado, independente da direcao de movimento
     float leap_timer;       // Salto Esmagador (no ar)
+    bool leap_hit_done;
     float leap_x0, leap_z0, leap_x1, leap_z1;
     float shout_timer;      // bonus de dano do grito
     float berserk_timer;    // Berserker
+    float rush_timer;       // R: somente velocidade de movimento
+    float barb_cooldowns[5]; // salto, grito, redemoinho, ultimate, impulso
+    unsigned char warcry_kind; // 0=nenhum, 1=grito, 2=berserker
+    bool warcry_fired;
     float fury_idle;        // tempo sem lutar (a furia esfria)
     float fx_shout, fx_impact;   // efeitos visuais (tempo restante)
     float fx_x, fx_z;

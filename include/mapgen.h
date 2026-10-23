@@ -19,4 +19,7 @@ typedef struct { int16_t x[6], z[6]; uint8_t kind; } FloorQuad;
 const char *const *mapgen_build(int area, int *rows, int *cols);
 // Chao organico do cemiterio gerado junto com o mapa (trilha ligando as salas, terra, lajes, grama).
 int mapgen_floor(const FloorQuad **out);
+// Read-only choices already made by stamp(); no additional random draws.
+typedef struct { uint8_t used, category, index, mx, my, conn; } MapVisualCell;
+bool mapgen_visual_cell(int x, int y, MapVisualCell *out);
 #endif

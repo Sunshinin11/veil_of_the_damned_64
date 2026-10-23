@@ -10,7 +10,9 @@
 #define AUDIO_RATE 22050
 #define SFX_CHANNEL_FIRST 2
 static float s_music_vol = 0.8f, s_sfx_vol = 0.8f;   // Opcoes: volume da musica e dos efeitos
-#define SFX_CHANNEL_COUNT 4
+#define SFX_CHANNEL_COUNT 5 // quatro efeitos + uma voz de grito protegida dos golpes
+#define SPIN_CHANNEL (SFX_CHANNEL_FIRST + SFX_CHANNEL_COUNT)
+#define SPIN_VOLUME 0.08f // cerca de11% do volume dos efeitos normais
 
 typedef enum {
     MUSIC_TITLE, MUSIC_PATH, MUSIC_CRYPT, MUSIC_COMBAT,
@@ -57,6 +59,9 @@ static const char *effect_names[SFX_COUNT] = {
     [SFX_PICKUP] = "sfx_pickup",
     [SFX_UI_SELECT] = "sfx_ui_select",
     [SFX_UI_UNAVAILABLE] = "sfx_ui_unavailable",
+    [SFX_BARB_SHOUT] = "sfx_barb_shout",
+    [SFX_BARB_BERSERK] = "sfx_barb_berserk",
+    [SFX_BARB_AXE] = "sfx_barb_axe",
 };
 
 static bool s_ready;
@@ -68,6 +73,26 @@ static wav64_t s_effects[SFX_CHANNEL_COUNT];
 static bool s_effect_open[SFX_CHANNEL_COUNT];
 static int s_next_effect;
 static int s_combat_hold;
+static wav64_t s_spin;
+static bool s_spin_open;
+static float s_spin_gain;
+
+static void spin_audio_update(void) {
+    bool active=s_state==GAME_STATE_PLAYING && g_hero==HERO_BARBARIAN && g_druid.hp>0 && g_druid.spin_timer>0.0f;
+    if (active && !s_spin_open) {
+        wav64_open(&s_spin,"rom:/sfx_barb_whirlwind.wav64");
+        wav64_set_loop(&s_spin,true);
+        wav64_play(&s_spin,SPIN_CHANNEL);
+        s_spin_open=true; s_spin_gain=0.0f;
+    }
+    if (!s_spin_open) return;
+    float target=active?SPIN_VOLUME:0.0f;
+    s_spin_gain+=clampf(target-s_spin_gain,-0.025f,0.025f);
+    mixer_ch_set_vol(SPIN_CHANNEL,s_spin_gain*s_sfx_vol,s_spin_gain*s_sfx_vol);
+    if (!active && s_spin_gain<=0.0f) {
+        mixer_ch_stop(SPIN_CHANNEL);wav64_close(&s_spin);s_spin_open=false;
+    }
+}
 
 static void music_start(MusicTrack track) {
     if (s_music_open && s_current_music == track) return;
@@ -88,20 +113,22 @@ static void music_start(MusicTrack track) {
 
 void sound_init(void) {
     audio_init(AUDIO_RATE, AUDIO_DEFAULT_LATENCY);
-    mixer_init(2 + SFX_CHANNEL_COUNT);
+    mixer_init(SPIN_CHANNEL + 1);
     mixer_set_vol(.8f);
     s_ready = true;
     s_state = GAME_STATE_INTRO;
     s_music_open = false;
     s_next_effect = 0;
     s_combat_hold = 0;
+    s_spin_open=false; s_spin_gain=0.0f;
     memset(s_effect_open, 0, sizeof(s_effect_open));
     debugf("[AUDIO] WAV64 streaming mixer ready at %d Hz.\n", AUDIO_RATE);
 }
 
 void sound_play(SoundEffect sfx) {
     if (!s_ready || sfx < 0 || sfx >= SFX_COUNT || !effect_names[sfx]) return;
-    int slot = s_next_effect++ % SFX_CHANNEL_COUNT;
+    bool voice=sfx==SFX_BARB_SHOUT || sfx==SFX_BARB_BERSERK;
+    int slot = voice ? SFX_CHANNEL_COUNT-1 : s_next_effect++ % (SFX_CHANNEL_COUNT-1);
     int ch = SFX_CHANNEL_FIRST + slot;
     if (s_effect_open[slot]) {
         mixer_ch_stop(ch);
@@ -163,9 +190,10 @@ void sound_pump(void) {
 }
 
 void sound_update(void) {
-    mixer_ch_set_vol(0, .42f * s_music_vol, .42f * s_music_vol);   // volume da musica (opcoes)
     if (!s_ready) return;
+    mixer_ch_set_vol(0, .42f * s_music_vol, .42f * s_music_vol);   // volume da musica (opcoes)
     music_start(desired_music());
+    spin_audio_update();
     for (int i = 0; i < SFX_CHANNEL_COUNT; i++) {
         if (s_effect_open[i] && !mixer_ch_playing(SFX_CHANNEL_FIRST + i)) {
             wav64_close(&s_effects[i]);
@@ -177,6 +205,7 @@ void sound_update(void) {
 
 void sound_close(void) {
     if (!s_ready) return;
+    if (s_spin_open) {mixer_ch_stop(SPIN_CHANNEL);wav64_close(&s_spin);s_spin_open=false;}
     for (int i = 0; i < SFX_CHANNEL_COUNT; i++) {
         if (s_effect_open[i]) {
             mixer_ch_stop(SFX_CHANNEL_FIRST + i);

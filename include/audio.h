@@ -37,6 +37,9 @@ typedef enum {
     SFX_PICKUP,
     SFX_UI_SELECT,
     SFX_UI_UNAVAILABLE,
+    SFX_BARB_SHOUT,
+    SFX_BARB_BERSERK,
+    SFX_BARB_AXE,
     SFX_COUNT
 } SoundEffect;
 

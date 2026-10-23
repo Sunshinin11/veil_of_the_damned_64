@@ -1,6 +1,8 @@
 #include "sprites.h"
 #include "sprite_norm.h"
 #include "anim_frames.h"
+#include "run_video_art.h"
+#include "idle_video_art.h"
 #include "druid.h"
 #include "enemies.h"
 #include "spells.h"
@@ -8,6 +10,11 @@
 #include "world.h"
 #include "huntress.h"
 #include "barbarian.h"
+#include "barbarian_attack.h"
+#include "barbarian_combo_art.h"
+#include "barbarian_warcry_art.h"
+#include "barbarian_skill_art.h"
+#include "barbarian_skills.h"
 #include "cards.h"
 #include <stdint.h>
 
@@ -19,6 +26,7 @@
 #define VISION_DIAMETER 440.0f   // px: diametro da escuridao; a area clara e ~30% disso (menor = visao mais curta)
 #define DRUID_HEIGHT 38.0f   // altura do druida em unidades de mundo (inimigos comuns = 34; guardioes = 34 x 1.3)
 #define DRUID_ROLL_SCALE 0.82f // rolagem/esquiva do druida (os quadros pareciam grandes)
+#define DRUID_IDLE_FPS   12.0f   // idle do Druida: 12 quadros de video a 12 fps (Sprites/Druida_Video_12_Frames)
 #define DRUID_BASE_BOOST 1.18f  // idle, diagonais e demais poses: mesma escala aparente da corrida vertical
 #define DRUID_SIDE_BOOST 1.20f  // corrida lateral alinhada com as corridas verticais
 #define DRUID_FRONT_BOOST 1.20f  // as corridas verticais tem corpo mais estreito que a corrida lateral
@@ -38,6 +46,7 @@ typedef enum {
     WO_IDLE, WO_RUN, WO_ATTACK, WO_SUMMON,
     FX_BOLT, FX_THORN, FX_DARK, ITEM, CHEST,
     DR_MOVE_SIDE, DR_MOVE_FRONT, BE_MOVE_SIDE, DR_MOVE_BACK,
+    DR_NRUN_S, DR_NRUN_N, DR_NRUN_W, DR_NRUN_SW,   // corrida nova (video, tools/import_druid_run.py): frente, costas, esquerda, diagonal esq-frente
     MH_IDLE, MH_WALK, MH_ATTACK, MH_HURT, MH_DEATH, MH_ENRAGE,   // Malakor (prancheta nova, fase 1)
     VK_IDLE, VK_WALK, VK_ATTACK, VK_HURT, VK_DEATH, VK_ENRAGE,   // Varkhul (Malakor transformado, fase 2)
     ESSENCE,                                                     // essencia demoniaca (drop)
@@ -49,12 +58,17 @@ typedef enum {
     DG_IDLE, DG_WALK, DG_ATTACK, DG_HURT, DG_DEATH, DG_ENRAGE,   // Draugr de Gelo (fase 2)
     BA_IDLE, BA_RUN, BA_ATTACK, BA_ATTACK2, BA_SPIN, BA_SHOUT, BA_HURT, BA_DEATH, BA_ROLL,   // Barbaro (Sprites/Barbaro)
     BA_FX_SHOUT, BA_FX_IMPACT,                                   // onda do grito e impacto do salto
+    BA_RUN8,                                                     // corrida nova do Barbaro (8 direcoes completas, sem flip)
+    BA_COMBO1, BA_COMBO2, BA_COMBO3,                              // tres golpes, quatro direcoes completas, sem flip
+    BA_WARCRY,                                                  // grito/berserker: S, E, N, W
+    BA_LEAP, BA_WHIRLWIND,                                     // salto4 direcoes e giro360 aprovados
+    DR_RUN8,                                                   // corrida aprovada: S, SE, E, NE, N, NW, W, SW
     ANIM_COUNT
 } Anim;
 
 static const char *names[ANIM_COUNT] = {
-    "druid_idle","druid_walk","druid_walk_alt","druid_run","druid_run_alt","druid_attack","druid_cast","druid_escape",
-    "druid_hurt","druid_death","druid_transform",
+    "mage_idle","mage_walk","mage_walk_alt","mage_run","mage_run_alt","mage_attack","mage_cast","mage_escape",
+    "mage_hurt","mage_death","mage_transform",
     "werewolf_idle","werewolf_walk","werewolf_run","werewolf_attack","werewolf_cast",
     "werewolf_escape","werewolf_hurt","werewolf_death",
     "skeleton_idle","skeleton_walk","skeleton_attack","skeleton_hurt",
@@ -63,7 +77,8 @@ static const char *names[ANIM_COUNT] = {
     "malakor_idle","malakor_walk","malakor_attack","malakor_hurt","malakor_death","malakor_enrage",
     "wolf_idle","wolf_run","wolf_attack","wolf_summon",
     "spirit_bolt","thorn_burst","dark_orb","item","chest",
-    "druid_run_left","druid_run_front","werewolf_run_left","druid_run_back",
+    "mage_run_left","mage_run_front","werewolf_run_left","mage_run_back",
+    "mage_nrun_s","mage_nrun_n","mage_nrun_w","mage_nrun_sw",
     "malakor_hd_idle","malakor_hd_walk","malakor_hd_attack","malakor_hd_hurt","malakor_hd_death","malakor_hd_enrage",
     "varkhul_idle","varkhul_walk","varkhul_attack","varkhul_hurt","varkhul_death","varkhul_enrage",
     "essence",
@@ -74,7 +89,10 @@ static const char *names[ANIM_COUNT] = {
     "jarl_idle","jarl_walk","jarl_attack","jarl_hurt","jarl_death","jarl_enrage",
     "draugr_idle","draugr_walk","draugr_attack","draugr_hurt","draugr_death","draugr_enrage",
     "barb_idle","barb_run","barb_attack","barb_attack2","barb_spin","barb_shout","barb_hurt","barb_death","barb_roll",
-    "barb_fx_shout","barb_fx_impact"
+    "barb_fx_shout","barb_fx_impact",
+    "barb_run8",
+    "barb_combo1","barb_combo2","barb_combo3","barb_warcry","barb_leap","barb_whirlwind",
+    "mage_run8"
 };
 // A arte do chefe da floresta ja foi importada? (senao usa o Malakor/Varkhul pintados de musgo)
 static bool forest_boss_art(void) {
@@ -96,17 +114,22 @@ static const char *ui_names[SPR_UI_COUNT] = {
     "hud_hicon_0","hud_hicon_1","hud_hicon_2","hud_hicon_3","hud_hicon_4",
     "hud_bicon_0","hud_bicon_1","hud_bicon_2","hud_bicon_3","hud_bicon_4"
 };
-typedef struct { int key; uint32_t used; sprite_t *sprite; } Cache;
+typedef struct { int key; uint32_t used; sprite_t *sprite; uint32_t bytes; } Cache;
 // occl: 0 = sem oclusao, 1 = some atras de muros, 2 = vira silhueta atras de muros (druida/lobos)
 typedef struct { Anim anim; int dir, frame; bool flip; float x,y,scale,order; sprite_t *direct; bool centered; uint32_t tint;
                  float wx, wz; uint8_t occl; } Draw;
 static Cache cache[CACHE_MAX];
 static int s_cache_size = CACHE_BASE;
+static uint32_t s_cache_bytes, s_cache_budget;
+#define CACHE_BUDGET_BASE (512u * 1024u)
+#define CACHE_BUDGET_EXPANDED (2048u * 1024u)
+// Maior textura dinamica atual:112x112 RGBA32. Reserva inclui metadados e margem.
+#define CACHE_LOAD_RESERVE (64u * 1024u)
 // Indice direto chave -> vaga (+1). Antes cada sprite procurava a chave nas 192 vagas, todo quadro.
-#define KEY_MAX (128 * 4 * 16)
+#define KEY_MAX (128 * 8 * 16)
 static uint16_t s_key_slot[KEY_MAX];
 static uint8_t s_key_missing[KEY_MAX / 8];
-_Static_assert(ANIM_COUNT * 4 * 16 <= KEY_MAX, "KEY_MAX pequeno demais");   // arquivo que nao existe: nao tenta abrir de novo a cada quadro
+_Static_assert(ANIM_COUNT * 8 * 16 <= KEY_MAX, "KEY_MAX pequeno demais");   // arquivo que nao existe: nao tenta abrir de novo a cada quadro
 static Draw draws[DRAW_MAX];
 static sprite_t *ui[SPR_UI_COUNT];
 static sprite_t *scene[SCENE_PROP_COUNT];
@@ -226,17 +249,24 @@ static bool in_view(float x, float z) {
 // centro horizontal e largura das linhas de baixo com pixels opacos, e quanto vazio ha abaixo.
 typedef struct { bool done; float cx, w, drop; } SceneFoot;
 static SceneFoot s_foot[SCENE_PROP_COUNT];
+static bool foot_pixel_opaque(const uint8_t *row, int x, tex_format_t fmt, const uint16_t *palette) {
+    if (fmt == FMT_CI8) return (palette[row[x]] & 1u) != 0;
+    if (fmt == FMT_RGBA16) return (((const uint16_t *)row)[x] & 1u) != 0;
+    return row[x * 4 + 3] > 96;
+}
 static void analyze_foot(int id, sprite_t *spr) {
     SceneFoot *ft=&s_foot[id];
     ft->done=true; ft->cx=0.0f; ft->w=(float)spr->width*0.6f; ft->drop=0.0f;
     surface_t t=sprite_get_pixels(spr);
     tex_format_t fmt=surface_get_format(&t);
-    if (fmt!=FMT_RGBA16 && fmt!=FMT_RGBA32) return;
+    const uint16_t *palette=sprite_get_palette(spr);
+    if (fmt!=FMT_RGBA16 && fmt!=FMT_RGBA32 && fmt!=FMT_CI8) return;
+    if (fmt==FMT_CI8 && !palette) return;
     int w=t.width, h=t.height, bottom=-1;
     for (int y=h-1;y>=0 && bottom<0;y--) {
         for (int x=0;x<w;x++) {
             const uint8_t *row=(const uint8_t*)t.buffer+y*t.stride;
-            bool op=(fmt==FMT_RGBA16)?((((const uint16_t*)row)[x])&1u)!=0:(row[x*4+3]>96);
+            bool op=foot_pixel_opaque(row,x,fmt,palette);
             if (op) { bottom=y; break; }
         }
     }
@@ -246,7 +276,7 @@ static void analyze_foot(int id, sprite_t *spr) {
     for (int y=bottom;y>bottom-band && y>=0;y--) {
         const uint8_t *row=(const uint8_t*)t.buffer+y*t.stride;
         for (int x=0;x<w;x++) {
-            bool op=(fmt==FMT_RGBA16)?((((const uint16_t*)row)[x])&1u)!=0:(row[x*4+3]>96);
+            bool op=foot_pixel_opaque(row,x,fmt,palette);
             if (op) { if (x<minx) minx=x; if (x>maxx) maxx=x; }
         }
     }
@@ -275,7 +305,7 @@ static void add_glow(sprite_t *spr, float x, float y, float width_units) {
 }
 
 // Animacoes do jogador com versao suave (arquivos spr_<nome>_s_d*_f0..NF_PLAYER-1).
-static bool smooth_anim(Anim a) { return (a>=DR_IDLE && a<=BE_DEATH) || a==BE_MOVE_SIDE || (a>=HU_IDLE && a<=HU_ROLL) || (a>=BA_IDLE && a<=BA_ROLL); }
+static bool smooth_anim(Anim a) { return (a>=DR_IDLE && a<=BE_DEATH) || a==BE_MOVE_SIDE || (a>=HU_IDLE && a<=HU_ROLL) || (a>=BA_IDLE && a<=BA_ROLL) || a==BA_RUN8 || a==DR_RUN8 || (a>=BA_COMBO1 && a<=BA_WHIRLWIND); }
 static int anim_nf(Anim a) {
     if (a==DR_MOVE_SIDE) return NF_DR_MOVE_SIDE;
     if (a==DR_MOVE_FRONT) return NF_DR_MOVE_FRONT;
@@ -284,8 +314,32 @@ static int anim_nf(Anim a) {
     if (a==ARROW) return 8;
     return smooth_anim(a)?NF_PLAYER:4;
 }
+static bool cache_pinned(const Cache *entry) {
+    if (g_hero!=HERO_BARBARIAN) return false;
+    int a=entry->key/(8*16),d=(entry->key/16)&7;
+    if (d!=barb_combo_direction(g_druid.yaw)) return false;
+    if (g_druid.state==DRUID_STATE_ATTACK) return a==BA_COMBO1+(g_druid.combo>2?2:g_druid.combo);
+    return g_druid.state==DRUID_STATE_CAST && g_druid.warcry_kind && a==BA_WARCRY;
+}
+static void cache_release(int slot) {
+    Cache *c=&cache[slot];
+    if (!c->sprite) return;
+    if (c->key>=0 && c->key<KEY_MAX) s_key_slot[c->key]=0;
+    s_cache_bytes-=c->bytes;
+    sprite_free(c->sprite);memset(c,0,sizeof(*c));
+}
+static int cache_oldest(void) {
+    int slot=-1;uint32_t oldest=UINT32_MAX;
+    for (int i=0;i<s_cache_size;i++) {
+        if (!cache[i].sprite || cache_pinned(&cache[i])) continue;
+        // O RDP usa tres buffers: texturas recentes ainda podem estar em uso.
+        if (frame_number>cache[i].used+3 && cache[i].used<oldest) {oldest=cache[i].used;slot=i;}
+    }
+    return slot;
+}
 static sprite_t *frame_sprite(Anim anim, int dir, int frame) {
-    int key = (anim * 4 + dir) * 16 + frame;   // ate 16 quadros por (anim, direcao)
+    if (dir < 0 || dir >= 8 || frame < 0 || frame >= 16) return NULL;
+    int key = (anim * 8 + dir) * 16 + frame;   // ate 8 direcoes e 16 quadros por animacao
     if (key < 0 || key >= KEY_MAX) return NULL;
     if (s_key_slot[key]) {
         Cache *c = &cache[s_key_slot[key] - 1];
@@ -294,17 +348,18 @@ static sprite_t *frame_sprite(Anim anim, int dir, int frame) {
     }
     if (s_key_missing[key >> 3] & (1 << (key & 7))) return NULL;
     int slot=-1;
-    uint32_t oldest=UINT32_MAX;
     for (int i=0;i<s_cache_size;i++) {
         if (!cache[i].sprite) { slot=i; break; }
-        // Triple-buffered RDP may still reference textures from recent frames.
-        if (frame_number > cache[i].used+3 && cache[i].used<oldest) {
-            oldest=cache[i].used; slot=i;
-        }
     }
-    if (slot<0) return NULL;
+    // Limitar bytes, nao apenas quantidade. Antes os48 quadros do combo/grito
+    // ficavam presos, e sprite_load alocava o novo ANTES de liberar o antigo.
+    while (slot<0 || s_cache_bytes+CACHE_LOAD_RESERVE>s_cache_budget) {
+        int victim=cache_oldest();
+        if (victim<0) return NULL;
+        cache_release(victim);if (slot<0) slot=victim;
+    }
     char path[96];
-    const char *format = anim>=WO_IDLE && anim<=WO_SUMMON ? "rgba32" : "rgba16";
+    const char *format = (anim>=WO_IDLE && anim<=WO_SUMMON) || anim==BA_LEAP || anim==BA_WHIRLWIND ? "rgba32" : "rgba16";
     const char *suffix=smooth_anim(anim)?"_s":"";
     snprintf(path,sizeof(path),"rom:/spr_%s%s_d%d_f%d.%s.sprite",names[anim],suffix,dir,frame,format);
     sprite_t *result=sprite_load(path);
@@ -313,18 +368,36 @@ static sprite_t *frame_sprite(Anim anim, int dir, int frame) {
         result=sprite_load(path);
     }
     if (!result) { debugf("[SPRITES] missing %s\n",path); s_key_missing[key >> 3] |= (uint8_t)(1 << (key & 7)); return NULL; }
-    if (cache[slot].sprite) {
-        if (cache[slot].key >= 0 && cache[slot].key < KEY_MAX) s_key_slot[cache[slot].key] = 0;
-        sprite_free(cache[slot].sprite);
-    }
-    cache[slot]=(Cache){key,frame_number,result};
+    unsigned bits=TEX_FORMAT_BITDEPTH(sprite_get_format(result));
+    uint32_t bytes=(uint32_t)result->width*result->height*bits/8u+1024u;
+    cache[slot]=(Cache){key,frame_number,result,bytes};s_cache_bytes+=bytes;
     s_key_slot[key] = (uint16_t)(slot + 1);
     return result;
+}
+// Carrega o combo durante a entrada da fase; ao mudar de direcao, completa um
+// quadro por atualizacao em repouso, sem bloquear o botao de ataque.
+static void warm_barb_combo(bool complete) {
+    if (!ready || g_hero!=HERO_BARBARIAN) return;
+    int dir=barb_combo_direction(g_druid.target_yaw);
+    for (int a=BA_COMBO1;a<=BA_WARCRY;a++) for (int f=0;f<BARB_COMBO_FRAMES;f++) {
+        int key=(a*8+dir)*16+f;
+        if (s_key_slot[key]) {
+            Cache *c=&cache[s_key_slot[key]-1];
+            if (c->sprite && c->key==key) continue;
+        }
+        // Precarregar so quando ha folga; nao expulsar os monstros para reservar
+        // uma animacao ociosa, nem renovar artificialmente sua idade no LRU.
+        if (s_cache_bytes+CACHE_LOAD_RESERVE>s_cache_budget*3/4) return;
+        frame_sprite((Anim)a,dir,f);
+        if (!complete) return;
+    }
 }
 // Com Expansion Pak: carrega de uma vez os quadros dos monstros e efeitos da fase (durante o fade),
 // assim a horda nao precisa ler sprites da ROM no meio da luta.
 void sprites_preload_area(void) {
-    if (!ready || s_cache_size <= CACHE_BASE) return;
+    if (!ready) return;
+    warm_barb_combo(true);
+    if (s_cache_size <= CACHE_BASE) return;
     static const Anim pre[] = { SK_IDLE, SK_WALK, SK_ATTACK, SK_HURT, DE_IDLE, DE_WALK, DE_ATTACK, DE_HURT,
                                 CU_IDLE, CU_WALK, CU_ATTACK, CU_HURT };
     for (unsigned a = 0; a < sizeof(pre) / sizeof(pre[0]); a++)
@@ -336,7 +409,10 @@ void sprites_init(void) {
     memset(cache,0,sizeof(cache)); memset(ui,0,sizeof(ui));
     memset(s_key_slot,0,sizeof(s_key_slot)); memset(s_key_missing,0,sizeof(s_key_missing));
     s_cache_size = is_memory_expanded() ? CACHE_EXPANDED : CACHE_BASE;
+    s_cache_budget=is_memory_expanded()?CACHE_BUDGET_EXPANDED:CACHE_BUDGET_BASE;
+    s_cache_bytes=0;
     debugf("[SPRITES] cache de %d quadros (%s)\n", s_cache_size, s_cache_size > CACHE_BASE ? "Expansion Pak" : "4 MB");
+    debugf("[SPRITES] limite de texturas: %lu KiB\n",(unsigned long)(s_cache_budget/1024));
     frame_number=1;
     init_reference_scale();
     for (int a=0;a<ANIM_COUNT;a++) for (int d=0;d<4;d++) s_norm[a][d]=1.0f;
@@ -344,9 +420,12 @@ void sprites_init(void) {
         for (int a=0;a<ANIM_COUNT;a++)
             if (!strcmp(names[a],SPRITE_NORM[n].name))
                 for (int d=0;d<4;d++) s_norm[a][d]=SPRITE_NORM[n].s[d];
+    for (int d=0;d<4;d++) s_norm[DR_IDLE][d]=1.0f;   // idle novo (4 direcoes): ja sai normalizado por tools/import_druid_idle12.py
     for (int a=DR_IDLE;a<=DR_TRANSFORM;a++)
         for (int d=0;d<4;d++) s_norm[a][d]*=DRUID_BASE_BOOST;
+    for (int d=0;d<4;d++) s_norm[DR_IDLE][d]=1.0f; // video idle already shares the run body size
     for (int d=0;d<4;d++) s_norm[DR_ESCAPE][d]*=DRUID_ROLL_SCALE;
+    s_norm[DR_NRUN_S][0]=s_norm[DR_NRUN_N][0]=s_norm[DR_NRUN_W][0]=s_norm[DR_NRUN_SW][0]=DRUID_BASE_BOOST;   // corrida nova: ja normalizada pelo importador
     s_norm[DR_MOVE_BACK][0]*=DRUID_BACK_BOOST*RUN_SCALE_BACK;
     s_norm[DR_MOVE_FRONT][0]*=DRUID_FRONT_BOOST*RUN_SCALE_FRONT;
     s_norm[DR_MOVE_SIDE][0]*=DRUID_SIDE_BOOST*RUN_SCALE_SIDE;
@@ -376,12 +455,39 @@ static int loop(float clock, float fps) {
 // Quadros do ciclo de corrida/andar (0 = nao e ciclo de movimento).
 static int move_frames(Anim a) {
     if (a==DR_WALK||a==DR_WALK_ALT||a==DR_RUN||a==DR_RUN_ALT||a==BE_WALK||a==BE_RUN||a==BE_MOVE_SIDE) return NF_PLAYER;
+    if (a>=DR_NRUN_S && a<=DR_NRUN_SW) return NF_PLAYER;
     return a==DR_MOVE_SIDE?NF_DR_MOVE_SIDE : a==DR_MOVE_FRONT?NF_DR_MOVE_FRONT :
            a==DR_MOVE_BACK?NF_DR_MOVE_BACK : 0;
 }
 static int loop_n(float clock, float fps, int n) {
     int k=(int)(clock*fps);
     return (k<0?0:k)%n;
+}
+// Preserve the holds and cycle duration of each approved 12-frame preview.
+// walk_cycle advances eight units per second at full humanoid movement speed.
+static int video_run_frame(int hero, int direction, float walk_cycle) {
+    float position=fmodf(fmaxf(walk_cycle,0.0f)*125.0f,(float)VIDEO_RUN_CYCLE_MS[hero][direction]);
+    for (int f=0;f<NF_PLAYER;f++) {
+        if (position<(float)VIDEO_RUN_FRAME_MS[hero][direction][f]) return f;
+        position-=(float)VIDEO_RUN_FRAME_MS[hero][direction][f];
+    }
+    return NF_PLAYER-1;
+}
+static int video_idle_frame(int hero, int direction, uint32_t clock_ms) {
+    unsigned position=clock_ms%VIDEO_IDLE_CYCLE_MS[hero][direction];
+    for (int f=0;f<NF_PLAYER;f++) {
+        if (position<VIDEO_IDLE_FRAME_MS[hero][direction][f]) return f;
+        position-=VIDEO_IDLE_FRAME_MS[hero][direction][f];
+    }
+    return NF_PLAYER-1;
+}
+// Apply a sequence-wide size correction around its common boot-floor anchor.
+static void video_art_size(int before, float factor, float foot_drop) {
+    if (draw_count<=before) return;
+    Draw *d=&draws[draw_count-1];
+    float previous=d->scale;
+    d->scale*=factor;
+    d->y+=foot_drop*(d->scale-previous);
 }
 // Progresso t em [0,1] -> quadro 0..n-1 (animacoes de uma vez)
 static int once_frame(float t, int n) {
@@ -549,7 +655,7 @@ static void add_huntress(T3DViewport *vp) {
 // Arte do Barbaro ja importada? (senao ele aparece como o druida pintado de vermelho)
 static bool barb_art(void) {
     static int has = -1;
-    if (has < 0) { FILE *f = fopen("rom:/spr_barb_idle_d0_f0.rgba16.sprite", "r"); has = f != NULL; if (f) fclose(f); }
+    if (has < 0) { FILE *f = fopen("rom:/spr_barb_idle_s_d0_f0.rgba16.sprite", "r"); has = f != NULL; if (f) fclose(f); }
     return has == 1;
 }
 #define BARB_HEIGHT 46.0f   // um pouco maior que o druida (guerreiro enorme)
@@ -569,7 +675,61 @@ static void add_barb_fx(T3DViewport *vp) {
 }
 static void barb_finish(int before) {   // berserker: vermelho e maior; esmaecido no salto nao
     if (draw_count<=before) return;
-    if (g_druid.berserk_timer>0.0f) { draws[draw_count-1].tint=0xFF6A58FFu; draws[draw_count-1].scale*=1.10f; }
+    if (g_druid.berserk_timer>0.0f) {
+        Draw *d=&draws[draw_count-1];
+        float margin=0.0f;
+        if (d->anim>=BA_COMBO1 && d->anim<=BA_COMBO3) margin=BARB_COMBO_TEXTURE_HEIGHT-BARB_COMBO_FOOT_ROW-2;
+        if (d->anim==BA_WARCRY) margin=BARB_WARCRY_TEXTURE_HEIGHT-BARB_WARCRY_FOOT_ROW-2;
+        if (d->anim==BA_LEAP || d->anim==BA_WHIRLWIND) margin=BARB_SKILL_TEXTURE_HEIGHT-BARB_SKILL_FOOT_ROW-2;
+        d->y+=margin*d->scale*.10f;
+        d->tint=0xFF6A58FFu; d->scale*=1.10f;
+    }
+}
+
+// Historico em coordenadas do mundo: acompanha a camera e guarda a pose real.
+// Seis copias leves, sem ponteiros de textura sujeitos a expulsao do cache.
+#define BARB_TRAIL_COUNT 6
+#define BARB_TRAIL_LIFE_MS 300
+typedef struct { Anim anim; int dir,frame; bool flip; float x,y,z,mult,offset; uint32_t born; } BarbTrail;
+static BarbTrail s_barb_trails[BARB_TRAIL_COUNT];
+static int s_barb_trail_next;
+static uint32_t s_barb_trail_tick, s_barb_trail_sample;
+static float s_barb_trail_x,s_barb_trail_z;
+static void clear_barb_trails(void) {
+    memset(s_barb_trails,0,sizeof(s_barb_trails));
+    s_barb_trail_tick=s_barb_trail_sample=0; s_barb_trail_next=0;
+}
+static void add_barb_trails(T3DViewport *vp, int before) {
+    uint32_t now=get_ticks_ms();
+    float dx=g_druid.x-s_barb_trail_x,dz=g_druid.z-s_barb_trail_z;
+    if (!s_barb_trail_tick || now-s_barb_trail_tick>250 || dx*dx+dz*dz>3600.0f || g_druid.hp<=0) clear_barb_trails();
+    s_barb_trail_tick=now; s_barb_trail_x=g_druid.x; s_barb_trail_z=g_druid.z;
+    if (draw_count<=before || g_druid.hp<=0) return;
+    Draw actor=draws[draw_count-1];
+    float base=clampf(ref_px_height(BARB_HEIGHT)/60.0f,.16f,2.2f);
+    bool active=g_druid.rush_timer>0.0f || g_druid.berserk_timer>0.0f;
+    if (active && actor.anim==BA_RUN8 && now-s_barb_trail_sample>=45) {
+        T3DVec3 feet;
+        t3d_viewport_calc_viewspace_pos(vp,&feet,&(T3DVec3){{g_druid.x,g_druid.y+FOOT_LIFT,g_druid.z}});
+        s_barb_trails[s_barb_trail_next]=(BarbTrail){actor.anim,actor.dir,actor.frame,actor.flip,
+            g_druid.x,g_druid.y,g_druid.z,actor.scale/base,(actor.y-feet.v[1])/actor.scale,now};
+        s_barb_trail_next=(s_barb_trail_next+1)%BARB_TRAIL_COUNT;
+        s_barb_trail_sample=now;
+    }
+    for (int i=0;i<BARB_TRAIL_COUNT;i++) {
+        BarbTrail *t=&s_barb_trails[i]; uint32_t age=now-t->born;
+        if (!t->born || age>=BARB_TRAIL_LIFE_MS) continue;
+        // Nao duplica o desenho por cima dele mesmo ao soltar o analogico.
+        float x=g_druid.x-t->x,z=g_druid.z-t->z;
+        if (x*x+z*z<4.0f) continue;
+        int n=draw_count; s_next_occl=1;
+        emit(vp,t->anim,t->dir,t->frame,t->flip,t->x,t->y,t->z,BARB_HEIGHT);
+        if (draw_count==n) continue;
+        Draw *d=&draws[draw_count-1]; d->scale*=t->mult; d->y+=t->offset*d->scale;
+        d->order=actor.order-.01f-(float)age*.001f;
+        unsigned alpha=(unsigned)(110.0f*(1.0f-(float)age/BARB_TRAIL_LIFE_MS));
+        d->tint=0xEF182800u | (alpha?alpha:1u);
+    }
 }
 // Barbaro: setores com as diagonais de 45 graus bem no MEIO de um setor (no facing() do druida a
 // diagonal cai exatamente na divisa frente/diagonal e costas/lado, e o sprite ficava piscando entre
@@ -594,36 +754,93 @@ static int barb_facing(float yaw, bool *flip) {
     *flip=last_flip;
     return d;
 }
+// Direcoes da tela: S, SE, E, NE, N, NW, W, SW. A camera espelha X do mundo.
+// Corrida usa oito artes; idle e combo usam S/E/N/W completos, sem flip.
+static int barb_facing8(float yaw, int *keep) {
+    int last=*keep;
+    float angle=atan2f(sinf(yaw),-cosf(yaw));
+    float step=0.78539816f;   // 45 graus
+    int nearest=((int)floorf((angle+1.5707963f+step*.5f)/step)+8)&7;
+    float center=-1.5707963f+(float)last*step;
+    float delta=atan2f(sinf(angle-center),cosf(angle-center));
+    if (nearest!=last && fabsf(delta)>step*.5f+.06f) last=nearest;
+    *keep=last;
+    return last;
+}
+static int barb_idle_facing(float yaw) {
+    static int last=0;
+    float angle=atan2f(sinf(yaw),-cosf(yaw));
+    float step=1.57079633f;
+    int nearest=((int)floorf((angle+step*1.5f)/step)+4)&3;
+    float center=-step+(float)last*step;
+    float delta=atan2f(sinf(angle-center),cosf(angle-center));
+    if (nearest!=last && fabsf(delta)>step*.5f+.06f) last=nearest;
+    return last*2;   // cardinal indices of the saved eight-direction idle
+}
 static void add_barbarian(T3DViewport *vp) {
     float speed=sqrtf(g_druid.vx*g_druid.vx+g_druid.vz*g_druid.vz);
     float sprite_yaw=speed>10.0f && g_druid.state!=DRUID_STATE_ATTACK?g_druid.target_yaw:g_druid.yaw;
     bool flip; int dir=barb_facing(sprite_yaw,&flip);
     const int N=NF_PLAYER;
     Anim anim=BA_IDLE;
-    int fr=loop_n((float)get_ticks_ms()*.001f,5.0f*N/4.0f,N);
+    if (g_druid.state!=DRUID_STATE_ATTACK && g_druid.state!=DRUID_STATE_CAST && g_druid.leap_timer<=0.0f && g_druid.spin_timer<=0.0f) warm_barb_combo(false);
+    int fr=loop_n((float)get_ticks_ms()*.001f,10.0f,N);
     if (g_druid.hp<=0 || g_druid.state==DRUID_STATE_DEAD) {
         anim=BA_DEATH; fr=once_frame(g_druid.state_timer/(.22f*4.0f),N);
     } else if (g_druid.leap_timer>0.0f) {
-        anim=BA_ATTACK2; fr=once_frame(1.0f-g_druid.leap_timer/0.45f,N);
+        anim=BA_LEAP; dir=barb_combo_direction(g_druid.yaw); flip=false;
+        fr=barb_leap_frame(BARB_LEAP_TIME-g_druid.leap_timer);
     } else if (g_druid.spin_timer>0.0f) {
-        anim=BA_SPIN; fr=loop_n((float)get_ticks_ms()*.001f,24.0f,N);
+        anim=BA_WHIRLWIND; dir=0; flip=false;
+        fr=barb_whirlwind_frame(g_druid.spin_clock);
+    } else if (g_druid.state==DRUID_STATE_ATTACK) {
+        int step=g_druid.combo>=2?2:g_druid.combo==1?1:0;
+        anim=(Anim)(BA_COMBO1+step);
+        dir=barb_combo_direction(g_druid.yaw); flip=false;
+        float duration=g_druid.attack_duration>0?g_druid.attack_duration:BARB_SWING_TIME;
+        fr=barb_combo_frame(1.0f-g_druid.attack_timer/duration,step==2);
+    } else if (g_druid.state==DRUID_STATE_CAST && g_druid.warcry_kind) {
+        anim=BA_WARCRY; dir=barb_combo_direction(g_druid.yaw); flip=false;
+        fr=once_frame(1.0f-g_druid.cast_timer/BARB_WARCRY_TIME,N);
     } else if (g_druid.hurt_timer>0) {
         anim=BA_HURT; fr=N/4;
     } else if (g_druid.state==DRUID_STATE_DODGE) {
         anim=BA_ROLL; fr=once_frame(1.0f-g_druid.dodge_timer/.40f,N);   // salto de esquiva
-    } else if (g_druid.state==DRUID_STATE_ATTACK) {
-        anim=g_druid.combo>=2?BA_ATTACK2:BA_ATTACK;
-        float duration=g_druid.attack_duration>0?g_druid.attack_duration:.36f;
-        fr=once_frame(1.0f-g_druid.attack_timer/duration,N);
     } else if (g_druid.state==DRUID_STATE_CAST) {
         anim=BA_SHOUT; fr=once_frame(1.0f-g_druid.cast_timer/.45f,N);
     } else if (speed>10.0f) {
         anim=BA_RUN; fr=((int)(g_druid.walk_cycle*(float)N*0.25f))%N; if(fr<0)fr=0;
+        // Oito direcoes completas; NE/NW usam as corridas diagonais aprovadas.
+        static int run_last;
+        int s8=barb_facing8(sprite_yaw,&run_last);
+        anim=BA_RUN8; dir=s8; flip=false;
+        fr=video_run_frame(0,dir,g_druid.walk_cycle);
+    }
+    if (anim==BA_IDLE) {
+        dir=barb_idle_facing(g_druid.target_yaw); flip=false;
+        fr=video_idle_frame(0,dir/2,get_ticks_ms());
     }
     int before=draw_count;
     s_next_shadow=20.0f;
     s_next_occl=2;
     emit(vp,anim,dir,fr,flip,g_druid.x,g_druid.y,g_druid.z,BARB_HEIGHT);
+    if (anim==BA_IDLE) video_art_size(before,VIDEO_IDLE_SCALE[0][dir/2],VIDEO_IDLE_FOOT_DROP[0][dir/2]);
+    if (anim==BA_RUN8) video_art_size(before,VIDEO_RUN_ART_SCALE[0][dir],VIDEO_RUN_FOOT_DROP[0][dir]);
+    if (draw_count>before && anim>=BA_COMBO1 && anim<=BA_COMBO3) {
+        Draw *d=&draws[draw_count-1];
+        d->scale*=BARB_COMBO_ART_SCALE[anim-BA_COMBO1][dir];
+        d->y+=(BARB_COMBO_TEXTURE_HEIGHT-BARB_COMBO_FOOT_ROW-2)*d->scale;
+    }
+    if (draw_count>before && anim==BA_WARCRY) {
+        Draw *d=&draws[draw_count-1];
+        d->scale*=BARB_WARCRY_ART_SCALE[dir];
+        d->y+=(BARB_WARCRY_TEXTURE_HEIGHT-BARB_WARCRY_FOOT_ROW-2)*d->scale;
+    }
+    if (draw_count>before && (anim==BA_LEAP || anim==BA_WHIRLWIND)) {
+        Draw *d=&draws[draw_count-1];
+        d->scale*=anim==BA_LEAP?BARB_LEAP_ART_SCALE[dir]:BARB_WHIRLWIND_ART_SCALE;
+        d->y+=(BARB_SKILL_TEXTURE_HEIGHT-BARB_SKILL_FOOT_ROW-2)*d->scale;
+    }
     if (draw_count>before && anim==BA_RUN) draws[draw_count-1].y-=fabsf(sinf(g_druid.walk_cycle*1.5707963f))*2.5f;
     if (draw_count>before) {
         static int last_hp=-1; static uint32_t flash_until=0;
@@ -633,6 +850,7 @@ static void add_barbarian(T3DViewport *vp) {
         if (now<flash_until && ((now/70)&1)==0) draws[draw_count-1].tint=0xFF4838FFu;
     }
     barb_finish(before);
+    add_barb_trails(vp,before);
     add_barb_fx(vp);
 }
 static void add_druid(T3DViewport *vp) {
@@ -650,7 +868,7 @@ static void add_druid(T3DViewport *vp) {
     bool beast=g_druid.is_beast;
     if (beast!=previous_beast) { running=false; previous_beast=beast; }
     Anim anim=beast?BE_IDLE:DR_IDLE;
-    int fr=loop_n((float)get_ticks_ms()*.001f,5.0f*NF_PLAYER/4.0f,NF_PLAYER);
+    int fr=loop_n((float)get_ticks_ms()*.001f,beast?5.0f*NF_PLAYER/4.0f:DRUID_IDLE_FPS,NF_PLAYER);
     if (g_druid.hp<=0 || g_druid.state==DRUID_STATE_DEAD) {
         anim=beast?BE_DEATH:DR_DEATH;
         fr=once_frame(g_druid.state_timer/(.22f*4.0f),NF_PLAYER);
@@ -692,31 +910,11 @@ static void add_druid(T3DViewport *vp) {
                 fr=phase;
             }
         } else {
-            float wdx=cosf(sprite_yaw), wdz=sinf(sprite_yaw);
-            float wax=fabsf(wdx), waz=fabsf(wdz);
-            // Corrida pintada: lado / frente / costas (folhas novas) e diagonais (folhas antigas
-            // Run 1/2). Todas normalizadas para a mesma altura de cabeca (sprite_norm.h).
-            // Histerese evita trocar de vista a cada quadro quando o analogico fica no limite.
-            static int view;   // 0 lado, 1 diagonal, 2 vertical
-            float ratio=waz/(wax>0.001f?wax:0.001f);
-            int want = ratio<0.38f ? 0 : ratio>2.6f ? 2 : 1;
-            if (view==0 && ratio<0.46f) want=0;
-            else if (view==2 && ratio>2.2f) want=2;
-            else if (view==1 && ratio>=0.38f && ratio<=2.6f) want=1;
-            view=want;
-            fr=phase;
-            if (view==0) { anim=DR_MOVE_SIDE; dir=0; flip=wdx<0.0f; }          // pintado virado p/ a esquerda
-            else if (view==2) {
-                if (wdz<0.0f) { anim=DR_MOVE_FRONT; dir=0; flip=false; }        // vindo p/ a camera
-                else          { anim=DR_MOVE_BACK; dir=0; flip=false; }         // indo p/ longe da camera
-            } else {
-                // Diagonais das folhas antigas (as pernas do lado direito-costas ficam fracas, por
-                // isso ele usa o quadro esquerdo-costas espelhado).
-                if (wdx<0.0f && wdz<0.0f)       { anim=DR_RUN;     dir=1; flip=false; }  // direita-frente
-                else if (wdx<0.0f)              { anim=DR_RUN_ALT; dir=1; flip=true;  }  // direita-costas
-                else if (wdz>=0.0f)             { anim=DR_RUN_ALT; dir=1; flip=false; }  // esquerda-costas
-                else                            { anim=DR_RUN_ALT; dir=3; flip=false; }  // esquerda-frente
-            }
+            static int run_last;
+            anim=DR_RUN8;
+            dir=barb_facing8(sprite_yaw,&run_last);
+            flip=false;
+            fr=video_run_frame(1,dir,g_druid.walk_cycle);
         }
     }
     int nfm=move_frames(anim);
@@ -726,10 +924,33 @@ static void add_druid(T3DViewport *vp) {
     }
     if(fr<0)fr=0;
     if(nfm==0 && fr>anim_nf(anim)-1)fr=anim_nf(anim)-1;
+    // Idle do Druida: arte nova de 4 direcoes (dir 0 = S/frente, 1 = W/esquerda da tela, 2 = N/costas,
+    // 3 = E/direita da tela), NUNCA espelhada, sem diagonais. Segue a direcao pretendida (target_yaw),
+    // nao o yaw suavizado (que gira de um lado a outro), e usa histerese para nao piscar.
+    // Nesta camera a tela e espelhada em X: direita da tela = -x do mundo (ver druid.c).
+    if (anim==DR_IDLE) {
+        static int idle4;
+        float th=atan2f(sinf(g_druid.target_yaw),-cosf(g_druid.target_yaw));   // 0 = direita da tela, -90 graus = para a camera
+        float u=(-1.5707963f-th)/1.5707963f;                                    // S=0, W=1, N=2, E=3
+        float diff=u-(float)idle4;
+        while (diff>=2.0f) diff-=4.0f;
+        while (diff<-2.0f) diff+=4.0f;
+        if (diff>0.62f || diff<-0.62f) idle4=(int)floorf(u+0.5f)&3;
+        dir=idle4; flip=false;
+        int cardinal=dir==1?3:dir==3?1:dir; // saved idle table is S,E,N,W
+        fr=video_idle_frame(1,cardinal,get_ticks_ms());
+    }
     int before=draw_count;
     s_next_shadow=beast?21.0f:18.0f;
     s_next_occl=2;
-    emit(vp,anim,dir,fr,flip,g_druid.x,g_druid.y,g_druid.z,beast?BEAST_HEIGHT:DRUID_HEIGHT);
+    // Native run pixels share the barbarian's size calibration.
+    float height=beast?BEAST_HEIGHT:(anim==DR_RUN8||anim==DR_IDLE)?BARB_HEIGHT:DRUID_HEIGHT;
+    emit(vp,anim,dir,fr,flip,g_druid.x,g_druid.y,g_druid.z,height);
+    if (anim==DR_IDLE) {
+        int cardinal=dir==1?3:dir==3?1:dir;
+        video_art_size(before,VIDEO_IDLE_SCALE[1][cardinal],VIDEO_IDLE_FOOT_DROP[1][cardinal]);
+    }
+    if (anim==DR_RUN8) video_art_size(before,VIDEO_RUN_ART_SCALE[1][dir],VIDEO_RUN_FOOT_DROP[1][dir]);
     if (draw_count>before && speed>10.0f &&
         (anim==DR_WALK||anim==DR_WALK_ALT||anim==DR_RUN||anim==DR_RUN_ALT||anim==BE_WALK||anim==BE_RUN)) {
         // Os quadros pintados de andar mudam pouco as pernas. Um pulinho sincronizado com os
@@ -980,6 +1201,8 @@ static float wrap_range(float v, float lo, float hi) {
 }
 // Visao limitada: manchas de nevoa derivando e, por cima, a escuridao que fecha em volta do druida.
 static void draw_vision_overlay(T3DViewport *vp) {
+    // User-requested removal of the black vignette in the original Cemetery.
+    if (g_campaign == 0 && g_current_area == AREA_FORSAKEN_PATH) return;
     if (!VISION_ENABLED || !s_vision_spr) return;
     T3DVec3 p;
     t3d_viewport_calc_viewspace_pos(vp,&p,&(T3DVec3){{g_druid.x,g_druid.y+10.0f,g_druid.z}});
@@ -1106,6 +1329,7 @@ static void scissor_rect(IRect r) {
 
 void sprites_draw_world(T3DViewport *vp) {
     if(!ready)return;
+    if (g_hero!=HERO_BARBARIAN) clear_barb_trails();
     frame_number++; draw_count=0;
     // Dinamicos primeiro: personagem, inimigos e itens nunca perdem vaga para o cenario.
     add_druid(vp); add_enemies(vp); add_spells(vp); add_items(vp); add_scenery(vp);
@@ -1117,16 +1341,21 @@ void sprites_draw_world(T3DViewport *vp) {
     rdpq_set_mode_standard();
     rdpq_mode_combiner(RDPQ_COMBINER_TEX);
     rdpq_mode_blender(RDPQ_BLENDER_MULTIPLY);
-    bool tinted=false;
+    bool tinted=false, translucent=false;
     for(int i=0;i<draw_count;i++) {
         Draw *d=&draws[i];
         sprite_t *spr=d->direct?d->direct:frame_sprite(d->anim,d->dir,d->frame);
         if(!spr)continue;
         if (d->tint) {
-            if (!tinted) { rdpq_mode_combiner(RDPQ_COMBINER_TEX_FLAT); tinted=true; }
-            rdpq_set_prim_color(RGBA32((d->tint>>24)&255,(d->tint>>16)&255,(d->tint>>8)&255,255));
+            bool ghost=(d->tint&255u)<255u;
+            if (!tinted || translucent!=ghost) {
+                if (ghost) rdpq_mode_combiner(RDPQ_COMBINER1((ZERO,ZERO,ZERO,PRIM),(TEX0,ZERO,PRIM,ZERO)));
+                else rdpq_mode_combiner(RDPQ_COMBINER_TEX_FLAT);
+                tinted=true; translucent=ghost;
+            }
+            rdpq_set_prim_color(RGBA32((d->tint>>24)&255,(d->tint>>16)&255,(d->tint>>8)&255,d->tint&255));
         } else if (tinted) {
-            rdpq_mode_combiner(RDPQ_COMBINER_TEX); tinted=false;
+            rdpq_mode_combiner(RDPQ_COMBINER_TEX); tinted=false; translucent=false;
         }
         IRect occ[OCC_MAX]; int nocc=0; IRect sp={0,0,0,0};
         if (d->occl) {
@@ -1194,10 +1423,12 @@ void sprites_draw_ui(SpriteUi id,float x,float y,float scale) {
 void sprites_draw_druid_portrait(float x, float y, float scale) { sprites_draw_hero_portrait(HERO_DRUID, x, y, scale); }
 void sprites_draw_hero_portrait(int hero, float x, float y, float scale) { sprites_draw_hero_portrait_ex(hero, x, y, scale, false); }
 void sprites_draw_hero_portrait_ex(int hero, float x, float y, float scale, bool dark) {
+    if (hero==HERO_ROGUE) return; // no borrowed portrait while its own art is pending
     if (!ready) return;
     frame_number++;
-    int fr = (int)((float)get_ticks_ms() * 0.001f * 5.0f * NF_PLAYER / 4.0f) % NF_PLAYER;
     Anim pa = hero == HERO_HUNTRESS ? HU_IDLE : (hero == HERO_BARBARIAN && barb_art()) ? BA_IDLE : DR_IDLE;
+    int fr = (int)((float)get_ticks_ms() * 0.001f * (pa == DR_IDLE ? DRUID_IDLE_FPS : 5.0f * NF_PLAYER / 4.0f)) % NF_PLAYER;
+    if (pa==BA_IDLE || pa==DR_IDLE) fr=video_idle_frame(pa==BA_IDLE?0:1,0,get_ticks_ms());
     sprite_t *spr = frame_sprite(pa, 0, fr);
     if (!spr) return;
     rdpq_set_mode_standard();

@@ -12,6 +12,7 @@
 #include "save.h"
 #include "cards.h"
 #include "mapgen.h"      // mapas 1 e 2 montados a cada partida (estilo Diablo II)
+#include "cemetery.h"
 
 AreaId g_current_area = AREA_FORSAKEN_PATH;
 
@@ -1183,15 +1184,18 @@ static void cem_draw_run(T3DVertPacked *verts, int first, int quads) {
 }
 
 static void cem_begin_layer(sprite_t *spr) {
-    surface_t tex = sprite_get_pixels(spr);
     rdpq_mode_combiner(RDPQ_COMBINER_TEX_SHADE);
-    rdpq_tex_upload(TILE0, &tex, &(rdpq_texparms_t){
+    rdpq_sprite_upload(TILE0, spr, &(rdpq_texparms_t){
         .s.repeats = REPEAT_INFINITE, .t.repeats = REPEAT_INFINITE
     });
     gfx_push_identity();
 }
 
 static void draw_cemetery_floor(void) {
+    if (g_campaign == 0 && g_current_area == AREA_FORSAKEN_PATH && cemetery_ready()) {
+        cemetery_draw(false, g_druid.x, g_druid.z);
+        return;
+    }
     static sprite_t *tex_k[4]; // 0 trilha, 1 terra, 2 lajes, 3 grama
     static bool loaded = false;
     if (!loaded) {
@@ -1273,6 +1277,12 @@ static void load_grid(const char *const *map, int rows, int cols) {
     s_seal_count = 0; s_seals_done = 0; s_boss_summoned = false; s_hazard_count = 0;
     if (a == AREA_FORSAKEN_PATH || s_swamp_theme) build_cemetery_floor(true, s_snow_theme ? 0.22f : 0.42f);   // pantano/neve: trilha + manchas
     else if (a == AREA_HOLLOW_CRYPT) build_cemetery_floor(false, 0.34f);
+
+    if (g_campaign == 0 && a == AREA_FORSAKEN_PATH && s_cem_nxc > 0)
+        cemetery_build(map, rows, cols, s_cem_base, s_cem_nxc * s_cem_nzc,
+                       s_cem_floor, s_fl, s_fl_n,
+                       s_wall_verts, s_wall_vert_count / 6,
+                       s_wall_top_verts, s_wall_top_vert_count / 6);
 
     // Textura de parede da area (64x32, cabe na TMEM), em cache por area.
     int st = g_campaign * AREA_COUNT + a;
@@ -1360,6 +1370,7 @@ static void load_grid(const char *const *map, int rows, int cols) {
 }
 
 void world_load_area(AreaId area) {
+    cemetery_release();
     if (area >= AREA_COUNT) area = AREA_FORSAKEN_PATH;
     g_current_area = area;
     s_collider_count = 0;
@@ -2053,8 +2064,7 @@ static void draw_portal_3d(const AreaData *ad) {
     rdpq_mode_fog(0);
     rdpq_mode_combiner(RDPQ_COMBINER_TEX_SHADE);
     rdpq_mode_blender(RDPQ_BLENDER_MULTIPLY);
-    surface_t tex = sprite_get_pixels(s_portal_tex);
-    rdpq_tex_upload(TILE0, &tex, NULL);
+    rdpq_sprite_upload(TILE0, s_portal_tex, NULL);
     t3d_state_set_drawflags(T3D_FLAG_SHADED | T3D_FLAG_TEXTURED | T3D_FLAG_NO_LIGHT);
 
     T3DMat4FP m;
@@ -2084,9 +2094,8 @@ void world_draw(void) {
     if (!cem_floor && s_floor_verts && s_floor_vert_count > 0) {
         bool textured = s_floor_textures[g_campaign * AREA_COUNT + g_current_area] != NULL;
         if (textured) {
-            surface_t tex = sprite_get_pixels(s_floor_textures[g_campaign * AREA_COUNT + g_current_area]);
             rdpq_mode_combiner(RDPQ_COMBINER_TEX_SHADE);
-            rdpq_tex_upload(TILE0, &tex, &(rdpq_texparms_t){
+            rdpq_sprite_upload(TILE0, s_floor_textures[g_campaign * AREA_COUNT + g_current_area], &(rdpq_texparms_t){
                 .s.repeats = REPEAT_INFINITE, .t.repeats = REPEAT_INFINITE
             });
             t3d_state_set_drawflags(T3D_FLAG_SHADED | T3D_FLAG_TEXTURED | T3D_FLAG_DEPTH);
@@ -2111,10 +2120,11 @@ void world_draw(void) {
     }
 
     // 2. Paredes 3D: malha vertical texturizada (mesmo pipeline do piso).
-    if (s_wall_verts && s_wall_vert_count > 0 && s_wall_tex) {
-        surface_t tex = sprite_get_pixels(s_wall_tex);
+    bool painted_cemetery = g_campaign == 0 && g_current_area == AREA_FORSAKEN_PATH && cemetery_ready();
+    if (painted_cemetery) cemetery_draw(true, g_druid.x, g_druid.z);
+    if (!painted_cemetery && s_wall_verts && s_wall_vert_count > 0 && s_wall_tex) {
         rdpq_mode_combiner(RDPQ_COMBINER_TEX_SHADE);
-        rdpq_tex_upload(TILE0, &tex, &(rdpq_texparms_t){
+        rdpq_sprite_upload(TILE0, s_wall_tex, &(rdpq_texparms_t){
             .s.repeats = REPEAT_INFINITE, .t.repeats = REPEAT_INFINITE
         });
         t3d_state_set_drawflags(T3D_FLAG_SHADED | T3D_FLAG_TEXTURED | T3D_FLAG_DEPTH);
@@ -2135,10 +2145,9 @@ void world_draw(void) {
     }
 
     // 2b. Tampas de topo das paredes (textura de topo), para dar profundidade.
-    if (s_wall_top_verts && s_wall_top_vert_count > 0 && s_wall_top_tex) {
-        surface_t tex = sprite_get_pixels(s_wall_top_tex);
+    if (!painted_cemetery && s_wall_top_verts && s_wall_top_vert_count > 0 && s_wall_top_tex) {
         rdpq_mode_combiner(RDPQ_COMBINER_TEX_SHADE);
-        rdpq_tex_upload(TILE0, &tex, &(rdpq_texparms_t){
+        rdpq_sprite_upload(TILE0, s_wall_top_tex, &(rdpq_texparms_t){
             .s.repeats = REPEAT_INFINITE, .t.repeats = REPEAT_INFINITE
         });
         t3d_state_set_drawflags(T3D_FLAG_SHADED | T3D_FLAG_TEXTURED | T3D_FLAG_DEPTH);

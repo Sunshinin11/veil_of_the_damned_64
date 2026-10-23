@@ -88,9 +88,19 @@ static void hud_draw_sprites(void) {
                 (i == 5 && (g_druid.health_potions || g_druid.spirit_potions));
             bool selected = (i == 0 && g_druid.state == DRUID_STATE_ATTACK) || (i == 3 && g_druid.spin_timer > 0) ||
                             (i == 4 && g_druid.berserk_timer > 0);
+            float cd=i>=1 && i<=4 ? barb_cooldown((BarbCooldown)(i-1)) : 0.0f;
+            if (cd>0.0f) enabled=false;
             if (!enabled || selected)
                 sprites_draw_ui(selected ? SPR_UI_SELECTED : SPR_UI_DISABLED, 51 + i * 36, 201, 1);
             sprites_draw_ui(i < 5 ? (SpriteUi)(SPR_UI_B_AXE + i) : SPR_UI_POTION, 56 + i * 36, 206, .8f);
+            if (cd>0.0f) {
+                float ratio=clampf(cd/barb_cooldown_time((BarbCooldown)(i-1)),0,1);
+                rdpq_set_mode_standard(); rdpq_mode_combiner(RDPQ_COMBINER_FLAT);
+                rdpq_set_prim_color(RGBA32(35,12,16,255));
+                rdpq_fill_rectangle(55+i*36,232,82+i*36,235);
+                rdpq_set_prim_color(RGBA32(195,35,45,255));
+                rdpq_fill_rectangle(55+i*36,232,55+i*36+(int)(27*(1-ratio)),235);
+            }
         }
     } else
     if (g_hero == HERO_HUNTRESS) {   // cinto da cacadora: tiro, rajada, raizes, gaviao, foco, pocao
@@ -241,6 +251,21 @@ void hud_draw_text(void) {
         ui_textf(230, 225, "x%d", g_druid.health_potions);
         ui_textf(12, 183, T(S_HUD_LV), g_druid.level);
         if (g_druid.continues > 0) ui_textf(12, 168, T(S_HUD_CONT), g_druid.continues);
+        if (g_hero==HERO_BARBARIAN) {
+            for (int i=1;i<=4;i++) {
+                float cd=barb_cooldown((BarbCooldown)(i-1));
+                if (cd>0.0f) {
+                    char text[8]; snprintf(text,sizeof(text),"%d",(int)ceilf(cd));
+                    ui_print(false,51+i*36,226,UI_STYLE_GOLD,1,34,text);
+                }
+            }
+            char rush[40];
+            float cd=barb_cooldown(BARB_CD_RUSH);
+            if (g_druid.rush_timer>0.0f) snprintf(rush,sizeof(rush),T(S_B_RUSH_STATUS),(int)ceilf(g_druid.rush_timer));
+            else if (cd>0.0f) snprintf(rush,sizeof(rush),"R: %ds",(int)ceilf(cd));
+            else snprintf(rush,sizeof(rush),"R: %s",T(S_BAB5));
+            ui_print(false,82,196,g_druid.rush_timer>0.0f?UI_STYLE_GOLD:UI_STYLE_NORMAL,0,0,rush);
+        }
         {   // essencia demoniaca (moeda do mascate): icone animado no canto superior esquerdo + quantidade
             static sprite_t *ess[4];
             static bool tried = false;

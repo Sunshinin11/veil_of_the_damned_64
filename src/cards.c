@@ -165,7 +165,7 @@ int cards_roll_weighted(int w_common, int w_rare, int w_legend, int w_cursed) {
                       roll < w_common + w_rare + w_legend ? RARITY_LEGENDARY : RARITY_CURSED;
     for (int pass = 0; pass < 2; pass++) {             // se acabou a raridade, qualquer outra
         int pool[CARD_COUNT], n = 0;
-        int first = g_hero * CARDS_PER_HERO;   // so cartas do heroi da partida (0 druida, 1 cacadora, 2 barbaro)
+        int first = hero_card_family(g_hero) * CARDS_PER_HERO;
         for (int id = first; id < first + CARDS_PER_HERO; id++) {
             if (pass == 0 && RARITY[id] != want) continue;
             if (!owned(id)) pool[n++] = id;

@@ -21,15 +21,19 @@
 
 ## Heróis
 
+Próximas classes e mudanças de visual estão registradas em [TAREFAS.md](TAREFAS.md).
+
 | Herói | Estilo | Habilidades |
 |---|---|---|
 | **Bárbaro** | Tanque de combate corpo a corpo, movido a **Fúria** | Combo de Machado, Salto Esmagador, Grito de Guerra, Redemoinho, Berserker e um salto de esquiva longo |
 | **Caçadora** | Ágil, à distância, alto crítico | Tiro de Arco carregado, Rajada, Armadilha de Raízes, Gavião, Foco do Caçador, Camuflagem |
 | **Druida** | Conjurador da natureza | Raio Espiritual, Erupção de Espinhos, Lobos Espectrais e Forma de Fera (lobisomem) |
+| **Mago** | Conjurador de capuz e cajado | Kit provisório compartilhado com o Druida; novas magias serão definidas depois |
+| **Ladino** | Classe em preparação | Bloqueado até receber seus sprites próprios |
 
 Cada classe tem vida, dano, armadura, crítico e energia próprios, que crescem de forma diferente a cada nível.
 
-O Bárbaro começa liberado. Os outros heróis são **segredos**: descobrir como libertá-los faz parte do jogo.
+O Bárbaro e o Mago começam liberados. O Ladino aguarda suas artes; os demais heróis são **segredos**: descobrir como libertá-los faz parte do jogo.
 
 ## Campanhas
 
@@ -77,6 +81,15 @@ make -j4
 ```
 
 Gera a ROM `veil_of_the_damned.z64` a partir dos quadros já convertidos em `assets/`. A arte original em alta resolução não está no repositório.
+
+### Formatos dos recursos
+
+- Personagens, monstros, chefes e cenários: CI8 (paleta de até 256 cores), com compressão sem perdas nível 2 do libdragon, incluindo o chão ilustrado.
+- Músicas e efeitos: WAV64 mono, 12.000 Hz, com compressão VADPCM.
+- Os nomes antigos `.rgba16` e `.rgba32` são mantidos para compatibilidade com as referências do jogo; o conteúdo dos sprites dessas pastas é CI8, definido explicitamente na compilação. Os PNGs de origem são preservados.
+- A compressão do sprite é sem perdas sobre o CI8; a redução para 256 cores ocorre antes dela. A paleta CI8 usa alfa de 1 bit, inclusive nos recursos que antes tinham transparência gradual em RGBA32.
+
+O carregamento de texturas 3D envia também as paletas, e a análise da base dos objetos lê a transparência na paleta CI8.
 
 ## Estrutura
 

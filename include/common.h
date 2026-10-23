@@ -9,6 +9,7 @@
 #include <libdragon.h>
 #include <t3d/t3d.h>
 #include <t3d/t3dmath.h>
+#include "hero_rules.h"
 
 #define SCREEN_WIDTH  320
 #define SCREEN_HEIGHT 240
@@ -74,7 +75,6 @@ typedef enum {
 } GameState;
 
 // Herois e campanhas
-typedef enum { HERO_DRUID = 0, HERO_HUNTRESS = 1, HERO_BARBARIAN = 2, HERO_COUNT = 3 } HeroId;
 extern int g_hero;       // heroi da partida (druid.c)
 extern int g_campaign;   // 0 = Caminho dos Condenados, 1 = Floresta Morta (world.c)
 #define CAMPAIGN_COUNT 3   // 0 Condenados (Druida), 1 Floresta Morta (Cacadora), 2 Norte Esquecido (Barbaro)

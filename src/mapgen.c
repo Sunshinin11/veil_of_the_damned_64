@@ -17,6 +17,7 @@ static const char *s_rows[MG_ROWS];
 static Cell s_cell[MG_CH][MG_CW];
 static FloorQuad s_floor[MG_MAX_FLOOR];
 static int s_floor_n = 0;
+static MapVisualCell s_visual[MG_CH][MG_CW];
 
 static float mg_frand(void) { return (float)(rand() % 10000) / 10000.0f; }
 static float mg_range(float a, float b) { return a + (b - a) * mg_frand(); }
@@ -116,9 +117,11 @@ static bool is_lane(int i) { return i == 2 || i == 3; }
 static void stamp(const ChunkSet *set, int x, int y, bool crypt) {
     Cell *c = &s_cell[y][x];
     int cat = c->role == R_START ? 3 : c->role == R_EXIT ? 4 : c->role == R_GUARD ? 2 : c->role == R_DEAD ? 1 : 0;
-    const char *t = set->list[cat][rand() % set->count[cat]];
+    int choice = rand() % set->count[cat];
+    const char *t = set->list[cat][choice];
     bool mx = rand() & 1;
     bool my = (cat < 3) && (rand() & 1);   // inicio/saida nao viram de cabeca para baixo (entrada ao sul, trono ao norte)
+    s_visual[y][x] = (MapVisualCell){1,cat,choice,mx,my,c->conn};
     (void)crypt;
     int x0 = x * MG_STEP + 1, y0 = y * MG_STEP + 1;
     for (int r = 0; r < 6; r++) for (int col = 0; col < 6; col++) {
@@ -274,6 +277,7 @@ static void build_floor(void) {
 }
 
 const char *const *mapgen_build(int area, int *rows, int *cols) {
+    memset(s_visual, 0, sizeof(s_visual));
     // 0 cemiterio, 1 cripta (tuneis estreitos), 2 floresta morta, 3 pantano podre,
     // 4 passo congelado, 5 cavernas de gelo (tuneis estreitos)
     bool crypt = area == 1 || area == 5;
@@ -295,3 +299,7 @@ const char *const *mapgen_build(int area, int *rows, int *cols) {
 }
 
 int mapgen_floor(const FloorQuad **out) { *out = s_floor; return s_floor_n; }
+bool mapgen_visual_cell(int x, int y, MapVisualCell *out) {
+    if (x<0 || y<0 || x>=MG_CW || y>=MG_CH || !s_visual[y][x].used) return false;
+    *out=s_visual[y][x]; return true;
+}

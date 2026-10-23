@@ -258,9 +258,13 @@ void menu_char_draw(int start_area) {
     bool hu = s_hero_sel == HERO_HUNTRESS, ba = s_hero_sel == HERO_BARBARIAN;
     sprites_draw_hero_portrait_ex(s_hero_sel, 86, 178, 1.9f, !open);   // travado: so a silhueta
     if (open) {
-        StrId base = hu ? S_HUNT_NAME : ba ? S_BARB_NAME : S_DRUID_NAME;   // nome + 4 linhas seguidas
+        StrId base = hu ? S_HUNT_NAME : ba ? S_BARB_NAME : s_hero_sel==HERO_MAGE ? S_MAGE_NAME : S_DRUID_NAME;
         ui_print(true, 166, 76, UI_STYLE_GOLD, 0, 0, T(base));
         for (int k = 1; k <= 4; k++) ui_print(false, 166, 82 + k * 16, UI_STYLE_NORMAL, 0, 0, T((StrId)(base + k)));
+    } else if (s_hero_sel==HERO_ROGUE) {
+        ui_print(true,166,76,UI_STYLE_DISABLED,0,0,T(S_ROGUE_NAME));
+        ui_print(false,166,98,UI_STYLE_DISABLED,0,0,T(S_LOCKED));
+        ui_print(false,166,120,UI_STYLE_NORMAL,0,0,T(S_ART_PENDING));
     } else {                                   // nada de dica: so o misterio
         ui_print(true, 166, 76, UI_STYLE_DISABLED, 0, 0, "???");
         ui_print(false, 166, 98, UI_STYLE_DISABLED, 0, 0, T(S_LOCKED));
@@ -502,12 +506,15 @@ static void draw_barb_desc(int id, int x, int y) {
             line(x, &y, N, T(S_COST), (int)BARB_BERSERK_COST);
             line(x, &y, g_mods.beast_time ? G : N, T(S_BA4_1), (int)barb_berserk_time());
             line(x, &y, N, "%s", T(S_BA4_2));
+            line(x, &y, N, "%s", T(S_BA4_3));
+            line(x, &y, N, "%s", T(S_BA4_4));
             break;
         case 5:
             line(x, &y, N, "%s", T(S_BA5_1)); line(x, &y, N, "%s", T(S_BA5_2)); line(x, &y, N, "%s", T(S_BA5_3));
             break;
         default: draw_ability_desc(id, x, y); break;   // pocao: igual ao druida
     }
+    if (id>=1 && id<=5) line(x,&y,N,T(S_B_CD_DESC),(int)barb_cooldown_time((BarbCooldown)(id-1)));
 }
 static const char *hunt_key(int i) {
     switch (i) { case 0: return "A"; case 1: return "B"; case 2: return T(S_K_CLEFT); case 3: return T(S_K_CUP);

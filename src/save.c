@@ -1,4 +1,5 @@
 #include "save.h"
+#include "test_flags.h"
 #include "lang.h"
 #include "druid.h"
 #include "cards.h"
@@ -23,7 +24,7 @@ typedef struct {
 GameOptions g_opt = { LANG_EN, 1, 8, 8, 0 };
 // Progresso: bits dos herois liberados + dificuldades vencidas por campanha (2 bits cada).
 // Fica nos bytes livres do arquivo de opcoes, assim o layout da EEPROM nao muda (saves antigos valem).
-static uint8_t s_heroes = (1u << HERO_BARBARIAN);   // Barbaro: unico heroi inicial
+static uint8_t s_heroes = (1u << HERO_BARBARIAN) | (1u << HERO_MAGE);
 static uint8_t s_beaten = 0;
 static uint8_t s_all = 0;                       // atalho de teste: tudo liberado
 static bool s_eeprom = false;
@@ -54,7 +55,7 @@ void save_init(void) {
             g_opt.controls = o.controls ? 1 : 0;
             // bit 7 = progresso no formato novo. Saves antigos (antes da arte do Barbaro)
             // gravavam o Druida aberto por padrao: sem o bit, o Druida volta a ficar travado.
-            s_heroes = (o.pad[0] & 0x7F) | (1u << HERO_BARBARIAN);
+            s_heroes = (o.pad[0] & 0x7F) | (1u << HERO_BARBARIAN) | (1u << HERO_MAGE);
             if (!(o.pad[0] & 0x80)) s_heroes &= (uint8_t)~(1u << HERO_DRUID);
             s_beaten = o.pad[1];
             s_all = o.pad[2] == 0xA5;
@@ -76,7 +77,7 @@ bool save_write_game(int area) {
     SaveGame g;
     memset(&g, 0, sizeof(g));
     g.magic = SAVE_MAGIC;
-    g.area = (uint8_t)(area | (g_campaign << 2) | (g_hero << 4));   // fase + campanha + heroi num byte
+    g.area = hero_pack_location(area,g_campaign,g_hero);
     g.level = (uint8_t)g_druid.level;
     g.continues = (uint8_t)g_druid.continues;
     g.exp = g_druid.exp; g.exp_next = g_druid.exp_next; g.attack = g_druid.attack_damage;
@@ -93,7 +94,10 @@ bool save_load_game(int *area) {
     if (!s_eeprom) return false;
     SaveGame g;
     if (eepfs_read("/game.sav", &g, sizeof(g)) != EEPFS_ESUCCESS || g.magic != SAVE_MAGIC) return false;
-    g_hero = (g.area >> 4) & 3; if (g_hero >= HERO_COUNT) g_hero = HERO_DRUID;
+    int loaded_hero=hero_unpack_location(g.area);
+    if (loaded_hero>=HERO_COUNT) loaded_hero=HERO_DRUID;
+    if (!hero_has_art(loaded_hero)) return false;
+    g_hero=loaded_hero;
     g_campaign = (g.area >> 2) & 3; if (g_campaign >= CAMPAIGN_COUNT) g_campaign = 0;
     g.area &= 3;
     g_difficulty = (g.ncards >> 4) & 3; if (g_difficulty >= DIFF_COUNT) g_difficulty = DIFF_NORMAL;
@@ -130,7 +134,10 @@ void save_write_options(void) {
 
 // ---- Progresso ----
 int campaign_beaten(int c) { return (c < 0 || c >= CAMPAIGN_COUNT) ? 0 : (s_beaten >> (c * 2)) & 3; }
-bool hero_unlocked(int h) { return s_all || (h >= 0 && h < HERO_COUNT && (s_heroes & (1u << h))); }
+bool hero_unlocked(int h) {
+    if (!hero_has_art(h)) return false; // never bypass the rogue art gate, including unlock-all
+    return h==HERO_MAGE || s_all || (TEST_UNLOCK_DRUID && h==HERO_DRUID) || (s_heroes&(1u<<h));
+}
 // Ordem da historia: Norte Esquecido (2) -> Floresta Morta (1) -> Caminho dos Condenados (0).
 static const int CAMP_ORDER[CAMPAIGN_COUNT] = { 2, 1, 0 };
 bool campaign_unlocked(int c) {
