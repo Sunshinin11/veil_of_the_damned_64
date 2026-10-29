@@ -15,14 +15,15 @@ static float s_music_vol = 0.8f, s_sfx_vol = 0.8f;   // Opcoes: volume da musica
 #define SPIN_VOLUME 0.08f // cerca de11% do volume dos efeitos normais
 
 typedef enum {
-    MUSIC_TITLE, MUSIC_PATH, MUSIC_CRYPT, MUSIC_COMBAT,
+    MUSIC_TITLE, MUSIC_PATH, MUSIC_CRYPT,
     MUSIC_ALTAR, MUSIC_BOSS, MUSIC_VICTORY, MUSIC_DEFEAT,
-    MUSIC_COUNT
+    MUSIC_FOREST, MUSIC_SWAMP, MUSIC_BOSS2, MUSIC_BOSS3, MUSIC_SNOW1, MUSIC_SNOW2, MUSIC_COUNT
 } MusicTrack;
 
 static const char *music_names[MUSIC_COUNT] = {
-    "bgm_title", "bgm_path", "bgm_crypt", "bgm_combat",
-    "bgm_altar", "bgm_boss", "bgm_victory", "bgm_defeat"
+    "bgm_title", "bgm_path", "bgm_crypt",
+    "bgm_altar", "bgm_boss", "bgm_victory", "bgm_defeat",
+    "bgm_forest", "bgm_swamp", "bgm_boss2", "bgm_boss3", "bgm_snow1", "bgm_snow2"
 };
 
 static const char *effect_names[SFX_COUNT] = {
@@ -72,7 +73,6 @@ static bool s_music_open;
 static wav64_t s_effects[SFX_CHANNEL_COUNT];
 static bool s_effect_open[SFX_CHANNEL_COUNT];
 static int s_next_effect;
-static int s_combat_hold;
 static wav64_t s_spin;
 static bool s_spin_open;
 static float s_spin_gain;
@@ -119,7 +119,6 @@ void sound_init(void) {
     s_state = GAME_STATE_INTRO;
     s_music_open = false;
     s_next_effect = 0;
-    s_combat_hold = 0;
     s_spin_open=false; s_spin_gain=0.0f;
     memset(s_effect_open, 0, sizeof(s_effect_open));
     debugf("[AUDIO] WAV64 streaming mixer ready at %d Hz.\n", AUDIO_RATE);
@@ -147,16 +146,19 @@ void sound_set_volumes(float music, float sfx) { s_music_vol = music; s_sfx_vol 
 
 void sound_set_context(GameState state) { s_state = state; }
 
-// Trilha por campanha: [fase 1, fase 2, fase 3, combate, chefe]. So 8 musicas no jogo,
-// entao a Floresta Morta embaralha as mesmas (a 01 do titulo vira musica de fase).
-static const MusicTrack s_camp_music[3][5] = {
-    { MUSIC_PATH,  MUSIC_CRYPT, MUSIC_ALTAR, MUSIC_COMBAT, MUSIC_BOSS },     // Condenados
-    { MUSIC_CRYPT, MUSIC_TITLE, MUSIC_PATH,  MUSIC_ALTAR,  MUSIC_COMBAT },   // Floresta Morta
-    { MUSIC_TITLE, MUSIC_PATH,  MUSIC_CRYPT, MUSIC_BOSS,   MUSIC_ALTAR },    // Norte do Barbaro
+// Trilha por campanha: [fase 1, fase 2, fase 3, chefe].
+// Ordinary battles keep the area's music in every campaign and game mode.
+// Floresta e pantano agora possuem faixas proprias.
+static const MusicTrack s_camp_music[CAMPAIGN_COUNT][4] = {
+    { MUSIC_PATH,  MUSIC_CRYPT, MUSIC_ALTAR, MUSIC_BOSS },     // Condenados
+    { MUSIC_FOREST,MUSIC_SWAMP,MUSIC_BOSS2, MUSIC_BOSS2 },     // Coracao Seco: faixa propria desde a entrada
+    { MUSIC_SNOW1, MUSIC_SNOW2, MUSIC_BOSS3, MUSIC_BOSS3 },    // Norte: faixas proprias nas tres fases
+    { MUSIC_PATH, MUSIC_CRYPT, MUSIC_BOSS2, MUSIC_BOSS2 }, // Desert: temporary existing tracks until Suno imports.
+    { MUSIC_FOREST, MUSIC_ALTAR, MUSIC_BOSS3, MUSIC_BOSS3 }, // Victorian: temporary existing tracks.
 };
 
 static MusicTrack desired_music(void) {
-    const MusicTrack *cm = s_camp_music[(g_campaign >= 0 && g_campaign < 3) ? g_campaign : 0];
+    const MusicTrack *cm = s_camp_music[(g_campaign >= 0 && g_campaign < CAMPAIGN_COUNT) ? g_campaign : 0];
     if (s_state == GAME_STATE_INTRO || s_state == GAME_STATE_CHAR_SELECT) return MUSIC_TITLE;
     if (s_state == GAME_STATE_PLAYER_DEAD) return MUSIC_DEFEAT;
     if (s_state == GAME_STATE_VICTORY) return MUSIC_VICTORY;
@@ -164,24 +166,9 @@ static MusicTrack desired_music(void) {
         Enemy *boss = enemies_get_boss();
         if (boss && boss->hp > 0 &&
             vec2_dist_sq(boss->x, boss->z, g_druid.x, g_druid.z) < 150.0f * 150.0f)
-            return cm[4];
+            return cm[3];
         return cm[2];
     }
-    Enemy *enemies = enemies_get_array();
-    bool threatened = false;
-    for (int i = 0; i < MAX_ENEMIES; i++) {
-        Enemy *e = &enemies[i];
-        if (e->active && e->hp > 0 &&
-            (e->state == ENEMY_STATE_CHASE || e->state == ENEMY_STATE_TELEGRAPH ||
-             e->state == ENEMY_STATE_ATTACK) &&
-            vec2_dist_sq(e->x, e->z, g_druid.x, g_druid.z) < 95.0f * 95.0f) {
-            threatened = true;
-            break;
-        }
-    }
-    if (threatened) s_combat_hold = 120;
-    else if (s_combat_hold > 0) s_combat_hold--;
-    if (s_combat_hold > 0) return cm[3];
     return g_current_area == AREA_HOLLOW_CRYPT ? cm[1] : cm[0];
 }
 

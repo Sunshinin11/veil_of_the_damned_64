@@ -19,6 +19,7 @@ MenuAction menu_char_update(const joypad_inputs_t *in, const joypad_buttons_t *p
 void menu_char_draw(int start_area);
 int  menu_selected_hero(void);
 int  menu_selected_campaign(void);
+int  menu_selected_area(void);
 int  menu_selected_difficulty(void);
 
 MenuAction menu_pause_update(const joypad_inputs_t *in, const joypad_buttons_t *pressed);

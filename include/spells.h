@@ -10,7 +10,11 @@
 typedef enum {
     PROJ_SPIRIT_BOLT,
     PROJ_DARK_BLOOD_ORB,
-    PROJ_ARROW              // flecha da cacadora
+    PROJ_ARROW,             // flecha da cacadora
+    PROJ_CULTIST_SKULL,     // shared pool; distinct art, no extra projectile fields
+    PROJ_MALAKOR_STONE_WAVE, // shared pool and existing hit flag; no particle pool
+    PROJ_MAGE_ORB,
+    PROJ_ROGUE_KNIFE
 } ProjectileType;
 
 #define MAX_ROOTS 4
@@ -84,10 +88,17 @@ bool spells_cast_hawks(float x, float z);
 const RootTrap* spells_get_roots(void);
 const Hawk* spells_get_hawks(void);
 bool spells_cast_enemy_dark_orb(float x, float y, float z, float dir_x, float dir_z, int damage);
+bool spells_cast_enemy_skull(float x, float y, float z, float dir_x, float dir_z, int damage);
+bool spells_cast_enemy_stone_wave(float x, float y, float z, float dir_x, float dir_z, int damage);
 
 // Query
 const Projectile* spells_get_projectiles(void);
 const ThornSpike* spells_get_thorns(void);
+typedef struct {float x,z,life;} MageOrbImpact;
+#define MAX_MAGE_IMPACTS 4
+const MageOrbImpact *spells_get_mage_impacts(void);
+bool spells_cast_mage_orb(float x,float z,float dir_x,float dir_z,int damage);
+bool spells_cast_knife(float x,float z,float dir_x,float dir_z,int damage);
 const SpiritWolf* spells_get_wolves(void);
 void spells_clear_all(void);
 

@@ -30,6 +30,12 @@ extern Mesh mesh_part_arm_upper;
 extern Mesh mesh_part_arm_lower;
 extern Mesh mesh_part_leg_upper;
 extern Mesh mesh_part_leg_lower;
+extern Mesh mesh_druid3d_body;
+extern Mesh mesh_druid3d_head;
+extern Mesh mesh_druid3d_upper_arm;
+extern Mesh mesh_druid3d_lower_arm;
+extern Mesh mesh_druid3d_upper_leg;
+extern Mesh mesh_druid3d_lower_leg;
 
 extern Mesh mesh_tree_dead;
 extern Mesh mesh_gravestone;

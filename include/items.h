@@ -23,14 +23,16 @@ typedef struct {
     T3DMat4FP mat_fp;
 } ItemDrop;
 
+typedef enum { CHEST_KIND_WOOD, CHEST_KIND_STEEL, CHEST_KIND_QUEST } ChestKind;
 typedef struct {
     bool active;
     bool opened;
     float open_timer;
     float x, z;
     float yaw;
-    bool small;        // bauzinho: abre direto, saque menor, sem carta
+    bool small;        // common-loot behavior; all three visuals share one size
     bool locked;       // bau grande selado: so abre depois do evento (world.c)
+    uint8_t kind;      // permanent appearance; survives mission unlock
     T3DMat4FP mat_fp;
 } Chest;
 
@@ -40,6 +42,7 @@ void items_spawn_drop(DropType type, float x, float z);
 void items_add_chest(float x, float z, float yaw);
 int  items_add_chest_ex(float x, float z, bool small, bool locked);   // indice ou -1
 void items_unlock_chest(int i);
+void items_prepare_event_chest(int i,bool visible);
 void items_update(float dt);
 void items_draw(void);
 const ItemDrop* items_get_drops(void);

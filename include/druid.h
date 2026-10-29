@@ -39,6 +39,8 @@ typedef struct {
     float charge;           // tempo puxando o arco
     float focus_timer;      // Foco do Cacador: critico garantido
     float camo_timer;       // Manto: invisivel para os monstros
+    unsigned char visual_action; // approved huntress cast pose; gameplay timer stays separate
+    float visual_timer, visual_duration;
 
     // Barbaro (o "espirito" vira Furia: enche batendo e apanhando)
     int   combo;            // golpe atual do combo (0, 1, 2 = pesado)
@@ -62,6 +64,7 @@ typedef struct {
 
     // Shapeshift
     bool is_beast;
+    bool is_stag;          // approved cervine form, independent from the wolf
     float beast_timer;
 
     // Animation & State
@@ -93,6 +96,7 @@ void druid_init(void);
 void druid_reset_at(float x, float z);
 void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed);
 void druid_take_damage(int amount, float from_x, float from_z);
+void druid_take_damage_capped(int amount, float from_x, float from_z, int maximum_loss);
 void druid_heal(int amount);
 void druid_restore_spirit(float amount);
 void druid_gain_exp(int amount);

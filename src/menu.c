@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "campaign_order.h"
 #include <stdarg.h>
 #include "gfx.h"
 #include "sprites.h"
@@ -13,6 +14,7 @@
 
 static sprite_t *s_bg = NULL, *s_logo = NULL;
 static int s_cursor = 0;
+static bool s_stage_picker;
 enum { PAGE_MAIN, PAGE_STATUS, PAGE_ABILITIES, PAGE_CARDS };
 static int s_page = PAGE_MAIN;   // pagina do menu de pausa
 static int s_nav_dir = 0;            // direcao segurada no analogico (para repetir)
@@ -110,10 +112,10 @@ static int nav_horizontal(const joypad_inputs_t *in, const joypad_buttons_t *p) 
     return 0;
 }
 
-// Versao final: sem seletor de fase (era so para teste).
+// Map review exposes stage choice without changing saved campaign unlocks.
 #define TITLE_N 3
 static void title_items(const char **items, bool *enabled) {
-    items[0] = T(S_NEW_GAME); items[1] = T(S_LOAD_GAME); items[2] = T(S_OPTIONS);
+    items[0] = VEIL_LEVEL_REVIEW?"Escolher fase":T(S_NEW_GAME); items[1] = T(S_LOAD_GAME); items[2] = T(S_OPTIONS);
     enabled[0] = enabled[2] = true;
     enabled[1] = save_has_game();
 }
@@ -185,7 +187,7 @@ MenuAction menu_title_update(const joypad_inputs_t *in, const joypad_buttons_t *
     move_cursor(nav_vertical(in, p), TITLE_N, en);
     if (p->a || p->start) {
         sound_play(SFX_SHAPESHIFT);
-        if (s_cursor == 0) { *start_area = 0; return MENU_NEW_GAME; }   // Novo Jogo: fase 1 da campanha escolhida
+        if (s_cursor == 0) { *start_area = campaign_order_at(0)*AREA_COUNT; s_stage_picker=VEIL_LEVEL_REVIEW; return MENU_NEW_GAME; }
         if (s_cursor == 1) return MENU_LOAD;
         s_in_options = true; s_opt_cursor = 0;
         return MENU_OPTIONS;
@@ -207,8 +209,10 @@ void menu_title_draw(int start_area) {
 
 // ---- Escolha de personagem ----
 static int s_hero_sel = HERO_BARBARIAN, s_camp_sel = 2, s_diff_sel = DIFF_NORMAL;
+static int s_phase_sel;
 int menu_selected_hero(void) { return s_hero_sel; }
 int menu_selected_campaign(void) { return s_camp_sel; }
+int menu_selected_area(void) { return s_phase_sel; }
 int menu_selected_difficulty(void) { return s_diff_sel; }
 static const StrId DIFF_NAMES[DIFF_COUNT] = { S_DIFF0, S_DIFF1, S_DIFF2 };
 
@@ -217,23 +221,42 @@ MenuAction menu_char_update(const joypad_inputs_t *in, const joypad_buttons_t *p
     if (*start_area != last_start) {          // veio do titulo: a fase escolhida define a campanha
         last_start = *start_area;
         s_camp_sel = *start_area / AREA_COUNT;
-        if (!campaign_unlocked(s_camp_sel)) s_camp_sel = 2;   // Norte: sempre aberto
+        s_phase_sel = *start_area % AREA_COUNT;
+        if (!VEIL_LEVEL_REVIEW && !campaign_unlocked(s_camp_sel)) s_camp_sel = 2;   // Norte: sempre aberto
     }
-    // d-pad / analogico: heroi; L/R: campanha; C-cima/C-baixo: dificuldade
+    if(s_stage_picker) {
+        int d=nav_vertical(in,p);
+        if(d){s_phase_sel=(s_phase_sel+d+AREA_COUNT)%AREA_COUNT;sound_play(SFX_SWING);}
+        if(p->l || p->r || p->c_left || p->c_right) {
+            s_camp_sel=campaign_order_step(s_camp_sel,(p->l || p->c_left)?-1:1);
+            sound_play(SFX_SWING);
+        }
+        *start_area=s_camp_sel*AREA_COUNT+s_phase_sel;last_start=*start_area;
+        if(p->a || p->start){s_stage_picker=false;sound_play(SFX_SHAPESHIFT);}
+        if(p->b){s_stage_picker=false;sound_play(SFX_SWING);return MENU_BACK;}
+        return MENU_NONE;
+    }
+    if(VEIL_LEVEL_REVIEW && p->z){s_stage_picker=true;return MENU_NONE;}
+    // Character/difficulty selection retains the independently selected start map.
     int h = p->d_left ? -1 : p->d_right ? 1 : 0;
     if (!h) { int d = in->stick_x > 50 ? 1 : in->stick_x < -50 ? -1 : 0; if (d != 0 && d != s_nav_h) h = d; s_nav_h = d; }
     if (h) { s_hero_sel = (s_hero_sel + h + HERO_COUNT) % HERO_COUNT; sound_play(SFX_SWING); }
     if (p->l || p->r || p->c_left || p->c_right) {
         int d = (p->l || p->c_left) ? -1 : 1;
-        s_camp_sel = (s_camp_sel + d + CAMPAIGN_COUNT) % CAMPAIGN_COUNT;
+        s_camp_sel = campaign_order_step(s_camp_sel,d);
         sound_play(SFX_SWING);
     }
-    int maxd = campaign_unlocked(s_camp_sel) ? campaign_max_difficulty(s_camp_sel) : 0;
+    if(VEIL_LEVEL_REVIEW && (p->d_up || p->d_down)) {
+        s_phase_sel=(s_phase_sel+(p->d_up?-1:1)+AREA_COUNT)%AREA_COUNT;
+        sound_play(SFX_SWING);
+    }
+    *start_area=s_camp_sel*AREA_COUNT+s_phase_sel;last_start=*start_area;
+    int maxd = VEIL_LEVEL_REVIEW?DIFF_COUNT-1:(campaign_unlocked(s_camp_sel) ? campaign_max_difficulty(s_camp_sel) : 0);
     if (p->c_up && s_diff_sel < maxd) { s_diff_sel++; sound_play(SFX_SWING); }
     if (p->c_down && s_diff_sel > 0)  { s_diff_sel--; sound_play(SFX_SWING); }
     if (s_diff_sel > maxd) s_diff_sel = maxd;
     if (p->a || p->start) {
-        if (!hero_unlocked(s_hero_sel) || !campaign_unlocked(s_camp_sel)) { sound_play(SFX_PLAYER_HURT); return MENU_NONE; }
+        if (!hero_unlocked(s_hero_sel) || (!VEIL_LEVEL_REVIEW && !campaign_unlocked(s_camp_sel))) { sound_play(SFX_PLAYER_HURT); return MENU_NONE; }
         sound_play(SFX_SHAPESHIFT);
         return MENU_CONFIRM;
     }
@@ -242,8 +265,19 @@ MenuAction menu_char_update(const joypad_inputs_t *in, const joypad_buttons_t *p
 }
 
 void menu_char_draw(int start_area) {
-    (void)start_area;
     draw_ken_burns(110);
+    if(s_stage_picker) {
+        ui_print(true,22,36,UI_STYLE_GOLD,0,0,"ESCOLHER FASE INICIAL");
+        ui_print(false,22,62,UI_STYLE_NORMAL,0,0,T((StrId)(S_CAMP0+s_camp_sel)));
+        for(int i=0;i<AREA_COUNT;i++) {
+            char line[96];snprintf(line,sizeof(line),"%s %d/%d  %s",i==s_phase_sel?">":" ",i+1,AREA_COUNT,area_name(s_camp_sel*AREA_COUNT+i));
+            ui_print(false,22,98+i*30,i==s_phase_sel?UI_STYLE_GOLD:UI_STYLE_NORMAL,0,0,line);
+        }
+        ui_print(false,22,192,UI_STYLE_NORMAL,0,0,"A partida comeca na fase escolhida.");
+        ui_print(false,22,216,UI_STYLE_DISABLED,0,0,"Cima/baixo: fase   L/R: campanha");
+        ui_print(false,22,232,UI_STYLE_DISABLED,0,0,"A: escolher   B: voltar");
+        return;
+    }
     ui_print(true, 22, 34, UI_STYLE_NORMAL, 0, 0, T(S_CHOOSE_HERO));
     rdpq_set_mode_standard();
     rdpq_mode_combiner(RDPQ_COMBINER_FLAT);
@@ -259,8 +293,11 @@ void menu_char_draw(int start_area) {
     sprites_draw_hero_portrait_ex(s_hero_sel, 86, 178, 1.9f, !open);   // travado: so a silhueta
     if (open) {
         StrId base = hu ? S_HUNT_NAME : ba ? S_BARB_NAME : s_hero_sel==HERO_MAGE ? S_MAGE_NAME : S_DRUID_NAME;
-        ui_print(true, 166, 76, UI_STYLE_GOLD, 0, 0, T(base));
-        for (int k = 1; k <= 4; k++) ui_print(false, 166, 82 + k * 16, UI_STYLE_NORMAL, 0, 0, T((StrId)(base + k)));
+        ui_print(true, 166, 76, UI_STYLE_GOLD, 0, 0, T(s_hero_sel==HERO_ROGUE?S_ROGUE_NAME:base));
+        if(s_hero_sel==HERO_ROGUE) {
+            ui_print(false,166,98,UI_STYLE_NORMAL,0,0,"Duas adagas");
+            ui_print(false,166,114,UI_STYLE_NORMAL,0,0,"Fumaca e furtividade");
+        } else for (int k = 1; k <= 4; k++) ui_print(false, 166, 82 + k * 16, UI_STYLE_NORMAL, 0, 0, T((StrId)(base + k)));
     } else if (s_hero_sel==HERO_ROGUE) {
         ui_print(true,166,76,UI_STYLE_DISABLED,0,0,T(S_ROGUE_NAME));
         ui_print(false,166,98,UI_STYLE_DISABLED,0,0,T(S_LOCKED));
@@ -272,12 +309,16 @@ void menu_char_draw(int start_area) {
     char nb[24]; snprintf(nb, sizeof(nb), "\xC2\xAB  %d / %d  \xC2\xBB", s_hero_sel + 1, HERO_COUNT);
     ui_print(false, 166, 172, UI_STYLE_DISABLED, 0, 0, nb);
     char buf[80];
-    bool copen = campaign_unlocked(s_camp_sel);
+    bool copen = VEIL_LEVEL_REVIEW || campaign_unlocked(s_camp_sel);
     snprintf(buf, sizeof(buf), T(S_CAMP_LINE), copen ? T((StrId)(S_CAMP0 + s_camp_sel)) : "???");
-    ui_print(false, 22, 200, copen ? UI_STYLE_NORMAL : UI_STYLE_DISABLED, 0, 0, buf);
+    ui_print(false, 22, VEIL_LEVEL_REVIEW?190:200, copen ? UI_STYLE_NORMAL : UI_STYLE_DISABLED, 0, 0, buf);
+    if(VEIL_LEVEL_REVIEW) {
+        snprintf(buf,sizeof(buf),"Fase %d/%d: %s",start_area%AREA_COUNT+1,AREA_COUNT,area_name(start_area));
+        ui_print(false,22,204,UI_STYLE_GOLD,0,0,buf);
+    }
     snprintf(buf, sizeof(buf), T(S_DIFF_LINE), T(DIFF_NAMES[s_diff_sel]));
-    ui_print(false, 22, 214, s_diff_sel == DIFF_HELL ? UI_STYLE_SELECTED : s_diff_sel ? UI_STYLE_GOLD : UI_STYLE_NORMAL, 0, 0, buf);
-    ui_print(false, 22, 230, UI_STYLE_DISABLED, 0, 0, T(S_CHAR_KEYS));
+    ui_print(false, 22, VEIL_LEVEL_REVIEW?218:214, s_diff_sel == DIFF_HELL ? UI_STYLE_SELECTED : s_diff_sel ? UI_STYLE_GOLD : UI_STYLE_NORMAL, 0, 0, buf);
+    ui_print(false, 22, 232, UI_STYLE_DISABLED, 0, 0, VEIL_LEVEL_REVIEW?"Z: fase inicial   A: comecar":T(S_CHAR_KEYS));
 }
 
 // ---- Pausa: Continuar / Status / Habilidades / Cartas / Salvar / Sair ----

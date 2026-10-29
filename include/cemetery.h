@@ -11,4 +11,5 @@ void cemetery_build(const char *const *grid, int rows, int cols,
                     const T3DVertPacked *tops, int top_quads);
 bool cemetery_ready(void);
 void cemetery_draw(bool walls, float player_x, float player_z);
+
 #endif

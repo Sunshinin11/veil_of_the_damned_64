@@ -43,6 +43,11 @@ void items_add_chest(float x, float z, float yaw) {
 void items_unlock_chest(int i) {
     if (i >= 0 && i < MAX_CHESTS) s_chests[i].locked = false;
 }
+void items_prepare_event_chest(int i,bool visible) {
+    if(i<0 || i>=MAX_CHESTS)return;
+    s_chests[i].active=visible;s_chests[i].locked=true;
+    s_chests[i].small=false;s_chests[i].kind=CHEST_KIND_QUEST;
+}
 
 int items_add_chest_ex(float x, float z, bool small, bool locked) {
     float yaw = 0.0f;
@@ -51,6 +56,7 @@ int items_add_chest_ex(float x, float z, bool small, bool locked) {
             s_chests[i].active = true;
             s_chests[i].small = small;
             s_chests[i].locked = locked;
+            s_chests[i].kind = locked?CHEST_KIND_QUEST:small?CHEST_KIND_WOOD:CHEST_KIND_STEEL;
             s_chests[i].opened = false;
             s_chests[i].open_timer = 0.0f;
             s_chests[i].x = x;

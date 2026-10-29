@@ -15,6 +15,12 @@ Mesh mesh_part_arm_upper;
 Mesh mesh_part_arm_lower;
 Mesh mesh_part_leg_upper;
 Mesh mesh_part_leg_lower;
+Mesh mesh_druid3d_body;
+Mesh mesh_druid3d_head;
+Mesh mesh_druid3d_upper_arm;
+Mesh mesh_druid3d_lower_arm;
+Mesh mesh_druid3d_upper_leg;
+Mesh mesh_druid3d_lower_leg;
 
 Mesh mesh_tree_dead;
 Mesh mesh_gravestone;
@@ -650,6 +656,78 @@ static Mesh build_part_leg_lower(void) {
     return builder_finish();
 }
 
+// Druida humano: peças articuladas em unidades de mundo, autoradas no grid MESH_PREC.
+// A frente é +Z. Cada membro nasce no pivô da junta e desce em -Y.
+static Mesh build_druid3d_body(void) {
+    builder_reset();
+    const uint32_t skin=0xB98261FF, shade=0x86563FFF, leather=0x4B3027FF;
+    const uint32_t fur=0x342A26FF, fur_lit=0x665047FF, gold=0xC59A48FF;
+    builder_add_prism(0,0,14,23,2.7f,1.8f,4.6f,2.5f,8,skin,skin,shade);
+    builder_add_box_p(-3.8f,13.2f,-2.1f,3.8f,15.8f,2.1f,leather,leather,fur);
+    // Saia irregular de pele e couro; as coxas permanecem visíveis.
+    builder_add_box_p(-3.5f,10.4f,-2.0f,-1.8f,14.0f,2.1f,fur_lit,fur,fur);
+    builder_add_box_p(1.8f,11.0f,-2.0f,3.6f,14.0f,2.1f,fur_lit,fur,fur);
+    builder_add_box_p(-1.4f,11.6f,1.8f,1.2f,14.0f,2.4f,leather,leather,fur);
+    // Gola de pelo escuro, duas tiras cruzadas e fivela de lobo dourada.
+    builder_add_box_p(-5.0f,21.2f,-2.8f,-2.7f,24.4f,2.4f,fur_lit,fur,fur);
+    builder_add_box_p(2.7f,21.2f,-2.8f,5.0f,24.4f,2.4f,fur_lit,fur,fur);
+    builder_add_box_p(-3.7f,22.5f,-3.0f,3.7f,24.0f,-1.7f,fur_lit,fur,fur);
+    builder_add_box_p(-3.8f,18.5f,2.3f,-2.6f,23.2f,2.8f,leather,leather,leather);
+    builder_add_box_p(2.1f,15.1f,2.3f,3.3f,21.0f,2.8f,leather,leather,leather);
+    builder_add_box_p(-0.7f,18.0f,2.45f,0.7f,20.0f,3.15f,gold,gold,gold);
+    builder_add_box_p(-0.35f,17.3f,3.0f,0.35f,18.2f,3.3f,gold,gold,gold);
+    // Marcas ocre no peito e placas nas costas, legíveis também por trás.
+    builder_add_box_p(-2.7f,20.0f,2.48f,-1.7f,21.3f,2.72f,gold,gold,gold);
+    builder_add_box_p(1.7f,20.0f,2.48f,2.7f,21.3f,2.72f,gold,gold,gold);
+    builder_add_box_p(-1.1f,17.0f,-2.65f,1.1f,20.5f,-2.35f,leather,leather,leather);
+    return builder_finish();
+}
+static Mesh build_druid3d_head(void) {
+    builder_reset();
+    const uint32_t skin=0xBD8967FF, hair=0x31231FFF, beard=0x51372AFF;
+    const uint32_t ochre=0xB77B3BFF, eye=0x241C19FF;
+    builder_add_prism(0,0,0,5.4f,2.1f,1.8f,2.0f,1.8f,8,skin,skin,skin);
+    builder_add_box_p(-1.8f,0.0f,1.45f,1.8f,1.6f,2.15f,beard,beard,beard);
+    builder_add_box_p(-2.1f,1.0f,-1.7f,-1.45f,4.3f,1.0f,beard,beard,beard);
+    builder_add_box_p(1.45f,1.0f,-1.7f,2.1f,4.3f,1.0f,beard,beard,beard);
+    builder_add_box_p(-0.65f,4.8f,-1.8f,0.65f,7.5f,1.6f,hair,hair,hair);
+    builder_add_box_p(-1.5f,2.8f,1.65f,-0.7f,3.25f,2.04f,eye,eye,eye);
+    builder_add_box_p(0.7f,2.8f,1.65f,1.5f,3.25f,2.04f,eye,eye,eye);
+    builder_add_box_p(-0.45f,2.1f,1.7f,0.45f,3.5f,2.5f,skin,skin,skin);
+    builder_add_box_p(-2.1f,3.7f,1.1f,-1.2f,4.2f,1.9f,ochre,ochre,ochre);
+    builder_add_box_p(1.2f,3.7f,1.1f,2.1f,4.2f,1.9f,ochre,ochre,ochre);
+    return builder_finish();
+}
+static Mesh build_druid3d_upper_arm(void) {
+    builder_reset();
+    builder_add_prism(0,0,-6.2f,0,1.45f,1.35f,1.8f,1.5f,6,0xBC8968FF,0xA77658FF,0x88543DFF);
+    builder_add_box_p(-1.6f,-1.6f,-1.55f,1.6f,0.0f,1.55f,0x604537FF,0x49332BFF,0x332722FF);
+    return builder_finish();
+}
+static Mesh build_druid3d_lower_arm(void) {
+    builder_reset();
+    builder_add_prism(0,0,-5.0f,0,1.05f,1.05f,1.25f,1.2f,6,0xA87556FF,0x98684EFF,0x72462FFF);
+    builder_add_box_p(-1.45f,-3.8f,-1.3f,1.45f,-0.7f,1.3f,0x604231FF,0x453128FF,0x2D2421FF);
+    builder_add_box_p(-1.4f,-3.2f,1.25f,1.4f,-2.6f,1.58f,0xB68A46FF,0xB68A46FF,0xB68A46FF);
+    builder_add_box_p(-1.05f,-6.0f,-0.9f,1.05f,-4.7f,1.0f,0xA87556FF,0xA87556FF,0x80523BFF);
+    for(int i=-1;i<=1;i++) builder_add_box_p(i*.65f-.12f,-6.8f,0.55f,i*.65f+.12f,-5.8f,1.2f,0xD2C19DFF,0xD2C19DFF,0x9E8E70FF);
+    return builder_finish();
+}
+static Mesh build_druid3d_upper_leg(void) {
+    builder_reset();
+    builder_add_prism(0,0,-6.8f,0,1.6f,1.4f,1.75f,1.5f,6,0x40332FFF,0x362C2BFF,0x2B2524FF);
+    builder_add_box_p(-1.8f,-1.2f,-1.6f,1.8f,0,1.6f,0x5D4939FF,0x49352AFF,0x302622FF);
+    return builder_finish();
+}
+static Mesh build_druid3d_lower_leg(void) {
+    builder_reset();
+    builder_add_prism(0,0,-6.2f,0,1.25f,1.2f,1.35f,1.3f,6,0x40332FFF,0x382E2AFF,0x292322FF);
+    builder_add_box_p(-1.5f,-5.7f,-1.45f,1.5f,-2.0f,1.55f,0x654A37FF,0x4D382CFF,0x302723FF);
+    builder_add_box_p(-1.7f,-2.4f,-1.6f,1.7f,-1.5f,1.65f,0x7B6048FF,0x604A39FF,0x3B302AFF);
+    builder_add_box_p(-1.7f,-6.6f,-1.3f,1.7f,-5.5f,2.65f,0x44342BFF,0x44342BFF,0x2A2422FF);
+    return builder_finish();
+}
+
 void models_init(void) {
     debugf("[MODELS] Building procedural 3D gothic meshes...\n");
 
@@ -667,6 +745,12 @@ void models_init(void) {
     mesh_part_arm_lower = build_part_arm_lower();
     mesh_part_leg_upper = build_part_leg_upper();
     mesh_part_leg_lower = build_part_leg_lower();
+    mesh_druid3d_body = build_druid3d_body();
+    mesh_druid3d_head = build_druid3d_head();
+    mesh_druid3d_upper_arm = build_druid3d_upper_arm();
+    mesh_druid3d_lower_arm = build_druid3d_lower_arm();
+    mesh_druid3d_upper_leg = build_druid3d_upper_leg();
+    mesh_druid3d_lower_leg = build_druid3d_lower_leg();
 
     mesh_tree_dead      = build_tree_dead();
     mesh_gravestone     = build_gravestone();

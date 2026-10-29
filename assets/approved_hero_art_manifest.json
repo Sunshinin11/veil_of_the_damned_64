@@ -1,0 +1,421 @@
+{
+  "animations": {
+    "ha_druida_humano_transformar_lobo": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_druida_humano_transformar_cervo": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_druida_cervo_investida_bestial": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_cacadora_base_flecha_perfurante": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_cacadora_base_sombra_violeta": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_cacadora_base_rajada_perfurante": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_ladina_base_combo_02_esquerda": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_ladina_base_combo_03_duplo": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_cacadora_efeitos_virote_perfurante": {
+      "directions": [
+        0
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_cacadora_efeitos_armadilha_prensora": {
+      "directions": [
+        0
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_fx_cacadora_fx_flechas_triplas": {
+      "directions": [
+        0
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_fx_mago_fx_orbe_negra": {
+      "directions": [
+        0
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_fx_mago_fx_impacto_orbe_area": {
+      "directions": [
+        0
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_fx_druida_simbolo_garras": {
+      "directions": [
+        0
+      ],
+      "frames": 1,
+      "active": true
+    },
+    "ha_fx_druida_simbolo_lobo": {
+      "directions": [
+        0
+      ],
+      "frames": 1,
+      "active": true
+    },
+    "ha_fx_druida_simbolo_cervo": {
+      "directions": [
+        0
+      ],
+      "frames": 1,
+      "active": true
+    },
+    "ha_druida_humano_ataque_garras": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_druida_lobo_ataque_garras": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_druida_cervo_ataque_garras": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_druida_humano_investida_bestial": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_druida_lobo_investida_bestial": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_cacadora_base_ataque_triplo": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_cacadora_base_armadilha_prensora": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_cacadora_base_rolamento": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_ladina_base_combo_01_direita": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_ladina_base_bomba_fumaca": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_ladina_base_avanco_giratorio": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_ladina_base_arremessar_adaga": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_ladina_base_teleporte": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_mago_base_avanco_energia": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_ladina_efeitos_nuvem_fumaca": {
+      "directions": [
+        0
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_ladina_efeitos_adaga_arremessada": {
+      "directions": [
+        0
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_mago_efeitos_dreno_almas": {
+      "directions": [
+        0
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_mago_efeitos_barreira_mortos": {
+      "directions": [
+        0
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_mago_efeitos_aura_escuridao": {
+      "directions": [
+        0
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_ladina_base_contact": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 1,
+      "active": true
+    },
+    "ha_mago_base_contact": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 1,
+      "active": true
+    },
+    "ha_mago_base_pentagrama_orbe": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_mago_base_poco_almas": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_mago_base_drenar_vida": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_mago_base_barreira_mortos": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_mago_base_poder_mortos": {
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": 12,
+      "active": true
+    },
+    "ha_mago_efeitos_poco_almas": {
+      "directions": [
+        0
+      ],
+      "frames": 12,
+      "active": true
+    }
+  }
+}

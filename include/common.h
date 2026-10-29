@@ -14,6 +14,30 @@
 #define SCREEN_WIDTH  320
 #define SCREEN_HEIGHT 240
 
+// Current map-review ROM requested by the user. Set to 0 for normal progression.
+#ifndef VEIL_LEVEL_REVIEW
+#define VEIL_LEVEL_REVIEW 1
+#endif
+// Stage selection and monster visibility are independent. Current review ROM:
+// Common and elite monsters enabled for the approved-art review ROM.
+#ifndef VEIL_REVIEW_HIDE_MONSTERS
+#define VEIL_REVIEW_HIDE_MONSTERS 0
+#endif
+
+// Temporary review switches. They never write unlocks or invulnerability to save.
+#ifndef VEIL_REVIEW_GOD_MODE
+#define VEIL_REVIEW_GOD_MODE 1
+#endif
+#ifndef VEIL_REVIEW_UNLOCK_HEROES
+#define VEIL_REVIEW_UNLOCK_HEROES 1
+#endif
+
+// Fast two-form boss defeat in the cemetery review build only.
+#ifndef VEIL_REVIEW_WEAK_CEMETERY_BOSS
+#define VEIL_REVIEW_WEAK_CEMETERY_BOSS 0
+#endif
+#define VEIL_REVIEW_CEMETERY_BOSS_HP 100
+
 // Camera isometrica (fonte unica). A escala fixa dos sprites e calculada a
 // partir destes valores, entao mexer aqui reescala todos os sprites juntos.
 //
@@ -71,13 +95,14 @@ typedef enum {
     GAME_STATE_CHAR_SELECT,   // escolha de personagem (depois de Novo Jogo)
     GAME_STATE_PAUSED,        // pausa (START)
     GAME_STATE_SHOP,          // mascate demoniaco (jogo pausado)
-    GAME_STATE_CARD_OFFER     // carta encontrada: jogo pausa para pegar ou deixar
+    GAME_STATE_CARD_OFFER,     // carta encontrada: jogo pausa para pegar ou deixar
+    GAME_STATE_LOADING_MAP     // carrega a fase depois de apresentar a tela de loading
 } GameState;
 
 // Herois e campanhas
 extern int g_hero;       // heroi da partida (druid.c)
 extern int g_campaign;   // 0 = Caminho dos Condenados, 1 = Floresta Morta (world.c)
-#define CAMPAIGN_COUNT 3   // 0 Condenados (Druida), 1 Floresta Morta (Cacadora), 2 Norte Esquecido (Barbaro)
+#define CAMPAIGN_COUNT 5   // Append-only IDs: Damned, Forest, North, Desert, Victorian city.
 // Dificuldade da run: 0 Normal, 1 Pesadelo, 2 Inferno (liberadas zerando a campanha na anterior)
 enum { DIFF_NORMAL = 0, DIFF_NIGHTMARE = 1, DIFF_HELL = 2, DIFF_COUNT = 3 };
 extern int g_difficulty;

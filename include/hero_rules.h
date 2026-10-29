@@ -10,7 +10,7 @@ typedef enum {
 } HeroId;
 
 static inline bool hero_has_art(int hero) {
-    return hero>=0 && hero<HERO_COUNT && hero!=HERO_ROGUE;
+    return hero>=0 && hero<HERO_COUNT;
 }
 static inline int hero_card_family(int hero) {
     // Mage temporarily shares the druid kit and its card modifiers.
@@ -19,9 +19,9 @@ static inline int hero_card_family(int hero) {
     return hero>=0 && hero<=HERO_BARBARIAN ? hero : HERO_DRUID;
 }
 static inline uint8_t hero_pack_location(int area,int campaign,int hero) {
-    return (uint8_t)((area&3)|((campaign&3)<<2)|((hero&15)<<4));
+    return (uint8_t)((area&3)|((campaign&7)<<2)|((hero&7)<<5));
 }
 static inline int hero_unpack_location(uint8_t location) {
-    return (location>>4)&15;
+    return (location>>5)&7;
 }
 #endif

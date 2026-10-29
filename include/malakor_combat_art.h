@@ -1,0 +1,7 @@
+#ifndef MALAKOR_COMBAT_ART_H
+#define MALAKOR_COMBAT_ART_H
+#define MALAKOR_COMBAT_FRAMES 4
+#define MALAKOR_COMBAT_ART_HEIGHT 60.0f
+#define MALAKOR_COMBAT_DRAW_Y_SHIFT 12.0f // 144-128 minus common four-pixel margin
+#define MALAKOR_WAVE_WORLD_WIDTH 80.0f
+#endif

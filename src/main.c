@@ -14,6 +14,9 @@
 #include "lang.h"
 #include "save.h"
 #include "cards.h"
+#include "cemetery.h"
+#include "cemetery_stage.h"
+#include "campaign_order.h"
 
 static GameState s_game_state = GAME_STATE_INTRO;
 static int s_start_area = 0;          // seletor de fase na tela inicial (teste)
@@ -22,9 +25,22 @@ static float s_fade_alpha = 0.0f;
 static AreaId s_target_area = AREA_FORSAKEN_PATH;
 static bool s_good_ending = false;
 static bool s_area_loaded = false;
+static int s_victory_campaign=-1;
+static int s_victory_notice;
+static float s_victory_nav_delay;
+static int victory_pick_campaign(int from,int step) {
+    for(int i=1;i<=CAMPAIGN_COUNT;i++) {
+        int c=campaign_order_step(from,step*i);
+        if(!run_campaign_completed(c) && campaign_unlocked(c))return c;
+    }
+    return -1;
+}
+
 
 // Performance / log
 static float s_perf_timer = 0.0f;
+static uint64_t s_max_frame_ticks = 0;
+static AreaId s_pending_area = AREA_FORSAKEN_PATH;
 
 // Camera
 static T3DViewport s_viewport;
@@ -129,7 +145,6 @@ int main(void) {
     models_gen_init();
     druid_init();
     sprites_init();
-    if (!sprites_druid_ready()) druid_model_init();
     spells_init();
     enemies_init();
     items_init();
@@ -153,7 +168,9 @@ int main(void) {
     // 4. Game Loop
     for (;;) {
         uint64_t current_time = get_ticks();
-        float dt = (float)(current_time - last_time) / (float)TICKS_PER_SECOND;
+        uint64_t frame_ticks = current_time - last_time;
+        if (frame_ticks > s_max_frame_ticks) s_max_frame_ticks = frame_ticks;
+        float dt = (float)frame_ticks / (float)TICKS_PER_SECOND;
         last_time = current_time;
         dt = clampf(dt, 0.005f, 0.05f); // guarda de simulacao
 
@@ -161,8 +178,29 @@ int main(void) {
         s_perf_timer += dt;
         if (s_perf_timer >= 1.0f) {
             s_perf_timer = 0.0f;
-            debugf("[PERF] Area %d | FPS %.1f | HP %d | Inimigos %d\n",
-                   (int)g_current_area, display_get_fps(), g_druid.hp, enemies_get_active_count());
+            debugf("[PERF] Area %d | FPS %.1f | MaxFrame %.2f ms | HP %d | Inimigos %d\n",
+                   (int)g_current_area, display_get_fps(),
+                   (double)s_max_frame_ticks * 1000.0 / (double)TICKS_PER_SECOND,
+                   g_druid.hp, enemies_get_active_count());
+            if(cemetery_stage_ready()) {
+                const CemeteryPerf *cp=cemetery_stage_perf();
+                const SpritePerf *sp=sprites_perf();
+                // Last-frame submission times, not GPU completion times. Never fence
+                // the RSP/RDP solely to time these: that would change frame pacing.
+                debugf("[CEM PERF] x=%.0f z=%.0f | queue world=%luus sprites=%luus | floor=%lu/%lu objects=%lu/%lu tri=%lu tex=%lu cull=%lu | sprites=%lu blits=%lu bands=%lu palettes=%lu\n",
+                    (double)g_druid.x,(double)g_druid.z,
+                    (unsigned long)cp->queue_us,(unsigned long)sp->queue_us,
+                    (unsigned long)cp->patches,(unsigned long)cp->total_patches,
+                    (unsigned long)cp->objects,(unsigned long)cp->total_objects,
+                    (unsigned long)cp->triangles,(unsigned long)cp->textures,(unsigned long)cp->cull_tests,
+                    (unsigned long)sp->draws,(unsigned long)sp->blits,
+                    (unsigned long)sp->depth_bands,(unsigned long)sp->palette_uploads);
+                debugf("[CEM DETAIL] sprite actors=%luus scenery=%luus tiles=%lu tri=%lu bytes=%lu frame_loads=%lu shared_posts=%lu\n",
+                    (unsigned long)sp->actors_us,(unsigned long)sp->scenery_us,
+                    (unsigned long)sp->texture_tiles,(unsigned long)sp->triangles,
+                    (unsigned long)sp->uploaded_bytes,(unsigned long)sp->frame_loads,(unsigned long)cp->shared_posts);
+            }
+            s_max_frame_ticks = 0;
         }
 
         // Input
@@ -170,7 +208,7 @@ int main(void) {
         joypad_inputs_t in = joypad_get_inputs(JOYPAD_PORT_1);
         joypad_buttons_t pressed = joypad_get_buttons_pressed(JOYPAD_PORT_1);
 
-        // D-pad esquerda: minimapa (os atalhos de depuracao de render foram removidos na versao final)
+        // D-pad esquerda = minimapa (D-pad direita fica livre para o jogo).
         if (s_game_state == GAME_STATE_PLAYING) {
             if (pressed.d_left)  world_minimap_toggle();   // Z ja e a pocao
         }
@@ -188,9 +226,8 @@ int main(void) {
                     int area = 0;
                     if (save_load_game(&area)) {
                         s_start_area = area;
-                        world_load_area((AreaId)area);
-                        setup_camera(0.1f);
-                        s_game_state = GAME_STATE_PLAYING;
+                        s_pending_area = (AreaId)area;
+                        s_game_state = GAME_STATE_LOADING_MAP;
                     }
                 }
                 break;
@@ -206,15 +243,22 @@ int main(void) {
                     g_campaign = menu_selected_campaign();
                     g_difficulty = menu_selected_difficulty();
                     g_seeds = 0;
-                    int stage = (s_start_area / AREA_COUNT == g_campaign) ? s_start_area % AREA_COUNT : 0;
+                    int stage = menu_selected_area();
+                    save_forget_game();
+                    run_reset_progress();
                     druid_init();
-                    world_load_area((AreaId)stage);
-                    setup_camera(0.1f);
-                    s_game_state = GAME_STATE_PLAYING;
+                    s_pending_area = (AreaId)stage;
+                    s_game_state = GAME_STATE_LOADING_MAP;
                     
                 }
                 break;
             }
+
+            case GAME_STATE_LOADING_MAP:
+                world_load_area(s_pending_area);
+                setup_camera(0.1f);
+                s_game_state = GAME_STATE_PLAYING;
+                break;
 
             case GAME_STATE_CARD_OFFER: {         // carta encontrada: escolher pegar ou deixar
                 MenuAction act = menu_offer_update(&in, &pressed);
@@ -260,6 +304,7 @@ int main(void) {
                     s_game_state = GAME_STATE_SHOP;
                     break;
                 }
+                if(act_btn.a && world_interact_event())act_btn.a=false;
                 druid_update(dt, &in, &act_btn);
                 spells_update(dt);
                 enemies_update(dt);
@@ -270,6 +315,7 @@ int main(void) {
                 if (g_druid.hp <= 0 && g_druid.state == DRUID_STATE_DEAD) {
                     s_game_state = GAME_STATE_PLAYER_DEAD;
                     s_state_timer = 0.0f;
+                    if(g_druid.continues<=0)save_forget_game();
                 }
 
                 if (world_check_exit(g_druid.x, g_druid.z)) {
@@ -292,6 +338,10 @@ int main(void) {
                         s_good_ending = g_campaign == 1 && g_difficulty >= DIFF_NIGHTMARE && g_seeds >= 3;
                         if (s_good_ending) progress_unlock_hero(HERO_DRUID);
                         progress_beat(g_campaign, g_difficulty);
+                        run_complete_campaign(g_campaign);
+                        s_victory_campaign=victory_pick_campaign(g_campaign,1);
+                        s_victory_notice=0;s_victory_nav_delay=0;
+
                         s_game_state = GAME_STATE_VICTORY;
                         s_state_timer = 0.0f;
                     }
@@ -334,9 +384,31 @@ int main(void) {
 
             case GAME_STATE_VICTORY: {
                 s_state_timer += dt;
-                if (s_state_timer > 3.0f && (pressed.start || pressed.a)) {
-                    menu_reset_cursor();
-                    s_game_state = GAME_STATE_INTRO;   // volta para a tela inicial
+                s_victory_nav_delay=fmaxf(0,s_victory_nav_delay-dt);
+                if(s_state_timer<1.0f)break;
+                int step=0;
+                if(pressed.d_left || pressed.c_left || (in.stick_x<-40 && s_victory_nav_delay<=0))step=-1;
+                if(pressed.d_right || pressed.c_right || (in.stick_x>40 && s_victory_nav_delay<=0))step=1;
+                if(step && s_victory_campaign>=0) {
+                    int next=victory_pick_campaign(s_victory_campaign,step);
+                    if(next>=0)s_victory_campaign=next;
+                    s_victory_nav_delay=.25f;s_victory_notice=0;
+                }
+                if(s_victory_campaign<0) {
+                    if(pressed.start || pressed.a || pressed.b) {
+                        if(!save_forget_game()) {s_victory_notice=1;break;}
+                        menu_reset_cursor();s_game_state=GAME_STATE_INTRO;
+                    }
+                } else if(pressed.b) {
+                    // Save the NEXT campaign without mutating the visible arena on failure.
+                    if(save_write_next_campaign(s_victory_campaign)) {
+                        menu_reset_cursor();s_game_state=GAME_STATE_INTRO;
+                    } else s_victory_notice=1;
+                } else if(pressed.a || pressed.start) {
+                    // Keep level/cards/items/health/continues. Only campaign-local seeds reset.
+                    g_campaign=s_victory_campaign;g_seeds=0;s_good_ending=false;
+                    s_target_area=AREA_FORSAKEN_PATH;s_area_loaded=false;
+                    s_state_timer=0;s_game_state=GAME_STATE_AREA_TRANSITION;
                 }
                 break;
             }
@@ -349,10 +421,12 @@ int main(void) {
         rdpq_attach(display_get(), display_get_zbuf());
         t3d_frame_start();
 
-        bool in_menu = (s_game_state == GAME_STATE_INTRO || s_game_state == GAME_STATE_CHAR_SELECT);
+        bool in_menu = (s_game_state == GAME_STATE_INTRO || s_game_state == GAME_STATE_CHAR_SELECT ||
+                        s_game_state == GAME_STATE_LOADING_MAP);
         if (!in_menu) {
             draw_scene_3d();
             // Projected 2D entities share the same isometric camera as the 3D world.
+            world_draw_event_zones(&s_viewport);
             sprites_draw_world(&s_viewport);
             world_draw_screen_filter();   // Altar Negro: filtro vermelho de perigo
         }
@@ -380,6 +454,12 @@ int main(void) {
             menu_title_draw(s_start_area);
         } else if (s_game_state == GAME_STATE_CHAR_SELECT) {
             menu_char_draw(s_start_area);
+        } else if (s_game_state == GAME_STATE_LOADING_MAP) {
+            rdpq_set_mode_standard();
+            rdpq_mode_combiner(RDPQ_COMBINER_FLAT);
+            rdpq_set_prim_color(RGBA32(8, 10, 12, 255));
+            rdpq_fill_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            ui_print(true, 0, 112, UI_STYLE_GOLD, 1, SCREEN_WIDTH, T(S_MAP_LOADING));
         } else if (s_game_state == GAME_STATE_PAUSED) {
             hud_draw_text();
             menu_pause_draw();
@@ -410,20 +490,34 @@ int main(void) {
                 ui_text_center(104, T(S_WIN3G));
                 ui_text_center(124, T(S_WIN4G));
             } else {
-                ui_text_center(84, T(g_campaign == 2 ? S_WIN2N : g_campaign == 1 ? S_WIN2F : S_WIN2));
-                ui_text_center(104, T(g_campaign == 2 ? S_WIN3N : g_campaign == 1 ? S_WIN3F : S_WIN3));
-                ui_text_center(124, T(g_campaign == 2 ? S_WIN4N : g_campaign == 1 ? S_WIN4F : S_WIN4));
+                ui_text_center(84, T(g_campaign==3?S_WIN2D:g_campaign==4?S_WIN2V:g_campaign == 2 ? S_WIN2N : g_campaign == 1 ? S_WIN2F : S_WIN2));
+                ui_text_center(104, T(g_campaign==3?S_WIN3D:g_campaign==4?S_WIN3V:g_campaign == 2 ? S_WIN3N : g_campaign == 1 ? S_WIN3F : S_WIN3));
+                ui_text_center(124, T(g_campaign==3?S_WIN4D:g_campaign==4?S_WIN4V:g_campaign == 2 ? S_WIN4N : g_campaign == 1 ? S_WIN4F : S_WIN4));
             }
             char lvl_buf[48];
             snprintf(lvl_buf, sizeof(lvl_buf), T(S_WIN5), g_druid.level);
-            ui_text_center(156, lvl_buf);
-            ui_text_center(212, T(S_PRESS_START));
+            ui_text_center(148,s_victory_notice?T(S_RUN_SAVE_FAILED):lvl_buf);
+            if(s_victory_campaign>=0) {
+                ui_text_center(168,T(S_RUN_PICK_NEXT));
+                ui_text_center(186,T((StrId)(S_CAMP0+s_victory_campaign)));
+                ui_text_center(206,T(S_RUN_CONTINUE));
+                ui_text_center(224,T(S_RUN_SAVE_EXIT));
+            } else {
+                ui_text_center(184,T(S_RUN_COMPLETE));
+                ui_text_center(212,T(S_PRESS_START));
+            }
         }
 
         // Linha de debug opcional (D-pad cima)
         if (g_dbg_hud) {
             const char *cull_name = (g_dbg_cull == 0) ? "NENHUM" : (g_dbg_cull == 1) ? "BACK" : "FRONT";
             ui_textf(6, 30, "FPS:%.1f CULL:%s FOG:%d", display_get_fps(), cull_name, (int)g_dbg_fog);
+            if(cemetery_stage_ready()) {
+                const CemeteryPerf *cp=cemetery_stage_perf();const SpritePerf *sp=sprites_perf();
+                ui_textf(6,40,"CEN:%luus SPR:%luus",(unsigned long)cp->queue_us,(unsigned long)sp->queue_us);
+                ui_textf(6,50,"TRI:%lu PARTES:%lu LOAD:%lu",(unsigned long)(cp->triangles+sp->triangles),
+                    (unsigned long)sp->texture_tiles,(unsigned long)sp->frame_loads);
+            }
         }
 
         rdpq_detach_show();

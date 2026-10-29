@@ -8,18 +8,23 @@
 #include "enemies.h"
 #include "world.h"
 #include "sprites.h"
+#include "cultist_combat.h"
+#include "malakor_combat.h"
 
 static Projectile s_projectiles[MAX_PROJECTILES];
 static ThornSpike s_thorns[MAX_THORNS];
 static SpiritWolf s_wolves[MAX_WOLVES];
 static RootTrap s_roots[MAX_ROOTS];
 static Hawk s_hawks[MAX_HAWKS];
+static MageOrbImpact s_mage_impacts[MAX_MAGE_IMPACTS];
+const MageOrbImpact *spells_get_mage_impacts(void) {return s_mage_impacts;}
 
 void spells_init(void) {
     spells_clear_all();
 }
 
 void spells_clear_all(void) {
+    memset(s_mage_impacts,0,sizeof(s_mage_impacts));
     for (int i = 0; i < MAX_PROJECTILES; i++) s_projectiles[i].active = false;
     for (int i = 0; i < MAX_THORNS; i++) s_thorns[i].active = false;
     for (int i = 0; i < MAX_WOLVES; i++) s_wolves[i].active = false;
@@ -136,7 +141,24 @@ static void hawks_update(float dt) {
     }
 }
 
+bool spells_cast_knife(float x,float z,float dx,float dz,int damage) {
+    for(int i=0;i<MAX_PROJECTILES;i++)if(!s_projectiles[i].active) {
+        Projectile *p=&s_projectiles[i];memset(p,0,sizeof(*p));
+        p->active=true;p->type=PROJ_ROGUE_KNIFE;p->x=x;p->y=20;p->z=z;
+        p->vx=dx*340;p->vz=dz*340;p->radius=4;p->damage=damage;p->life=1.3f;return true;
+    }
+    return false;
+}
+bool spells_cast_mage_orb(float x,float z,float dx,float dz,int damage) {
+    for(int i=0;i<MAX_PROJECTILES;i++)if(!s_projectiles[i].active) {
+        Projectile *p=&s_projectiles[i];memset(p,0,sizeof(*p));
+        p->active=true;p->type=PROJ_MAGE_ORB;p->x=x;p->y=24;p->z=z;
+        p->vx=dx*220;p->vz=dz*220;p->radius=6;p->damage=damage;p->life=1.6f;return true;
+    }
+    return false;
+}
 static bool spawn_bolt(float x, float z, float dir_x, float dir_z) {
+    if(g_hero==HERO_MAGE)return spells_cast_mage_orb(x,z,dir_x,dir_z,cards_roll_damage(32+g_druid.level*6,g_mods.bolt_pct));
     for (int i = 0; i < MAX_PROJECTILES; i++) {
         if (!s_projectiles[i].active) {
             s_projectiles[i].active = true;
@@ -172,26 +194,39 @@ bool spells_cast_spirit_bolt(float x, float z, float dir_x, float dir_z) {
     return any;
 }
 
-bool spells_cast_enemy_dark_orb(float x, float y, float z, float dir_x, float dir_z, int damage) {
+static bool spawn_enemy_projectile(ProjectileType type, float speed, float x, float y, float z, float dir_x, float dir_z, int damage) {
     for (int i = 0; i < MAX_PROJECTILES; i++) {
         if (!s_projectiles[i].active) {
             s_projectiles[i].active = true;
-            s_projectiles[i].type = PROJ_DARK_BLOOD_ORB;
+            s_projectiles[i].type = type;
             s_projectiles[i].x = x;
             s_projectiles[i].y = y;
             s_projectiles[i].z = z;
-            s_projectiles[i].vx = dir_x * 120.0f;
-            s_projectiles[i].vz = dir_z * 120.0f;
-            s_projectiles[i].radius = 6.0f;
+            s_projectiles[i].vx = dir_x * speed;
+            s_projectiles[i].vz = dir_z * speed;
+            s_projectiles[i].radius = type==PROJ_MALAKOR_STONE_WAVE?MALAKOR_WAVE_RADIUS:6.0f;
             s_projectiles[i].damage = damage;
-            s_projectiles[i].life = 2.5f;
+            s_projectiles[i].life = type==PROJ_CULTIST_SKULL?CULTIST_SKULL_LIFETIME:
+                type==PROJ_MALAKOR_STONE_WAVE?MALAKOR_WAVE_LIFETIME:2.5f;
             s_projectiles[i].is_enemy = true;
+            s_projectiles[i].pierce = false;
+            s_projectiles[i].hit_cd = 0.0f;
+            s_projectiles[i].yaw = atan2f(dir_z,dir_x);
 
-            sound_play(SFX_DARK_ORB_CAST);
+            if(type!=PROJ_MALAKOR_STONE_WAVE)sound_play(SFX_DARK_ORB_CAST);
             return true;
         }
     }
     return false;
+}
+bool spells_cast_enemy_dark_orb(float x, float y, float z, float dir_x, float dir_z, int damage) {
+    return spawn_enemy_projectile(PROJ_DARK_BLOOD_ORB,120.0f,x,y,z,dir_x,dir_z,damage);
+}
+bool spells_cast_enemy_skull(float x, float y, float z, float dir_x, float dir_z, int damage) {
+    return spawn_enemy_projectile(PROJ_CULTIST_SKULL,CULTIST_SKULL_SPEED,x,y,z,dir_x,dir_z,damage);
+}
+bool spells_cast_enemy_stone_wave(float x, float y, float z, float dir_x, float dir_z, int damage) {
+    return spawn_enemy_projectile(PROJ_MALAKOR_STONE_WAVE,MALAKOR_WAVE_SPEED,x,y,z,dir_x,dir_z,damage);
 }
 
 bool spells_cast_thorn_burst(float center_x, float center_z) {
@@ -260,6 +295,7 @@ bool spells_cast_spirit_wolves(float x, float z) {
 }
 
 void spells_update(float dt) {
+    for(int i=0;i<MAX_MAGE_IMPACTS;i++)s_mage_impacts[i].life=fmaxf(0,s_mage_impacts[i].life-dt);
     // 1. Update Projectiles
     for (int i = 0; i < MAX_PROJECTILES; i++) {
         if (!s_projectiles[i].active) continue;
@@ -273,11 +309,33 @@ void spells_update(float dt) {
         s_projectiles[i].x += s_projectiles[i].vx * dt;
         s_projectiles[i].z += s_projectiles[i].vz * dt;
 
+        bool stone_wave=s_projectiles[i].type==PROJ_MALAKOR_STONE_WAVE;
+        if(stone_wave) {
+            // Stop the ground wave at walls before testing its hit on the player.
+            float x=s_projectiles[i].x,z=s_projectiles[i].z;
+            if(world_collide_circle(&x,&z,s_projectiles[i].radius)) {s_projectiles[i].active=false;continue;}
+        }
+
         // Player projectile hitting enemies
+        if(s_projectiles[i].type==PROJ_MAGE_ORB) {
+            Projectile *p=&s_projectiles[i];const Enemy *enemies=enemies_get_array();bool hit=false;
+            for(int n=0;n<MAX_ENEMIES;n++) {
+                const Enemy *e=&enemies[n];if(!e->active || e->hp<=0 || e->state==ENEMY_STATE_DEAD)continue;
+                float r=p->radius+e->radius;
+                if(vec2_dist_sq(p->x,p->z,e->x,e->z)<r*r){hit=true;break;}
+            }
+            if(hit) {
+                // One radial damage application, never contact damage plus explosion.
+                enemies_damage_at(p->x,p->z,32,p->damage,p->vx*.1f,p->vz*.1f);
+                int slot=0;for(int k=1;k<MAX_MAGE_IMPACTS;k++)if(s_mage_impacts[k].life<s_mage_impacts[slot].life)slot=k;
+                s_mage_impacts[slot]=(MageOrbImpact){p->x,p->z,1.02f};p->active=false;
+                sound_play(SFX_SPIRIT_BOLT_HIT);continue;
+            }
+        }
         if (!s_projectiles[i].is_enemy) {
             if (s_projectiles[i].type == PROJ_ARROW) g_hit_poison = g_mods.poison * (float)s_projectiles[i].damage;
             if (s_projectiles[i].hit_cd > 0.0f) s_projectiles[i].hit_cd -= dt;
-            else if (enemies_damage_at(s_projectiles[i].x, s_projectiles[i].z, s_projectiles[i].radius + 6.0f, s_projectiles[i].damage, s_projectiles[i].vx * 0.1f, s_projectiles[i].vz * 0.1f)) {
+            else if (s_projectiles[i].type!=PROJ_MAGE_ORB && enemies_damage_at(s_projectiles[i].x, s_projectiles[i].z, s_projectiles[i].radius + 6.0f, s_projectiles[i].damage, s_projectiles[i].vx * 0.1f, s_projectiles[i].vz * 0.1f)) {
                 sound_play(SFX_SPIRIT_BOLT_HIT);
                 if (s_projectiles[i].type == PROJ_ARROW && g_mods.lifesteal > 0.0f)
                     druid_heal((int)(s_projectiles[i].damage * g_mods.lifesteal + 0.5f));
@@ -290,17 +348,20 @@ void spells_update(float dt) {
             // Enemy projectile hitting player
             float d2 = vec2_dist_sq(s_projectiles[i].x, s_projectiles[i].z, g_druid.x, g_druid.z);
             float hit_r = s_projectiles[i].radius + g_druid.radius;
-            if (d2 < (hit_r * hit_r)) {
-                druid_take_damage(s_projectiles[i].damage, s_projectiles[i].x, s_projectiles[i].z);
-                s_projectiles[i].active = false;
-                continue;
+            if (d2 < (hit_r * hit_r) && !(stone_wave && s_projectiles[i].pierce)) {
+                int damage=s_projectiles[i].damage;
+                if(stone_wave && damage>g_druid.max_hp*35/100)damage=g_druid.max_hp*35/100;
+                if(stone_wave)druid_take_damage_capped(damage,s_projectiles[i].x,s_projectiles[i].z,g_druid.max_hp*35/100);
+                else druid_take_damage(damage,s_projectiles[i].x,s_projectiles[i].z);
+                if(stone_wave)s_projectiles[i].pierce=true; // one hit, then keep stones traveling
+                else {s_projectiles[i].active = false;continue;}
             }
         }
 
         // Projectile hitting world walls
         float test_x = s_projectiles[i].x;
         float test_z = s_projectiles[i].z;
-        if (world_collide_circle(&test_x, &test_z, s_projectiles[i].radius)) {
+        if (!stone_wave && world_collide_circle(&test_x, &test_z, s_projectiles[i].radius)) {
             sound_play(SFX_SPIRIT_BOLT_HIT);
             s_projectiles[i].active = false;
             continue;
@@ -448,6 +509,7 @@ void spells_draw(void) {
     // 1. Draw Projectiles
     for (int i = 0; i < MAX_PROJECTILES; i++) {
         if (!s_projectiles[i].active) continue;
+        if (s_projectiles[i].type==PROJ_MALAKOR_STONE_WAVE) continue; // never fall back to an orb mesh
         gfx_matrix_push(&s_projectiles[i].mat_fp);
         if (s_projectiles[i].type == PROJ_SPIRIT_BOLT) {
             models_draw_mesh(&mesh_spirit_bolt);

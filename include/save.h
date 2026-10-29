@@ -13,6 +13,11 @@ bool save_available(void);          // existe EEPROM?
 bool save_has_game(void);
 bool save_write_game(int area);     // salva a partida (fase atual + druida + cartas)
 bool save_load_game(int *area);     // carrega; o jogo recomeca no inicio da fase salva
+bool save_write_next_campaign(int campaign);
+bool save_forget_game(void);        // game over ends this run; permanent unlocks survive
+void run_reset_progress(void);
+void run_complete_campaign(int campaign);
+bool run_campaign_completed(int campaign);
 void save_write_options(void);
 void options_apply(void);           // aplica idioma, neblina e volumes
 

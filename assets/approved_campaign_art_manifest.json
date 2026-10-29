@@ -1,0 +1,1784 @@
+{
+  "animations": {
+    "apv_1_enforcado_brejo_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_1_enforcado_brejo_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_1_enforcado_brejo_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_1_enforcado_brejo_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_1_flagelo_raizes_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_1_flagelo_raizes_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_1_flagelo_raizes_casca_ancorada": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_1_flagelo_raizes_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_1_oraculo_fungico_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_1_oraculo_fungico_conjurar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_1_oraculo_fungico_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_1_sylvara_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_1_sylvara_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_1_sylvara_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_1_sylvara_sementes_funebres": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_1_sylvara_circulo_espinhos": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_1_sylvara_transformar_mae_raiz": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_1_mae_raiz_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_1_mae_raiz_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_1_mae_raiz_raizes_cacadoras": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_1_mae_raiz_floracao_parasita": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_1_mae_raiz_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_1_efeitos_dardo_micelio": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_1_efeitos_floracao_negra": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_1_efeitos_germinacao_espinhos": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_1_efeitos_mandibula_raiz": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_1_efeitos_veu_esporos": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_2_guerreiro_sepulcro_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_2_guerreiro_sepulcro_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_2_guerreiro_sepulcro_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_2_guerreiro_sepulcro_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_2_cao_tumulo_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_2_cao_tumulo_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_2_cao_tumulo_morder": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_2_cao_tumulo_uivo_alcateia": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_2_cao_tumulo_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_2_vidente_geada_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_2_vidente_geada_conjurar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_2_vidente_geada_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_2_jarl_hrimgar_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_2_jarl_hrimgar_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_2_jarl_hrimgar_espada_retorno": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_2_jarl_hrimgar_tribunal_runico": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_2_jarl_hrimgar_transformar_draugr_gelo": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_2_draugr_gelo_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_2_draugr_gelo_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_2_draugr_gelo_lancas_carapaca": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_2_draugr_gelo_geada_inexoravel": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_2_draugr_gelo_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_2_efeitos_espada_voadora": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_2_efeitos_estilhaco_geada": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_2_efeitos_geada_solo": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_2_efeitos_reflexo_gelo": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_2_efeitos_runa_julgamento": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_3_mumia_lanceira_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_3_mumia_lanceira_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_mumia_lanceira_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_mumia_lanceira_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_3_ushabti_rachado_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_3_ushabti_rachado_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_ushabti_rachado_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_ushabti_rachado_escaravelhos_carcere": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_ushabti_rachado_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_3_nemezar_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_3_nemezar_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_nemezar_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_nemezar_correntes_dinastia": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_nemezar_balanca_mortuaria": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_3_nemezar_transformar_rei_sem_sol": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_3_rei_sem_sol_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_3_rei_sem_sol_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_rei_sem_sol_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_rei_sem_sol_liturgia_quatro": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_rei_sem_sol_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_3_efeitos_corrente_dinastia": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_3_efeitos_escaravelho": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_3_efeitos_mandala_vazio": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_3_efeitos_raio_eclipse": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_saqueador_cadaverico_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_4_saqueador_cadaverico_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_saqueador_cadaverico_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_carrasco_ferro_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_4_carrasco_ferro_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_carrasco_ferro_sentenca_ferro": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_carrasco_ferro_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_bruxa_saco_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_4_bruxa_saco_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_bruxa_saco_agulha_luto": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_bruxa_saco_costura_boca": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_bruxa_saco_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_condessa_vespera_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_4_condessa_vespera_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_condessa_vespera_tacas_rubras": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_condessa_vespera_transformar_noiva_meia_noite": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_noiva_meia_noite_contact": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 1
+    },
+    "apv_4_noiva_meia_noite_ataque_normal": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_noiva_meia_noite_grito_hora_morta": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_noiva_meia_noite_procissao_trapos": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_noiva_meia_noite_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_efeitos_agulha_luto": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_efeitos_costura_maldita": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_efeitos_gota_rubra": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_efeitos_lamento_morto": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_efeitos_trapo_errante": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_efeitos_veu_lamina": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_1_oraculo_fungico_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_rei_sem_sol_mandala_vazio": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_4_saqueador_cadaverico_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_condessa_vespera_veu_cortante": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_3_escorpiao_ferrao": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_escorpiao_morrer": {
+      "directions": [
+        0
+      ],
+      "frames": 4
+    },
+    "apv_3_escorpiao_contact": {
+      "directions": [
+        0,
+        1
+      ],
+      "frames": 1
+    },
+    "apv_2_vidente_geada_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_1_flagelo_raizes_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_1_mae_raiz_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_2_jarl_hrimgar_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_2_draugr_gelo_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_carrasco_ferro_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_condessa_vespera_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_4_noiva_meia_noite_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_escorpiao_andar": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    },
+    "apv_3_escorpiao_pincas": {
+      "directions": [
+        0,
+        1,
+        2
+      ],
+      "frames": 4
+    }
+  },
+  "files": [
+    "spr_apv_1_efeitos_dardo_micelio_d0_f0.rgba16.sprite",
+    "spr_apv_1_efeitos_dardo_micelio_d0_f1.rgba16.sprite",
+    "spr_apv_1_efeitos_dardo_micelio_d0_f2.rgba16.sprite",
+    "spr_apv_1_efeitos_dardo_micelio_d0_f3.rgba16.sprite",
+    "spr_apv_1_efeitos_floracao_negra_d0_f0.rgba16.sprite",
+    "spr_apv_1_efeitos_floracao_negra_d0_f1.rgba16.sprite",
+    "spr_apv_1_efeitos_floracao_negra_d0_f2.rgba16.sprite",
+    "spr_apv_1_efeitos_floracao_negra_d0_f3.rgba16.sprite",
+    "spr_apv_1_efeitos_germinacao_espinhos_d0_f0.rgba16.sprite",
+    "spr_apv_1_efeitos_germinacao_espinhos_d0_f1.rgba16.sprite",
+    "spr_apv_1_efeitos_germinacao_espinhos_d0_f2.rgba16.sprite",
+    "spr_apv_1_efeitos_germinacao_espinhos_d0_f3.rgba16.sprite",
+    "spr_apv_1_efeitos_mandibula_raiz_d0_f0.rgba16.sprite",
+    "spr_apv_1_efeitos_mandibula_raiz_d0_f1.rgba16.sprite",
+    "spr_apv_1_efeitos_mandibula_raiz_d0_f2.rgba16.sprite",
+    "spr_apv_1_efeitos_mandibula_raiz_d0_f3.rgba16.sprite",
+    "spr_apv_1_efeitos_veu_esporos_d0_f0.rgba16.sprite",
+    "spr_apv_1_efeitos_veu_esporos_d0_f1.rgba16.sprite",
+    "spr_apv_1_efeitos_veu_esporos_d0_f2.rgba16.sprite",
+    "spr_apv_1_efeitos_veu_esporos_d0_f3.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_andar_d0_f0.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_andar_d0_f1.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_andar_d0_f2.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_andar_d0_f3.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_andar_d1_f0.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_andar_d1_f1.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_andar_d1_f2.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_andar_d1_f3.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_andar_d2_f0.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_andar_d2_f1.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_andar_d2_f2.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_andar_d2_f3.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_contact_d0_f0.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_contact_d1_f0.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_contact_d2_f0.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_1_enforcado_brejo_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_andar_d0_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_andar_d0_f1.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_andar_d0_f2.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_andar_d0_f3.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_andar_d1_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_andar_d1_f1.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_andar_d1_f2.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_andar_d1_f3.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_andar_d2_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_andar_d2_f1.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_andar_d2_f2.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_andar_d2_f3.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_casca_ancorada_d0_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_casca_ancorada_d0_f1.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_casca_ancorada_d0_f2.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_casca_ancorada_d0_f3.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_casca_ancorada_d1_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_casca_ancorada_d1_f1.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_casca_ancorada_d1_f2.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_casca_ancorada_d1_f3.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_casca_ancorada_d2_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_casca_ancorada_d2_f1.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_casca_ancorada_d2_f2.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_casca_ancorada_d2_f3.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_contact_d0_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_contact_d1_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_contact_d2_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_1_flagelo_raizes_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_1_mae_raiz_andar_d0_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_andar_d0_f1.rgba16.sprite",
+    "spr_apv_1_mae_raiz_andar_d0_f2.rgba16.sprite",
+    "spr_apv_1_mae_raiz_andar_d0_f3.rgba16.sprite",
+    "spr_apv_1_mae_raiz_andar_d1_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_andar_d1_f1.rgba16.sprite",
+    "spr_apv_1_mae_raiz_andar_d1_f2.rgba16.sprite",
+    "spr_apv_1_mae_raiz_andar_d1_f3.rgba16.sprite",
+    "spr_apv_1_mae_raiz_andar_d2_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_andar_d2_f1.rgba16.sprite",
+    "spr_apv_1_mae_raiz_andar_d2_f2.rgba16.sprite",
+    "spr_apv_1_mae_raiz_andar_d2_f3.rgba16.sprite",
+    "spr_apv_1_mae_raiz_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_1_mae_raiz_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_1_mae_raiz_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_1_mae_raiz_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_1_mae_raiz_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_1_mae_raiz_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_1_mae_raiz_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_1_mae_raiz_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_1_mae_raiz_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_1_mae_raiz_contact_d0_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_contact_d1_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_contact_d2_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_floracao_parasita_d0_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_floracao_parasita_d0_f1.rgba16.sprite",
+    "spr_apv_1_mae_raiz_floracao_parasita_d0_f2.rgba16.sprite",
+    "spr_apv_1_mae_raiz_floracao_parasita_d0_f3.rgba16.sprite",
+    "spr_apv_1_mae_raiz_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_1_mae_raiz_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_1_mae_raiz_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_1_mae_raiz_raizes_cacadoras_d0_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_raizes_cacadoras_d0_f1.rgba16.sprite",
+    "spr_apv_1_mae_raiz_raizes_cacadoras_d0_f2.rgba16.sprite",
+    "spr_apv_1_mae_raiz_raizes_cacadoras_d0_f3.rgba16.sprite",
+    "spr_apv_1_mae_raiz_raizes_cacadoras_d1_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_raizes_cacadoras_d1_f1.rgba16.sprite",
+    "spr_apv_1_mae_raiz_raizes_cacadoras_d1_f2.rgba16.sprite",
+    "spr_apv_1_mae_raiz_raizes_cacadoras_d1_f3.rgba16.sprite",
+    "spr_apv_1_mae_raiz_raizes_cacadoras_d2_f0.rgba16.sprite",
+    "spr_apv_1_mae_raiz_raizes_cacadoras_d2_f1.rgba16.sprite",
+    "spr_apv_1_mae_raiz_raizes_cacadoras_d2_f2.rgba16.sprite",
+    "spr_apv_1_mae_raiz_raizes_cacadoras_d2_f3.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_andar_d0_f0.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_andar_d0_f1.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_andar_d0_f2.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_andar_d0_f3.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_andar_d1_f0.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_andar_d1_f1.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_andar_d1_f2.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_andar_d1_f3.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_andar_d2_f0.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_andar_d2_f1.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_andar_d2_f2.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_andar_d2_f3.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_conjurar_d0_f0.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_conjurar_d0_f1.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_conjurar_d0_f2.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_conjurar_d0_f3.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_conjurar_d1_f0.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_conjurar_d1_f1.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_conjurar_d1_f2.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_conjurar_d1_f3.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_conjurar_d2_f0.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_conjurar_d2_f1.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_conjurar_d2_f2.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_conjurar_d2_f3.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_contact_d0_f0.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_contact_d1_f0.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_contact_d2_f0.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_1_oraculo_fungico_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_1_sylvara_andar_d0_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_andar_d0_f1.rgba16.sprite",
+    "spr_apv_1_sylvara_andar_d0_f2.rgba16.sprite",
+    "spr_apv_1_sylvara_andar_d0_f3.rgba16.sprite",
+    "spr_apv_1_sylvara_andar_d1_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_andar_d1_f1.rgba16.sprite",
+    "spr_apv_1_sylvara_andar_d1_f2.rgba16.sprite",
+    "spr_apv_1_sylvara_andar_d1_f3.rgba16.sprite",
+    "spr_apv_1_sylvara_andar_d2_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_andar_d2_f1.rgba16.sprite",
+    "spr_apv_1_sylvara_andar_d2_f2.rgba16.sprite",
+    "spr_apv_1_sylvara_andar_d2_f3.rgba16.sprite",
+    "spr_apv_1_sylvara_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_1_sylvara_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_1_sylvara_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_1_sylvara_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_1_sylvara_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_1_sylvara_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_1_sylvara_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_1_sylvara_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_1_sylvara_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_1_sylvara_circulo_espinhos_d0_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_circulo_espinhos_d0_f1.rgba16.sprite",
+    "spr_apv_1_sylvara_circulo_espinhos_d0_f2.rgba16.sprite",
+    "spr_apv_1_sylvara_circulo_espinhos_d0_f3.rgba16.sprite",
+    "spr_apv_1_sylvara_contact_d0_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_contact_d1_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_contact_d2_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_sementes_funebres_d0_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_sementes_funebres_d0_f1.rgba16.sprite",
+    "spr_apv_1_sylvara_sementes_funebres_d0_f2.rgba16.sprite",
+    "spr_apv_1_sylvara_sementes_funebres_d0_f3.rgba16.sprite",
+    "spr_apv_1_sylvara_sementes_funebres_d1_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_sementes_funebres_d1_f1.rgba16.sprite",
+    "spr_apv_1_sylvara_sementes_funebres_d1_f2.rgba16.sprite",
+    "spr_apv_1_sylvara_sementes_funebres_d1_f3.rgba16.sprite",
+    "spr_apv_1_sylvara_sementes_funebres_d2_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_sementes_funebres_d2_f1.rgba16.sprite",
+    "spr_apv_1_sylvara_sementes_funebres_d2_f2.rgba16.sprite",
+    "spr_apv_1_sylvara_sementes_funebres_d2_f3.rgba16.sprite",
+    "spr_apv_1_sylvara_transformar_mae_raiz_d0_f0.rgba16.sprite",
+    "spr_apv_1_sylvara_transformar_mae_raiz_d0_f1.rgba16.sprite",
+    "spr_apv_1_sylvara_transformar_mae_raiz_d0_f2.rgba16.sprite",
+    "spr_apv_1_sylvara_transformar_mae_raiz_d0_f3.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_andar_d0_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_andar_d0_f1.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_andar_d0_f2.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_andar_d0_f3.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_andar_d1_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_andar_d1_f1.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_andar_d1_f2.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_andar_d1_f3.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_andar_d2_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_andar_d2_f1.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_andar_d2_f2.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_andar_d2_f3.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_contact_d0_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_contact_d1_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_contact_d2_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morder_d0_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morder_d0_f1.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morder_d0_f2.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morder_d0_f3.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morder_d1_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morder_d1_f1.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morder_d1_f2.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morder_d1_f3.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morder_d2_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morder_d2_f1.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morder_d2_f2.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morder_d2_f3.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_uivo_alcateia_d0_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_uivo_alcateia_d0_f1.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_uivo_alcateia_d0_f2.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_uivo_alcateia_d0_f3.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_uivo_alcateia_d1_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_uivo_alcateia_d1_f1.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_uivo_alcateia_d1_f2.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_uivo_alcateia_d1_f3.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_uivo_alcateia_d2_f0.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_uivo_alcateia_d2_f1.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_uivo_alcateia_d2_f2.rgba16.sprite",
+    "spr_apv_2_cao_tumulo_uivo_alcateia_d2_f3.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_andar_d0_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_andar_d0_f1.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_andar_d0_f2.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_andar_d0_f3.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_andar_d1_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_andar_d1_f1.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_andar_d1_f2.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_andar_d1_f3.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_andar_d2_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_andar_d2_f1.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_andar_d2_f2.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_andar_d2_f3.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_contact_d0_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_contact_d1_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_contact_d2_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_geada_inexoravel_d0_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_geada_inexoravel_d0_f1.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_geada_inexoravel_d0_f2.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_geada_inexoravel_d0_f3.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_lancas_carapaca_d0_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_lancas_carapaca_d0_f1.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_lancas_carapaca_d0_f2.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_lancas_carapaca_d0_f3.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_lancas_carapaca_d1_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_lancas_carapaca_d1_f1.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_lancas_carapaca_d1_f2.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_lancas_carapaca_d1_f3.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_lancas_carapaca_d2_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_lancas_carapaca_d2_f1.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_lancas_carapaca_d2_f2.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_lancas_carapaca_d2_f3.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_2_draugr_gelo_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_2_efeitos_espada_voadora_d0_f0.rgba16.sprite",
+    "spr_apv_2_efeitos_espada_voadora_d0_f1.rgba16.sprite",
+    "spr_apv_2_efeitos_espada_voadora_d0_f2.rgba16.sprite",
+    "spr_apv_2_efeitos_espada_voadora_d0_f3.rgba16.sprite",
+    "spr_apv_2_efeitos_estilhaco_geada_d0_f0.rgba16.sprite",
+    "spr_apv_2_efeitos_estilhaco_geada_d0_f1.rgba16.sprite",
+    "spr_apv_2_efeitos_estilhaco_geada_d0_f2.rgba16.sprite",
+    "spr_apv_2_efeitos_estilhaco_geada_d0_f3.rgba16.sprite",
+    "spr_apv_2_efeitos_geada_solo_d0_f0.rgba16.sprite",
+    "spr_apv_2_efeitos_geada_solo_d0_f1.rgba16.sprite",
+    "spr_apv_2_efeitos_geada_solo_d0_f2.rgba16.sprite",
+    "spr_apv_2_efeitos_geada_solo_d0_f3.rgba16.sprite",
+    "spr_apv_2_efeitos_reflexo_gelo_d0_f0.rgba16.sprite",
+    "spr_apv_2_efeitos_reflexo_gelo_d0_f1.rgba16.sprite",
+    "spr_apv_2_efeitos_reflexo_gelo_d0_f2.rgba16.sprite",
+    "spr_apv_2_efeitos_reflexo_gelo_d0_f3.rgba16.sprite",
+    "spr_apv_2_efeitos_runa_julgamento_d0_f0.rgba16.sprite",
+    "spr_apv_2_efeitos_runa_julgamento_d0_f1.rgba16.sprite",
+    "spr_apv_2_efeitos_runa_julgamento_d0_f2.rgba16.sprite",
+    "spr_apv_2_efeitos_runa_julgamento_d0_f3.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_andar_d0_f0.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_andar_d0_f1.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_andar_d0_f2.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_andar_d0_f3.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_andar_d1_f0.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_andar_d1_f1.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_andar_d1_f2.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_andar_d1_f3.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_andar_d2_f0.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_andar_d2_f1.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_andar_d2_f2.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_andar_d2_f3.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_contact_d0_f0.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_contact_d1_f0.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_contact_d2_f0.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_2_guerreiro_sepulcro_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_andar_d0_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_andar_d0_f1.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_andar_d0_f2.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_andar_d0_f3.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_andar_d1_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_andar_d1_f1.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_andar_d1_f2.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_andar_d1_f3.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_andar_d2_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_andar_d2_f1.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_andar_d2_f2.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_andar_d2_f3.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_contact_d0_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_contact_d1_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_contact_d2_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_espada_retorno_d0_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_espada_retorno_d0_f1.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_espada_retorno_d0_f2.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_espada_retorno_d0_f3.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_espada_retorno_d1_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_espada_retorno_d1_f1.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_espada_retorno_d1_f2.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_espada_retorno_d1_f3.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_espada_retorno_d2_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_espada_retorno_d2_f1.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_espada_retorno_d2_f2.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_espada_retorno_d2_f3.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_transformar_draugr_gelo_d0_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_transformar_draugr_gelo_d0_f1.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_transformar_draugr_gelo_d0_f2.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_transformar_draugr_gelo_d0_f3.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_tribunal_runico_d0_f0.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_tribunal_runico_d0_f1.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_tribunal_runico_d0_f2.rgba16.sprite",
+    "spr_apv_2_jarl_hrimgar_tribunal_runico_d0_f3.rgba16.sprite",
+    "spr_apv_2_vidente_geada_andar_d0_f0.rgba16.sprite",
+    "spr_apv_2_vidente_geada_andar_d0_f1.rgba16.sprite",
+    "spr_apv_2_vidente_geada_andar_d0_f2.rgba16.sprite",
+    "spr_apv_2_vidente_geada_andar_d0_f3.rgba16.sprite",
+    "spr_apv_2_vidente_geada_andar_d1_f0.rgba16.sprite",
+    "spr_apv_2_vidente_geada_andar_d1_f1.rgba16.sprite",
+    "spr_apv_2_vidente_geada_andar_d1_f2.rgba16.sprite",
+    "spr_apv_2_vidente_geada_andar_d1_f3.rgba16.sprite",
+    "spr_apv_2_vidente_geada_andar_d2_f0.rgba16.sprite",
+    "spr_apv_2_vidente_geada_andar_d2_f1.rgba16.sprite",
+    "spr_apv_2_vidente_geada_andar_d2_f2.rgba16.sprite",
+    "spr_apv_2_vidente_geada_andar_d2_f3.rgba16.sprite",
+    "spr_apv_2_vidente_geada_conjurar_d0_f0.rgba16.sprite",
+    "spr_apv_2_vidente_geada_conjurar_d0_f1.rgba16.sprite",
+    "spr_apv_2_vidente_geada_conjurar_d0_f2.rgba16.sprite",
+    "spr_apv_2_vidente_geada_conjurar_d0_f3.rgba16.sprite",
+    "spr_apv_2_vidente_geada_conjurar_d1_f0.rgba16.sprite",
+    "spr_apv_2_vidente_geada_conjurar_d1_f1.rgba16.sprite",
+    "spr_apv_2_vidente_geada_conjurar_d1_f2.rgba16.sprite",
+    "spr_apv_2_vidente_geada_conjurar_d1_f3.rgba16.sprite",
+    "spr_apv_2_vidente_geada_conjurar_d2_f0.rgba16.sprite",
+    "spr_apv_2_vidente_geada_conjurar_d2_f1.rgba16.sprite",
+    "spr_apv_2_vidente_geada_conjurar_d2_f2.rgba16.sprite",
+    "spr_apv_2_vidente_geada_conjurar_d2_f3.rgba16.sprite",
+    "spr_apv_2_vidente_geada_contact_d0_f0.rgba16.sprite",
+    "spr_apv_2_vidente_geada_contact_d1_f0.rgba16.sprite",
+    "spr_apv_2_vidente_geada_contact_d2_f0.rgba16.sprite",
+    "spr_apv_2_vidente_geada_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_2_vidente_geada_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_2_vidente_geada_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_2_vidente_geada_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_3_efeitos_corrente_dinastia_d0_f0.rgba16.sprite",
+    "spr_apv_3_efeitos_corrente_dinastia_d0_f1.rgba16.sprite",
+    "spr_apv_3_efeitos_corrente_dinastia_d0_f2.rgba16.sprite",
+    "spr_apv_3_efeitos_corrente_dinastia_d0_f3.rgba16.sprite",
+    "spr_apv_3_efeitos_escaravelho_d0_f0.rgba16.sprite",
+    "spr_apv_3_efeitos_escaravelho_d0_f1.rgba16.sprite",
+    "spr_apv_3_efeitos_escaravelho_d0_f2.rgba16.sprite",
+    "spr_apv_3_efeitos_escaravelho_d0_f3.rgba16.sprite",
+    "spr_apv_3_efeitos_mandala_vazio_d0_f0.rgba16.sprite",
+    "spr_apv_3_efeitos_mandala_vazio_d0_f1.rgba16.sprite",
+    "spr_apv_3_efeitos_mandala_vazio_d0_f2.rgba16.sprite",
+    "spr_apv_3_efeitos_mandala_vazio_d0_f3.rgba16.sprite",
+    "spr_apv_3_efeitos_raio_eclipse_d0_f0.rgba16.sprite",
+    "spr_apv_3_efeitos_raio_eclipse_d0_f1.rgba16.sprite",
+    "spr_apv_3_efeitos_raio_eclipse_d0_f2.rgba16.sprite",
+    "spr_apv_3_efeitos_raio_eclipse_d0_f3.rgba16.sprite",
+    "spr_apv_3_escorpiao_andar_d0_f0.rgba16.sprite",
+    "spr_apv_3_escorpiao_andar_d0_f1.rgba16.sprite",
+    "spr_apv_3_escorpiao_andar_d0_f2.rgba16.sprite",
+    "spr_apv_3_escorpiao_andar_d0_f3.rgba16.sprite",
+    "spr_apv_3_escorpiao_andar_d1_f0.rgba16.sprite",
+    "spr_apv_3_escorpiao_andar_d1_f1.rgba16.sprite",
+    "spr_apv_3_escorpiao_andar_d1_f2.rgba16.sprite",
+    "spr_apv_3_escorpiao_andar_d1_f3.rgba16.sprite",
+    "spr_apv_3_escorpiao_andar_d2_f0.rgba16.sprite",
+    "spr_apv_3_escorpiao_andar_d2_f1.rgba16.sprite",
+    "spr_apv_3_escorpiao_andar_d2_f2.rgba16.sprite",
+    "spr_apv_3_escorpiao_andar_d2_f3.rgba16.sprite",
+    "spr_apv_3_escorpiao_contact_d0_f0.rgba16.sprite",
+    "spr_apv_3_escorpiao_contact_d1_f0.rgba16.sprite",
+    "spr_apv_3_escorpiao_ferrao_d0_f0.rgba16.sprite",
+    "spr_apv_3_escorpiao_ferrao_d0_f1.rgba16.sprite",
+    "spr_apv_3_escorpiao_ferrao_d0_f2.rgba16.sprite",
+    "spr_apv_3_escorpiao_ferrao_d0_f3.rgba16.sprite",
+    "spr_apv_3_escorpiao_ferrao_d1_f0.rgba16.sprite",
+    "spr_apv_3_escorpiao_ferrao_d1_f1.rgba16.sprite",
+    "spr_apv_3_escorpiao_ferrao_d1_f2.rgba16.sprite",
+    "spr_apv_3_escorpiao_ferrao_d1_f3.rgba16.sprite",
+    "spr_apv_3_escorpiao_ferrao_d2_f0.rgba16.sprite",
+    "spr_apv_3_escorpiao_ferrao_d2_f1.rgba16.sprite",
+    "spr_apv_3_escorpiao_ferrao_d2_f2.rgba16.sprite",
+    "spr_apv_3_escorpiao_ferrao_d2_f3.rgba16.sprite",
+    "spr_apv_3_escorpiao_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_3_escorpiao_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_3_escorpiao_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_3_escorpiao_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_3_escorpiao_pincas_d0_f0.rgba16.sprite",
+    "spr_apv_3_escorpiao_pincas_d0_f1.rgba16.sprite",
+    "spr_apv_3_escorpiao_pincas_d0_f2.rgba16.sprite",
+    "spr_apv_3_escorpiao_pincas_d0_f3.rgba16.sprite",
+    "spr_apv_3_escorpiao_pincas_d1_f0.rgba16.sprite",
+    "spr_apv_3_escorpiao_pincas_d1_f1.rgba16.sprite",
+    "spr_apv_3_escorpiao_pincas_d1_f2.rgba16.sprite",
+    "spr_apv_3_escorpiao_pincas_d1_f3.rgba16.sprite",
+    "spr_apv_3_escorpiao_pincas_d2_f0.rgba16.sprite",
+    "spr_apv_3_escorpiao_pincas_d2_f1.rgba16.sprite",
+    "spr_apv_3_escorpiao_pincas_d2_f2.rgba16.sprite",
+    "spr_apv_3_escorpiao_pincas_d2_f3.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_andar_d0_f0.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_andar_d0_f1.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_andar_d0_f2.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_andar_d0_f3.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_andar_d1_f0.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_andar_d1_f1.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_andar_d1_f2.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_andar_d1_f3.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_andar_d2_f0.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_andar_d2_f1.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_andar_d2_f2.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_andar_d2_f3.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_contact_d0_f0.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_contact_d1_f0.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_contact_d2_f0.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_3_mumia_lanceira_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_3_nemezar_andar_d0_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_andar_d0_f1.rgba16.sprite",
+    "spr_apv_3_nemezar_andar_d0_f2.rgba16.sprite",
+    "spr_apv_3_nemezar_andar_d0_f3.rgba16.sprite",
+    "spr_apv_3_nemezar_andar_d1_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_andar_d1_f1.rgba16.sprite",
+    "spr_apv_3_nemezar_andar_d1_f2.rgba16.sprite",
+    "spr_apv_3_nemezar_andar_d1_f3.rgba16.sprite",
+    "spr_apv_3_nemezar_andar_d2_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_andar_d2_f1.rgba16.sprite",
+    "spr_apv_3_nemezar_andar_d2_f2.rgba16.sprite",
+    "spr_apv_3_nemezar_andar_d2_f3.rgba16.sprite",
+    "spr_apv_3_nemezar_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_3_nemezar_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_3_nemezar_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_3_nemezar_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_3_nemezar_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_3_nemezar_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_3_nemezar_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_3_nemezar_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_3_nemezar_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_3_nemezar_balanca_mortuaria_d0_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_balanca_mortuaria_d0_f1.rgba16.sprite",
+    "spr_apv_3_nemezar_balanca_mortuaria_d0_f2.rgba16.sprite",
+    "spr_apv_3_nemezar_balanca_mortuaria_d0_f3.rgba16.sprite",
+    "spr_apv_3_nemezar_contact_d0_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_contact_d1_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_contact_d2_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_correntes_dinastia_d0_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_correntes_dinastia_d0_f1.rgba16.sprite",
+    "spr_apv_3_nemezar_correntes_dinastia_d0_f2.rgba16.sprite",
+    "spr_apv_3_nemezar_correntes_dinastia_d0_f3.rgba16.sprite",
+    "spr_apv_3_nemezar_correntes_dinastia_d1_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_correntes_dinastia_d1_f1.rgba16.sprite",
+    "spr_apv_3_nemezar_correntes_dinastia_d1_f2.rgba16.sprite",
+    "spr_apv_3_nemezar_correntes_dinastia_d1_f3.rgba16.sprite",
+    "spr_apv_3_nemezar_correntes_dinastia_d2_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_correntes_dinastia_d2_f1.rgba16.sprite",
+    "spr_apv_3_nemezar_correntes_dinastia_d2_f2.rgba16.sprite",
+    "spr_apv_3_nemezar_correntes_dinastia_d2_f3.rgba16.sprite",
+    "spr_apv_3_nemezar_transformar_rei_sem_sol_d0_f0.rgba16.sprite",
+    "spr_apv_3_nemezar_transformar_rei_sem_sol_d0_f1.rgba16.sprite",
+    "spr_apv_3_nemezar_transformar_rei_sem_sol_d0_f2.rgba16.sprite",
+    "spr_apv_3_nemezar_transformar_rei_sem_sol_d0_f3.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_andar_d0_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_andar_d0_f1.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_andar_d0_f2.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_andar_d0_f3.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_andar_d1_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_andar_d1_f1.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_andar_d1_f2.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_andar_d1_f3.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_andar_d2_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_andar_d2_f1.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_andar_d2_f2.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_andar_d2_f3.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_contact_d0_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_contact_d1_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_contact_d2_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_liturgia_quatro_d0_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_liturgia_quatro_d0_f1.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_liturgia_quatro_d0_f2.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_liturgia_quatro_d0_f3.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_liturgia_quatro_d1_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_liturgia_quatro_d1_f1.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_liturgia_quatro_d1_f2.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_liturgia_quatro_d1_f3.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_liturgia_quatro_d2_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_liturgia_quatro_d2_f1.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_liturgia_quatro_d2_f2.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_liturgia_quatro_d2_f3.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_mandala_vazio_d0_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_mandala_vazio_d0_f1.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_mandala_vazio_d0_f2.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_mandala_vazio_d0_f3.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_3_rei_sem_sol_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_andar_d0_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_andar_d0_f1.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_andar_d0_f2.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_andar_d0_f3.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_andar_d1_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_andar_d1_f1.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_andar_d1_f2.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_andar_d1_f3.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_andar_d2_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_andar_d2_f1.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_andar_d2_f2.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_andar_d2_f3.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_contact_d0_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_contact_d1_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_contact_d2_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_escaravelhos_carcere_d0_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_escaravelhos_carcere_d0_f1.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_escaravelhos_carcere_d0_f2.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_escaravelhos_carcere_d0_f3.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_escaravelhos_carcere_d1_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_escaravelhos_carcere_d1_f1.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_escaravelhos_carcere_d1_f2.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_escaravelhos_carcere_d1_f3.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_escaravelhos_carcere_d2_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_escaravelhos_carcere_d2_f1.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_escaravelhos_carcere_d2_f2.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_escaravelhos_carcere_d2_f3.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_3_ushabti_rachado_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_agulha_luto_d0_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_agulha_luto_d0_f1.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_agulha_luto_d0_f2.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_agulha_luto_d0_f3.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_agulha_luto_d1_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_agulha_luto_d1_f1.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_agulha_luto_d1_f2.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_agulha_luto_d1_f3.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_agulha_luto_d2_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_agulha_luto_d2_f1.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_agulha_luto_d2_f2.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_agulha_luto_d2_f3.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_andar_d0_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_andar_d0_f1.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_andar_d0_f2.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_andar_d0_f3.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_andar_d1_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_andar_d1_f1.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_andar_d1_f2.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_andar_d1_f3.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_andar_d2_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_andar_d2_f1.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_andar_d2_f2.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_andar_d2_f3.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_contact_d0_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_contact_d1_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_contact_d2_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_costura_boca_d0_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_costura_boca_d0_f1.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_costura_boca_d0_f2.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_costura_boca_d0_f3.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_costura_boca_d1_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_costura_boca_d1_f1.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_costura_boca_d1_f2.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_costura_boca_d1_f3.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_costura_boca_d2_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_costura_boca_d2_f1.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_costura_boca_d2_f2.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_costura_boca_d2_f3.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_4_bruxa_saco_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_andar_d0_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_andar_d0_f1.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_andar_d0_f2.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_andar_d0_f3.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_andar_d1_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_andar_d1_f1.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_andar_d1_f2.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_andar_d1_f3.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_andar_d2_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_andar_d2_f1.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_andar_d2_f2.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_andar_d2_f3.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_contact_d0_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_contact_d1_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_contact_d2_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_sentenca_ferro_d0_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_sentenca_ferro_d0_f1.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_sentenca_ferro_d0_f2.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_sentenca_ferro_d0_f3.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_sentenca_ferro_d1_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_sentenca_ferro_d1_f1.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_sentenca_ferro_d1_f2.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_sentenca_ferro_d1_f3.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_sentenca_ferro_d2_f0.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_sentenca_ferro_d2_f1.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_sentenca_ferro_d2_f2.rgba16.sprite",
+    "spr_apv_4_carrasco_ferro_sentenca_ferro_d2_f3.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_andar_d0_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_andar_d0_f1.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_andar_d0_f2.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_andar_d0_f3.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_andar_d1_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_andar_d1_f1.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_andar_d1_f2.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_andar_d1_f3.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_andar_d2_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_andar_d2_f1.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_andar_d2_f2.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_andar_d2_f3.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_contact_d0_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_contact_d1_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_contact_d2_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_tacas_rubras_d0_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_tacas_rubras_d0_f1.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_tacas_rubras_d0_f2.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_tacas_rubras_d0_f3.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_tacas_rubras_d1_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_tacas_rubras_d1_f1.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_tacas_rubras_d1_f2.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_tacas_rubras_d1_f3.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_tacas_rubras_d2_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_tacas_rubras_d2_f1.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_tacas_rubras_d2_f2.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_tacas_rubras_d2_f3.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_transformar_noiva_meia_noite_d0_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_transformar_noiva_meia_noite_d0_f1.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_transformar_noiva_meia_noite_d0_f2.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_transformar_noiva_meia_noite_d0_f3.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_veu_cortante_d0_f0.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_veu_cortante_d0_f1.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_veu_cortante_d0_f2.rgba16.sprite",
+    "spr_apv_4_condessa_vespera_veu_cortante_d0_f3.rgba16.sprite",
+    "spr_apv_4_efeitos_agulha_luto_d0_f0.rgba16.sprite",
+    "spr_apv_4_efeitos_agulha_luto_d0_f1.rgba16.sprite",
+    "spr_apv_4_efeitos_agulha_luto_d0_f2.rgba16.sprite",
+    "spr_apv_4_efeitos_agulha_luto_d0_f3.rgba16.sprite",
+    "spr_apv_4_efeitos_costura_maldita_d0_f0.rgba16.sprite",
+    "spr_apv_4_efeitos_costura_maldita_d0_f1.rgba16.sprite",
+    "spr_apv_4_efeitos_costura_maldita_d0_f2.rgba16.sprite",
+    "spr_apv_4_efeitos_costura_maldita_d0_f3.rgba16.sprite",
+    "spr_apv_4_efeitos_gota_rubra_d0_f0.rgba16.sprite",
+    "spr_apv_4_efeitos_gota_rubra_d0_f1.rgba16.sprite",
+    "spr_apv_4_efeitos_gota_rubra_d0_f2.rgba16.sprite",
+    "spr_apv_4_efeitos_gota_rubra_d0_f3.rgba16.sprite",
+    "spr_apv_4_efeitos_lamento_morto_d0_f0.rgba16.sprite",
+    "spr_apv_4_efeitos_lamento_morto_d0_f1.rgba16.sprite",
+    "spr_apv_4_efeitos_lamento_morto_d0_f2.rgba16.sprite",
+    "spr_apv_4_efeitos_lamento_morto_d0_f3.rgba16.sprite",
+    "spr_apv_4_efeitos_trapo_errante_d0_f0.rgba16.sprite",
+    "spr_apv_4_efeitos_trapo_errante_d0_f1.rgba16.sprite",
+    "spr_apv_4_efeitos_trapo_errante_d0_f2.rgba16.sprite",
+    "spr_apv_4_efeitos_trapo_errante_d0_f3.rgba16.sprite",
+    "spr_apv_4_efeitos_veu_lamina_d0_f0.rgba16.sprite",
+    "spr_apv_4_efeitos_veu_lamina_d0_f1.rgba16.sprite",
+    "spr_apv_4_efeitos_veu_lamina_d0_f2.rgba16.sprite",
+    "spr_apv_4_efeitos_veu_lamina_d0_f3.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_andar_d0_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_andar_d0_f1.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_andar_d0_f2.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_andar_d0_f3.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_andar_d1_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_andar_d1_f1.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_andar_d1_f2.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_andar_d1_f3.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_andar_d2_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_andar_d2_f1.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_andar_d2_f2.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_andar_d2_f3.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_contact_d0_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_contact_d1_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_contact_d2_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_grito_hora_morta_d0_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_grito_hora_morta_d0_f1.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_grito_hora_morta_d0_f2.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_grito_hora_morta_d0_f3.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_grito_hora_morta_d1_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_grito_hora_morta_d1_f1.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_grito_hora_morta_d1_f2.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_grito_hora_morta_d1_f3.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_grito_hora_morta_d2_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_grito_hora_morta_d2_f1.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_grito_hora_morta_d2_f2.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_grito_hora_morta_d2_f3.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_morrer_d0_f3.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_procissao_trapos_d0_f0.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_procissao_trapos_d0_f1.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_procissao_trapos_d0_f2.rgba16.sprite",
+    "spr_apv_4_noiva_meia_noite_procissao_trapos_d0_f3.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_andar_d0_f0.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_andar_d0_f1.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_andar_d0_f2.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_andar_d0_f3.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_andar_d1_f0.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_andar_d1_f1.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_andar_d1_f2.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_andar_d1_f3.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_andar_d2_f0.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_andar_d2_f1.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_andar_d2_f2.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_andar_d2_f3.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_ataque_normal_d0_f0.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_ataque_normal_d0_f1.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_ataque_normal_d0_f2.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_ataque_normal_d0_f3.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_ataque_normal_d1_f0.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_ataque_normal_d1_f1.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_ataque_normal_d1_f2.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_ataque_normal_d1_f3.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_ataque_normal_d2_f0.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_ataque_normal_d2_f1.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_ataque_normal_d2_f2.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_ataque_normal_d2_f3.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_contact_d0_f0.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_contact_d1_f0.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_contact_d2_f0.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_morrer_d0_f0.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_morrer_d0_f1.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_morrer_d0_f2.rgba16.sprite",
+    "spr_apv_4_saqueador_cadaverico_morrer_d0_f3.rgba16.sprite"
+  ]
+}

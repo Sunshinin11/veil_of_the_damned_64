@@ -1,6 +1,8 @@
+#include "campaign_combat.h"
 #include "gfx.h"
 #include "lang.h"
 #include "druid.h"
+#include "review_hero_actions.h"
 #include "cards.h"
 #include "models.h"
 #include "models_gen.h"
@@ -21,7 +23,7 @@ Druid g_druid;
 int g_hero = HERO_DRUID;
 
 // ===== Modelo esqueletico do druida (Rota A: skinning animado do Tiny3D) =====
-#define DRUID_MODEL_SCALE 50.0f  // Compensates for Mixamo 0.01 bone scale and normalizes to ~32 world units height
+#define DRUID_MODEL_SCALE (1.0f / MESH_PREC)
 
 static T3DModel   *s_druid_model = NULL;
 static T3DSkeleton s_druid_skel;
@@ -110,6 +112,8 @@ void druid_init(void) {
     if (g_hero == HERO_BARBARIAN) g_druid.spirit = 0.0f;   // furia comeca vazia
 
     g_druid.is_beast = false;
+    g_druid.is_stag = false;
+    review_hero_reset();
     g_druid.beast_timer = 0.0f;
     g_druid.state = DRUID_STATE_IDLE;
     druid_build_matrix();
@@ -138,6 +142,8 @@ float hero_crit(void) {
 }
 
 void druid_reset_at(float x, float z) {
+    review_hero_reset();
+    g_druid.visual_action=0;g_druid.visual_timer=g_druid.visual_duration=0;
     if (g_hero == HERO_BARBARIAN) barb_cancel_actions();
     g_druid.x = x;
     g_druid.y = 0.0f;
@@ -154,8 +160,10 @@ void druid_reset_at(float x, float z) {
     druid_build_matrix();
 }
 
-void druid_take_damage(int amount, float from_x, float from_z) {
+static void druid_take_damage_limited(int amount, float from_x, float from_z, int maximum_loss) {
+    if (VEIL_LEVEL_REVIEW && VEIL_REVIEW_GOD_MODE) return;
     if (g_druid.hp <= 0 || g_druid.invuln_timer > 0.0f) return;
+    if(review_hero_in_smoke())amount=(amount+1)/2;
 
     // Armor damage reduction in beast form (-25%)
     if (g_druid.is_beast) {
@@ -172,6 +180,9 @@ void druid_take_damage(int amount, float from_x, float from_z) {
             if (amount < 1) amount = 1;
         }
     }
+    // A percentage slam cannot become a one-shot through negative armor or
+    // incoming-damage modifiers. Normal attacks keep their original behavior.
+    if (maximum_loss>0 && amount>maximum_loss) amount=maximum_loss;
     g_druid.hp -= amount;
     g_druid.hurt_timer = 0.20f;
     g_druid.invuln_timer = 0.50f;
@@ -192,6 +203,15 @@ void druid_take_damage(int amount, float from_x, float from_z) {
         g_druid.state_timer = 0.0f;
         hud_show_message(T(S_FELL), 3.0f);
     }
+}
+
+void druid_take_damage(int amount, float from_x, float from_z) {
+    druid_take_damage_limited(amount,from_x,from_z,0);
+}
+
+void druid_take_damage_capped(int amount, float from_x, float from_z, int maximum_loss) {
+    if (amount<=0 || maximum_loss<=0) return;
+    druid_take_damage_limited(amount,from_x,from_z,maximum_loss);
 }
 
 void druid_heal(int amount) {
@@ -229,6 +249,7 @@ void druid_gain_exp(int amount) {
 
 void druid_revive(void) {
     if (g_druid.continues <= 0) return;
+    g_druid.visual_action=0;g_druid.visual_timer=g_druid.visual_duration=0;
     if (g_hero == HERO_BARBARIAN) barb_cancel_actions();
     g_druid.continues--;
     if (g_seeds > 0) {                     // morrer custa as sementes
@@ -278,6 +299,7 @@ void druid_toggle_shapeshift(void) {
     } else {
         // Revert to human
         g_druid.is_beast = false;
+        g_druid.is_stag = false;
         g_druid.transform_timer = 0.32f;
         g_druid.beast_timer = 0.0f;
         sound_play(SFX_SHAPESHIFT);
@@ -287,6 +309,15 @@ void druid_toggle_shapeshift(void) {
 }
 
 void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
+    review_hero_update(dt);
+    if(g_druid.visual_timer>0)g_druid.visual_timer=fmaxf(0,g_druid.visual_timer-dt);
+    // Witch stitching blocks casts only: movement, basic attacks, potion and dodge remain available.
+    joypad_buttons_t unlocked_buttons;
+    if(pressed && campaign_player_cast_locked()) {
+        unlocked_buttons=*pressed;
+        unlocked_buttons.b=unlocked_buttons.c_left=unlocked_buttons.c_up=unlocked_buttons.c_right=0;
+        pressed=&unlocked_buttons;
+    }
     if (g_druid.hp <= 0) {
         g_druid.state = DRUID_STATE_DEAD;
         g_druid.state_timer += dt;
@@ -339,16 +370,25 @@ void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
     }
 
     // Speed setting
-    float speed = (g_druid.is_beast ? 110.0f : g_hero == HERO_HUNTRESS ? 82.0f : g_hero == HERO_BARBARIAN ? 78.0f : 75.0f) * (1.0f + g_mods.speed_pct);
+    float speed = (g_druid.is_stag ? 80.0f : g_druid.is_beast ? 110.0f : g_hero == HERO_HUNTRESS ? 82.0f : g_hero == HERO_BARBARIAN ? 78.0f : 75.0f) * (1.0f + g_mods.speed_pct);
     if (g_hero == HERO_BARBARIAN) speed *= barb_speed_mult();
+    if(g_druid.state!=DRUID_STATE_DODGE)speed*=campaign_player_speed();
     if (g_druid.state == DRUID_STATE_DODGE) speed *= 1.6f;
     else speed *= world_ground_speed(g_druid.x, g_druid.z);   // agua do pantano
-    float accel = 12.0f * world_ground_grip(g_druid.x, g_druid.z);   // gelo liso: escorrega
+    float accel = 12.0f * world_ground_grip(g_druid.x, g_druid.z)*campaign_player_grip();   // gelo liso: escorrega
 
     // A camera olha na direcao +Z (olho atras, em -Z), entao a tela fica espelhada
     // em relacao a uma camera -Z padrao: inverte os dois eixos p/ o analogico bater.
     float target_vx = -move_x * speed; //  direita no analogico  -> direita na tela
     float target_vz =  move_z * speed; //  cima no analogico     -> cima na tela (+Z, longe)
+    if(g_druid.state==DRUID_STATE_DODGE) {
+        target_vx=g_hero==HERO_ROGUE?0:cosf(g_druid.yaw)*speed;
+        target_vz=g_hero==HERO_ROGUE?0:sinf(g_druid.yaw)*speed;
+    }
+    if(g_hero==HERO_HUNTRESS && g_druid.state==DRUID_STATE_ATTACK) {
+        float recoil=70*sinf(3.14159265f*(1-g_druid.attack_timer/fmaxf(.01f,g_druid.attack_duration)));
+        target_vx-=cosf(g_druid.yaw)*recoil;target_vz-=sinf(g_druid.yaw)*recoil;
+    }
     float aim_vx = target_vx, aim_vz = target_vz;
     // Golpe corpo a corpo: o druida PARA para golpear e so volta a andar quando a animacao termina.
     if (g_druid.state == DRUID_STATE_ATTACK && g_hero != HERO_HUNTRESS) {
@@ -412,12 +452,20 @@ void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
             float dash = speed;
             g_druid.vx = dash_x * dash;
             g_druid.vz = dash_z * dash;
+            g_druid.yaw=g_druid.target_yaw=atan2f(dash_z,dash_x);
+            if(g_hero==HERO_ROGUE) {
+                g_druid.x+=dash_x*42;g_druid.z+=dash_z*42;
+                world_collide_circle(&g_druid.x,&g_druid.z,g_druid.radius);
+                g_druid.vx=g_druid.vz=0;
+            }
             sound_play(SFX_DODGE);
         }
         if (g_hero == HERO_HUNTRESS) {
             hunt_buttons(in, pressed, input_mag);
         } else if (g_hero == HERO_BARBARIAN) {
             barb_buttons(in, pressed, input_mag);
+        } else if (g_hero == HERO_ROGUE || g_hero == HERO_MAGE) {
+            review_hero_buttons(pressed,input_mag);
         } else {
         // A Button: Basic Melee Attack
         if (pressed->a && g_druid.state != DRUID_STATE_ATTACK &&
@@ -429,6 +477,7 @@ void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
             else g_druid.target_yaw = g_druid.yaw;
             // Mais curto e com o acerto mais cedo: antes o dano so saia ~0,24 s depois do botao.
             g_druid.attack_duration = g_druid.is_beast ? 0.36f : 0.45f;
+            if(g_druid.focus_timer>0 && !g_druid.is_beast)g_druid.attack_duration*=.7f;
             g_druid.attack_timer = g_druid.attack_duration;
             g_druid.attack_hit_done = false;
             sound_play(g_druid.is_beast ? SFX_BEAST_SWING : SFX_SWING);
@@ -455,16 +504,7 @@ void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
         // C-Left: Thorn Burst
         if (pressed->c_left && g_druid.state != DRUID_STATE_DODGE &&
             g_druid.state != DRUID_STATE_ATTACK) {
-            if (g_druid.spirit >= 25.0f) {
-                if (spells_cast_thorn_burst(g_druid.x, g_druid.z)) {
-                    g_druid.spirit -= 25.0f;
-                    g_druid.state = DRUID_STATE_CAST;
-                    g_druid.cast_timer = 0.30f;
-                    hud_show_message(T(S_THORNS), 1.2f);
-                }
-            } else {
-                { char mb[48]; snprintf(mb, sizeof(mb), T(S_NO_MANA), 25); hud_show_message(mb, 1.0f); }
-            }
+            review_druid_stag();
         }
 
         // C-Up: Spirit Wolves
@@ -485,8 +525,10 @@ void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
         // C-Right: Shapeshift
         if (pressed->c_right && g_druid.state != DRUID_STATE_DODGE &&
             g_druid.state != DRUID_STATE_ATTACK) {
+            if(g_druid.is_stag){g_druid.is_stag=false;g_druid.is_beast=false;}
             druid_toggle_shapeshift();
         }
+        if(pressed->l)review_druid_buff();
 
         }   // fim dos botoes do druida
 
@@ -513,13 +555,18 @@ void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
             float h_rad = g_druid.is_beast ? 20.0f : 16.0f;
             int dmg = cards_roll_damage(g_druid.attack_damage + (g_druid.is_beast ? 14 : 0),
                                         g_mods.melee_pct + (g_druid.is_beast ? g_mods.beast_pct : 0.0f));
+            if(g_hero==HERO_ROGUE && g_druid.combo==2)dmg*=2;
+            if(g_hero==HERO_MAGE && g_druid.focus_timer>0)dmg=dmg*3/2;
 
             // Damage enemies in melee arc
-            bool hit = enemies_damage_at(hx, hz, h_rad, dmg, cosf(g_druid.yaw), sinf(g_druid.yaw));
+            bool hit = false;
+            if(g_hero==HERO_MAGE)spells_cast_mage_orb(hx,hz,cosf(g_druid.yaw),sinf(g_druid.yaw),dmg);
+            else hit=enemies_damage_at(hx, hz, h_rad, dmg, cosf(g_druid.yaw), sinf(g_druid.yaw));
             if (hit && g_mods.lifesteal > 0.0f) {          // cartas de roubo de vida
                 int heal = (int)(dmg * g_mods.lifesteal + 0.5f);
                 if (heal > 0) druid_heal(heal);
             }
+            if(hit && g_hero==HERO_DRUID && g_druid.is_beast && !g_druid.is_stag && g_druid.focus_timer>0)druid_heal(dmg/10);
         }
 
         if (g_druid.attack_timer <= 0.0f) {
@@ -545,21 +592,52 @@ void druid_update(float dt, joypad_inputs_t *in, joypad_buttons_t *pressed) {
     druid_anim_update(dt);
 }
 
+static void druid_push_part(const float pos[3], const float rot[3]) {
+    gfx_push_part((float[]){pos[0]*MESH_PREC,pos[1]*MESH_PREC,pos[2]*MESH_PREC},rot);
+}
+
 void druid_draw(void) {
-    if (sprites_druid_ready()) return;
+    // O humano usa geometria 3D real; as formas transformadas mantêm a arte atual.
+    if (g_hero != HERO_DRUID || g_druid.is_beast || g_druid.is_stag) return;
     gfx_matrix_push(&g_druid.mat_fp); // raiz: posicao + direcao
 
     // cor por vertice (regioes do corpo), sem textura -> combiner SHADE, sem luz
     t3d_state_set_drawflags(T3D_FLAG_SHADED | T3D_FLAG_DEPTH | T3D_FLAG_NO_LIGHT | gfx_cull_flag());
     rdpq_mode_combiner(RDPQ_COMBINER_SHADE);
 
-    if (g_druid.is_beast) {
-        models_draw_mesh(&mesh_werewolf_model);        // lobisomem ainda estatico
-    } else if (s_druid_model) {
-        t3d_skeleton_use(&s_druid_skel);                        // OBRIGATORIO p/ esqueleto buffered
-        t3d_model_draw_skinned(s_druid_model, &s_druid_skel);  // druida animado
-    }
+    float speed = sqrtf(g_druid.vx*g_druid.vx + g_druid.vz*g_druid.vz);
+    float stride = fminf(1.0f, speed / 55.0f);
+    float phase = g_druid.walk_cycle * 1.5707963f;
+    float swing = sinf(phase);
+    float crouch = stride * 1.25f;
 
+    // Tronco inclinado, baixo e com braços abertos: corrida animalesca.
+    druid_push_part((float[]){0,-crouch,0},(float[]){-stride*.16f,0,0});
+    models_draw_mesh(&mesh_druid3d_body);
+    druid_push_part((float[]){0,23.0f,0},(float[]){-stride*.10f,0,0});
+    models_draw_mesh(&mesh_druid3d_head);
+    t3d_matrix_pop(1);
+    t3d_matrix_pop(1);
+
+    for (int side=-1;side<=1;side+=2) {
+        float leg = swing * (float)side * stride;
+        float arm = -leg;
+        druid_push_part((float[]){side*5.0f,21.7f,0},
+                      (float[]){-.28f-arm*.55f,0,side*(.33f+stride*.18f)});
+        models_draw_mesh(&mesh_druid3d_upper_arm);
+        druid_push_part((float[]){0,-6.2f,0},(float[]){-.30f+arm*.40f,0,side*.08f});
+        models_draw_mesh(&mesh_druid3d_lower_arm);
+        t3d_matrix_pop(2);
+
+        // Joelhos alternam de verdade; a canela dobra no voo e estende no apoio.
+        druid_push_part((float[]){side*2.0f,13.9f,0},
+                      (float[]){leg*.82f,0,side*.04f});
+        models_draw_mesh(&mesh_druid3d_upper_leg);
+        float knee = stride*(.15f+fmaxf(0.0f,-leg)*1.05f);
+        druid_push_part((float[]){0,-6.8f,0},(float[]){knee,0,0});
+        models_draw_mesh(&mesh_druid3d_lower_leg);
+        t3d_matrix_pop(2);
+    }
     t3d_state_set_drawflags(T3D_FLAG_SHADED | T3D_FLAG_DEPTH | gfx_cull_flag());
     t3d_matrix_pop(1);
 }

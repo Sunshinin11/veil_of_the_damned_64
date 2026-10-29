@@ -16,6 +16,11 @@ void sprites_init(void);
 void sprites_preload_area(void);   // com Expansion Pak: pre-carrega os quadros dos monstros da fase
 bool sprites_druid_ready(void);
 void sprites_draw_world(T3DViewport *vp);
+typedef struct {
+    uint32_t queue_us, draws, blits, palette_uploads, depth_bands;
+    uint32_t texture_tiles, triangles, uploaded_bytes, actors_us, scenery_us, frame_loads;
+} SpritePerf;
+const SpritePerf *sprites_perf(void);
 void sprites_draw_ui(SpriteUi id, float x, float y, float scale);
 void sprites_draw_druid_portrait(float x, float y, float scale);
 void sprites_draw_hero_portrait(int hero, float x, float y, float scale);

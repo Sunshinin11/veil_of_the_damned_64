@@ -8,7 +8,7 @@
 #include "lang.h"
 #include "save.h"
 
-#define SHOT_TIME     0.16f   // flecha sai no toque; animacao curta de retorno
+#define SHOT_TIME     0.42f   // complete twelve-frame shot and backward hop
 #define VOLLEY_COST   18.0f
 
 int hunt_arrow_damage(void) { return (int)((g_druid.attack_damage + 4) * (1.0f + g_mods.melee_pct + g_mods.all_pct)); }
@@ -62,21 +62,19 @@ void hunt_buttons(joypad_inputs_t *in, joypad_buttons_t *pressed, float input_ma
         g_druid.attack_hit_done = true;
         g_druid.charging = false;
         g_druid.charge = 0.0f;
-        fire(g_druid.yaw, 1.0f, false);
+        for(int k=-1;k<=1;k++)fire(g_druid.yaw+k*.10f,1.0f,false);
         sound_play(SFX_SWING);
         return;
     }
-    // B: rajada em leque
+    // B: single large piercing bolt, separate from the body animation.
     if (pressed->b && !busy) {
         if (spend(hunt_volley_cost())) {
-            int n = hunt_volley_count();
-            for (int k = 0; k < n; k++) {
-                float a = g_druid.yaw + ((float)k - (float)(n - 1) * 0.5f) * 0.20f;
-                fire(a, 0.75f + g_mods.bolt_pct, false);
-            }
+            fire(g_druid.yaw,1.5f+g_mods.bolt_pct,true);
             sound_play(SFX_SWING);
             g_druid.state = DRUID_STATE_CAST;
             g_druid.cast_timer = 0.30f;
+            g_druid.visual_action=HUNT_VISUAL_PIERCE;
+            g_druid.visual_timer=g_druid.visual_duration=0.30f;
         }
     }
     // C-esq: armadilha de raizes um pouco a frente
@@ -86,22 +84,28 @@ void hunt_buttons(joypad_inputs_t *in, joypad_buttons_t *pressed, float input_ma
             spells_place_roots(g_druid.x + cosf(g_druid.yaw) * d, g_druid.z + sinf(g_druid.yaw) * d);
             g_druid.state = DRUID_STATE_CAST;
             g_druid.cast_timer = 0.30f;
+            g_druid.visual_action=HUNT_VISUAL_TRAP;
+            g_druid.visual_timer=g_druid.visual_duration=.60f;
             hud_show_message(T(S_H_ROOTS), 1.2f);
         }
     }
-    // C-cima: gaviao
+    // C-up: piercing volley, using the approved separate bolt effect.
     if (pressed->c_up && !busy) {
         if (spend(HUNT_HAWK_COST)) {
-            spells_cast_hawks(g_druid.x, g_druid.z);
+            int n=hunt_volley_count();
+            for(int k=0;k<n;k++)fire(g_druid.yaw+((float)k-(n-1)*.5f)*.16f,1.2f,true);
             g_druid.state = DRUID_STATE_CAST;
             g_druid.cast_timer = 0.30f;
-            hud_show_banner(T(S_H_HAWK_T), T(S_H_HAWK_S), 2.0f);
+            g_druid.visual_action=HUNT_VISUAL_VOLLEY;
+            g_druid.visual_timer=g_druid.visual_duration=.60f;
         }
     }
     // C-dir: Foco do Cacador
     if (pressed->c_right && !busy && g_druid.focus_timer <= 0.0f) {
         if (spend(HUNT_FOCUS_COST)) {
             g_druid.focus_timer = hunt_focus_time();
+            g_druid.visual_action=HUNT_VISUAL_FOCUS;
+            g_druid.visual_timer=g_druid.visual_duration=1.02f;
             sound_play(SFX_SHAPESHIFT);
             hud_show_banner(T(S_H_FOCUS_T), T(S_H_FOCUS_S), 2.0f);
         }
